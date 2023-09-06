@@ -21,3 +21,7 @@ I am Huanhuan Cheng, a graduate student who enjoys cooking and crafting. While m
 ### Developer - Rey Balmaceda
 
 Hi, I'm Rey. I feel comfortable working with Java, Python, and JavaScript. I'm open to picking up any other languages should that be necessary. I've been programming (poorly) for about 4 or 5 years now. Other than programming my main hobbies are reading, playing chess (extremely poorly), and games.
+
+### Developer - Shwetha Lokesh
+
+My name is Shwetha Lokesh. I'm a senior at Eastern Michigan. And am majoring in computer science I'm graduating next semester. I like Python and JS in other classes but am pretty much fresh in most languages. Thank you.
