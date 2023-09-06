@@ -8,7 +8,7 @@ Hello, I'm Casey! I'm an undergraduate Computer Science student who's been progr
 
 ### Deputy Lead - Tasha Furey
 
-TODO: Bio
+Hello, I am Tasha! I'm an undergraduate Computer Science student. I am proficient in many languages including java, Python, C#, and SQL. I am currently intrested in learning more about cloud software, machine learning and big data.
 
 ### Developer - Genyuan Liao
 
