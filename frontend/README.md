@@ -5,9 +5,10 @@ This directory contains all the source code relating to the frontend of Bookworm
 ## Starting the Frontend
 
 1) Open a terminal, and ensure that you are in the `backend` directory
-2) Depending on whether you are running **locally** or **deploying to production**
+2) Run `npm i`
+3) Depending on whether you are running **locally** or **deploying to production**
    - If you're running **locally**: run `npm run dev`
-   - If you're **deploying to production**: run `npm build`, then run `node ./dist/index.js`
+   - If you're **deploying to production**: run `npm build`. You can then navigate to `./dist` to find the built HTML/JS files for the application
 
 ## Vite Generated Readme
 
