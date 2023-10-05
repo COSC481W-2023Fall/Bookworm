@@ -1,6 +1,44 @@
 # Bookworm
 
-## Members
+An online book review application made with the MERN tech stack.
+
+## Tech Stack, Dependencies
+
+We utilize the MERN Tech Stack, and version 5 of the [TypeScript](https://typescriptlang.org) programming language for type safety.
+
+This project utilizes several other libraries and dependencies. See the `package.json` in each of the `backend` and `frontend` directories for more information on additional dependency versions.
+
+In the `frontend` and `backend` directories, run `npm i` to install all dependencies needed for the project.
+
+## Getting Started
+
+### Contributing
+
+1) Clone the repository
+2) For both the `backend` and `frontend` directories, navigate to each of these directories and run `npm i` to install dependencies
+3) Create a new branch for your changes (ex: `feat/new-button`, `fix/refresh-bug`, `chore/cleanup`)
+4) Use [conventional commit messages](https://www.conventionalcommits.org/en/v1.0.0/)
+5) Open a pull request to suggest your changes
+
+### Project Structure
+
+This repository contains two root directories: `frontend`, and `backend`:
+
+- The `frontend` directory contains all source files relating to the *frontend* of the application, including the client
+- The `backend` directory contains all source files relating to the *backend* of the application, including the database and API
+
+Each of these root directories are their own node.js package, and have different steps for testing and deployment. See the README's of each for more information.
+
+Each of these directories may also contain the following additional sub-directories:
+
+- `node_modules` contains the dependencies for said portion of the project. This folder is included in the project's gitignore, and should not be committed to source control
+- `dist` contains compiled source files ready to be deployed to production
+
+### Starting the project
+
+See the README's in the `frontend` and `backend` directories for more information on starting each of these.
+
+## Team Members
 
 ### Project Lead - Casey Bartush
 
