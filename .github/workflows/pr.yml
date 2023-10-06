@@ -1,0 +1,19 @@
+name: PR
+on: [pull_request]
+jobs:
+  pr:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Chekout Repository
+      uses: actions/checkout@v3
+
+    - name: Install Node.JS v18
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    - run: npm ci
+
+    - name: Test
+      run: npm test
