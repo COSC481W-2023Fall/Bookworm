@@ -4,11 +4,18 @@ This directory contains all the source code relating to the frontend of Bookworm
 
 ## Starting the Frontend
 
-1) Open a terminal, and ensure that you are in the `backend` directory
+1) Open a terminal, and ensure that you are in the `frontend` directory
 2) Run `npm i`
 3) Depending on whether you are running **locally** or **deploying to production**
    - If you're running **locally**: run `npm run dev`
    - If you're **deploying to production**: run `npm build`. You can then navigate to `./dist` to find the built HTML/JS files for the application
+
+## Setting up the testing framework
+
+1) Open a terminal, and ensure that you are in the `frontend` directory
+2) Run `npm install --save-dev ts-jest`
+3) Run `npm install --save-dev @jest/globals`
+4) Run `npm test`
 
 ## Vite Generated Readme
 
