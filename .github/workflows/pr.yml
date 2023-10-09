@@ -7,7 +7,9 @@ jobs:
     - name: Chekout Repository
       uses: actions/checkout@v3
 
-    - name: Install Node.JS v18
+    - run: cd frontend
+    
+    - name: Install Node.JS v18 For Frontend
       uses: actions/setup-node@v3
       with:
         node-version: 18
@@ -15,13 +17,19 @@ jobs:
 
     - name: Run Frontend Tests
       run: |
-        cd frontend
         npm ci
         npm test
         cd ..
+  
+    - run: cd backend
+    
+    - name: Install Node.JS v18 For Backend
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
 
     - name: Run Backend Tests
       run: |
-        cd backend
         npm ci
         npm test
