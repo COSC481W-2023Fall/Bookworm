@@ -13,7 +13,15 @@ jobs:
         node-version: 18
         cache: 'npm'
 
-    - run: npm ci
+    - name: Run Frontend Tests
+      run: |
+        cd frontend
+        npm ci
+        npm test
+        cd ..
 
-    - name: Test
-      run: npm test
+    - name: Run Backend Tests
+      run: |
+        cd backend
+        npm ci
+        npm test
