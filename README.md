@@ -14,18 +14,18 @@ In the `frontend` and `backend` directories, run `npm i` to install all dependen
 
 ### Contributing
 
-1) Clone the repository
-2) For both the `backend` and `frontend` directories, navigate to each of these directories and run `npm i` to install dependencies
-3) Create a new branch for your changes (ex: `feat/new-button`, `fix/refresh-bug`, `chore/cleanup`)
-4) Use [conventional commit messages](https://www.conventionalcommits.org/en/v1.0.0/)
-5) Open a pull request to suggest your changes
+1. Clone the repository
+2. For both the `backend` and `frontend` directories, navigate to each of these directories and run `npm i` to install dependencies
+3. Create a new branch for your changes (ex: `feat/new-button`, `fix/refresh-bug`, `chore/cleanup`)
+4. Use [conventional commit messages](https://www.conventionalcommits.org/en/v1.0.0/)
+5. Open a pull request to suggest your changes
 
 ### Project Structure
 
 This repository contains two root directories: `frontend`, and `backend`:
 
-- The `frontend` directory contains all source files relating to the *frontend* of the application, including the client
-- The `backend` directory contains all source files relating to the *backend* of the application, including the database and API
+- The `frontend` directory contains all source files relating to the _frontend_ of the application, including the client
+- The `backend` directory contains all source files relating to the _backend_ of the application, including the database and API
 
 Each of these root directories are their own node.js package, and have different steps for testing and deployment. See the README's of each for more information.
 
