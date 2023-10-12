@@ -19,3 +19,5 @@ const bookSchema = new Schema<Ibook>({
   publisher: { type: String, required: true },
   genres: { type: [String], required: true }
 });
+
+export const Book = model<Ibook>('Book', bookSchema);
