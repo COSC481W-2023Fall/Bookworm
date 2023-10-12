@@ -12,3 +12,7 @@ app.use(cors());
 app.get('/ping', (_, res) => {
   res.status(200).send('Pong!');
 });
+
+app.get('/book', async (_, res) => {
+  res.sendStatus(200);
+});
