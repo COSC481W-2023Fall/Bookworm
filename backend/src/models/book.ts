@@ -20,4 +20,5 @@ const bookSchema = new Schema<Ibook>({
   genres: { type: [String], required: true }
 });
 
-export const Book = model<Ibook>('Book', bookSchema);
+const Book = model<Ibook>('Book', bookSchema);
+export default Book;
