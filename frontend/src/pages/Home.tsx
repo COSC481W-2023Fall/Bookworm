@@ -1,9 +1,8 @@
-import React from 'react';
-import Navbar from '../components/navbar';
-import Bookshelf from '../components/Bookshelf';
 import { Typography } from 'antd';
+import Navbar from '../components/Navbar';
+import Bookshelf from '../components/Bookshelf';
 
-const Home: React.FC = () => {
+function Home(): JSX.Element {
   const tempBooks = [
     {
       isbn: '0156007754'
@@ -22,19 +21,21 @@ const Home: React.FC = () => {
     }
   ];
 
+  const blurb =
+    'Meet "BookWorms," the ultimate haven for passionate readers and bibliophiles alike! BookWorms isn\'t just a book review application....';
+
   return (
     <div className='homePage'>
       <Navbar />
       <div className='content'>
         <Typography.Paragraph strong className='blurb'>
-          Meet "BookWorms," the ultimate haven for passionate readers and
-          bibliophiles alike! BookWorms isn't just a book review application....
+          {blurb}
         </Typography.Paragraph>
       </div>
-      <Bookshelf shelfName={'Book Shelf'} books={tempBooks} />
-      <Bookshelf shelfName={'Recommendations'} books={tempBooks} />
+      <Bookshelf shelfName='Book Shelf' books={tempBooks} />
+      <Bookshelf shelfName='Recommendations' books={tempBooks} />
     </div>
   );
-};
+}
 
 export default Home;

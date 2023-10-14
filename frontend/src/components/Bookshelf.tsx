@@ -1,4 +1,3 @@
-import React from 'react';
 import { Typography } from 'antd';
 import { Link } from 'react-router-dom';
 
@@ -11,12 +10,12 @@ interface BookshelfProps {
   books: BookType[];
 }
 
-const Bookshelf: React.FC<BookshelfProps> = ({ shelfName, books }) => {
+function Bookshelf({ shelfName, books }: BookshelfProps): JSX.Element {
   return (
     <div className='bookshelf'>
       <span className='shelf-title'>
         <Typography.Title level={2}> {shelfName} </Typography.Title>
-        <Link to={'/browse'} style={{ textDecoration: 'none' }}>
+        <Link to='/browse' style={{ textDecoration: 'none' }}>
           <Typography.Text style={{ fontSize: '1rem' }}>
             {' '}
             View All{' '}
@@ -24,18 +23,17 @@ const Bookshelf: React.FC<BookshelfProps> = ({ shelfName, books }) => {
         </Link>
       </span>
       <ul className='book-list'>
-        {books.map((book) => {
-          return (
-            <li key={book.isbn}>
-              <img
-                src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`}
-              />
-            </li>
-          );
-        })}
+        {books.map((book) => (
+          <li key={book.isbn}>
+            <img
+              src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`}
+              alt={book.isbn}
+            />
+          </li>
+        ))}
       </ul>
     </div>
   );
-};
+}
 
 export default Bookshelf;

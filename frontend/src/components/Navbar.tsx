@@ -1,15 +1,14 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Input, Typography } from 'antd';
 import type { MenuProps } from 'antd';
 
-const Navbar: React.FC = () => {
+function Navbar(): JSX.Element {
   const onSearch = () => {};
 
   const items: MenuProps['items'] = [
     {
       label: (
-        <Link to={'/sign-in'}>
+        <Link to='/sign-in'>
           <Typography.Text strong style={{ fontSize: '1.5rem' }}>
             Sign In
           </Typography.Text>
@@ -19,7 +18,7 @@ const Navbar: React.FC = () => {
     },
     {
       label: (
-        <Link to={'/sign-up'}>
+        <Link to='/sign-up'>
           <Typography.Text strong style={{ fontSize: '1.5rem' }}>
             Join
           </Typography.Text>
@@ -45,9 +44,9 @@ const Navbar: React.FC = () => {
         mode='horizontal'
         items={items}
         style={{ borderBottom: 'none', lineHeight: '0px', background: 'none' }}
-      ></Menu>
+      />
     </div>
   );
-};
+}
 
 export default Navbar;
