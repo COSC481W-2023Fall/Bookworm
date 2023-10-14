@@ -1,5 +1,4 @@
-import {BrowserRouter as Router,
-  Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home.tsx';
 import SignIn from './pages/SignIn.tsx';
@@ -8,7 +7,6 @@ import Browse from './pages/Browse.tsx';
 import { ConfigProvider } from 'antd';
 
 const App: React.FC = () => {
-
   return (
     <ConfigProvider>
       <Routes>
@@ -17,9 +15,8 @@ const App: React.FC = () => {
         <Route path='/sign-up' element={<SignUp />}></Route>
         <Route path='/browse' element={<Browse />}></Route>
       </Routes>
-
     </ConfigProvider>
   );
-}
+};
 
 export default App;

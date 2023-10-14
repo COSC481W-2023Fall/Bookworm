@@ -3,9 +3,7 @@ import Navbar from '../components/navbar';
 import Bookshelf from '../components/Bookshelf';
 import { Typography } from 'antd';
 
-
 const Home: React.FC = () => {
-
   const tempBooks = [
     {
       isbn: '0156007754'
@@ -21,17 +19,20 @@ const Home: React.FC = () => {
     },
     {
       isbn: '198481785X'
-    } 
-  ]
+    }
+  ];
 
   return (
     <div className='homePage'>
       <Navbar />
       <div className='content'>
-        <Typography.Paragraph strong className='blurb'>Meet "BookWorms," the ultimate haven for passionate readers and bibliophiles alike! BookWorms isn't just a book review application....</Typography.Paragraph>
+        <Typography.Paragraph strong className='blurb'>
+          Meet "BookWorms," the ultimate haven for passionate readers and
+          bibliophiles alike! BookWorms isn't just a book review application....
+        </Typography.Paragraph>
       </div>
-      <Bookshelf shelfName={ 'Book Shelf' } books={ tempBooks } />
-      <Bookshelf shelfName={ 'Recommendations'} books={ tempBooks } />
+      <Bookshelf shelfName={'Book Shelf'} books={tempBooks} />
+      <Bookshelf shelfName={'Recommendations'} books={tempBooks} />
     </div>
   );
 };
