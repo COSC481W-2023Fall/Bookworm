@@ -15,11 +15,11 @@ const App: React.FC = () => {
         <Route path='/' element={<Home />}></Route>
         <Route path='/sign-in' element={<SignIn />}></Route>
         <Route path='/sign-up' element={<SignUp />}></Route>
+        <Route path='/browse' element={<Browse />}></Route>
       </Routes>
 
     </ConfigProvider>
   );
 }
 
-export default App;
 export default App;
