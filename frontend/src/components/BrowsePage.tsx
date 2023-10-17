@@ -1,31 +1,37 @@
 import React from 'react';
-import { Avatar, List } from 'antd';
+import { Image, List } from 'antd';
 
 
-const data = [
-  {
-    title: 'Ant Design Title 1',
-  },
-  {
-    title: 'Ant Design Title 2',
-  },
-  {
-    title: 'Ant Design Title 3',
-  },
-  {
-    title: 'Ant Design Title 4',
-  },
+const books = [
+    {
+      isbn: '0156007754'
+    },
+    {
+      isbn: '0765365278'
+    },
+    {
+      isbn: ' 0060883286'
+    },
+    {
+      isbn: '1939905214'
+    },
+    {
+      isbn: '198481785X'
+    }
 ];
 
 const BrowsePage: React.FC = () => (
   <List
     itemLayout="horizontal"
-    dataSource={data}
-    renderItem={(item, index) => (
+    dataSource={books}
+    renderItem={(book, index) => (
       <List.Item>
         <List.Item.Meta
-          avatar={<Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`} />}
-          title={<a href="https://ant.design">{item.title}</a>}
+          avatar={<Image 
+             src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`}
+             
+              />}
+          title={<a href="https://ant.design">{book.isbn}</a>}
           description="Ant Design, a design language for background applications, is refined by Ant UED Team"
         />
       </List.Item>
