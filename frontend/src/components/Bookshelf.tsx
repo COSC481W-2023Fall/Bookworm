@@ -1,5 +1,6 @@
 import { Typography } from 'antd';
 import { Link } from 'react-router-dom';
+import styles from './Bookshelf.module.css';
 
 interface BookType {
   isbn: string;
@@ -12,8 +13,8 @@ interface BookshelfProps {
 
 function Bookshelf({ shelfName, books }: BookshelfProps): JSX.Element {
   return (
-    <div className='bookshelf'>
-      <span className='shelf-title'>
+    <div className={styles.bookshelf}>
+      <span className={styles.shelfTitle}>
         <Typography.Title level={2}> {shelfName} </Typography.Title>
         <Link to='/browse' style={{ textDecoration: 'none' }}>
           <Typography.Text style={{ fontSize: '1rem' }}>
@@ -22,7 +23,7 @@ function Bookshelf({ shelfName, books }: BookshelfProps): JSX.Element {
           </Typography.Text>
         </Link>
       </span>
-      <ul className='book-list'>
+      <ul className={styles.bookList}>
         {books.map((book) => (
           <li key={book.isbn}>
             <img

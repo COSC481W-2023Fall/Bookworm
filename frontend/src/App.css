@@ -1,59 +1,18 @@
+@import './global.module.css';
+
 body {
+  height: 100vh;
+  min-width: 1200px;
   max-width: 1200px;
   margin: 0 auto;
-  float: none;
   background-image: linear-gradient(
-    lightyellow,
+    var(--accent-color),
     white,
     white,
     white,
-    lightyellow
+    var(--accent-color)
   );
-}
-
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.title {
-  min-width: 215px;
-}
-
-.search {
-  min-width: 400px;
-  max-width: 400px;
-  justify-content: center;
-}
-
-.content {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 50px;
-  padding-bottom: 50px;
-}
-
-.bookshelf {
-  width: 100%;
-}
-
-.shelf-title {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 25px;
-}
-
-.book-list {
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.blurb {
-  font-size: 1.3rem;
-  justify-self: left;
+  background-size: contain;
+  background-repeat: no-repeat;
+  font-family: 'Inter', sans-serif;
 }

@@ -1,0 +1,21 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search {
+  min-width: 400px;
+  max-width: 400px;
+  justify-content: center;
+}
+
+.menu {
+  border-bottom: none;
+  line-height: 0px;
+  background: none;
+}
+
+.menuLink {
+  font-size: 1.25rem;
+}

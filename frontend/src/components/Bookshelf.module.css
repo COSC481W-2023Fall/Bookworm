@@ -1,0 +1,17 @@
+.bookshelf {
+  width: 100%;
+}
+
+.shelfTitle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 25px;
+}
+
+.bookList {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
