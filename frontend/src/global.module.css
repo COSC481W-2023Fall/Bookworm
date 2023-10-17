@@ -1,0 +1,9 @@
+:root {
+  --primary-color: rgba(255, 255, 255, 1);
+  --accent-color: rgba(232, 181, 50, 0.3);
+  --text-primary: rgba(0, 0, 0, 1);
+  --text-secondary: rgba(132, 130, 130, 1);
+  --text-box-background: rgba(64, 30, 30, 0.03);
+  --main-button-background: rgba(254, 200, 11, 0.62);
+  --secondary-button-background: rgba(254, 221, 104, 1);
+}
