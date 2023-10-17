@@ -6,6 +6,6 @@
  * @param b Second number to add
  * @returns The sum of a and b
  */
-export function sum(a: number, b: number) {
+export default function sum(a: number, b: number) {
   return a + b;
 }
