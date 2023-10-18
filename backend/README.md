@@ -4,11 +4,10 @@ This directory contains all the source code relating to the backend of Bookworm.
 
 ## Starting the Backend
 
-1. Replace dist/index.js file MongoDB connection credential to your own MongoDB atlas credential to test
-2. Open a terminal, and ensure that you are in the `backend` directory
-3. Run `npm i`
-4. Run `npm run build`
-5. Run `npm start`
+1. Open a terminal, and ensure that you are in the `backend` directory
+2. Run `npm i`
+3. Run `npm run build`
+4. Run `npm start`
 
 ## Setting up the testing framework
 
