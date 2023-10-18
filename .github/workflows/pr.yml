@@ -22,6 +22,7 @@ jobs:
         run: npm run lint
   tests:
     runs-on: ubuntu-latest
+    environment: staging
     steps:
       - name: Chekout Repository
         uses: actions/checkout@v3
