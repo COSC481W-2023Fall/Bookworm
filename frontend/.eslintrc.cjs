@@ -21,9 +21,9 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
-        'argsIgnorePattern': '^_',
-        'varsIgnorePattern': '^_',
-        'caughtErrorsIgnorePattern': '^_'
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_'
       }
     ],
     'react/react-in-jsx-scope': 'off',
@@ -31,20 +31,20 @@ module.exports = {
     '@typescript-eslint/naming-convention': [
       'error',
       {
-        selector: ["parameter", "variable"],
-        leadingUnderscore: "forbid",
+        selector: ['parameter', 'variable'],
+        leadingUnderscore: 'forbid',
         filter: {
-          regex: "_*",
+          regex: '_*',
           match: false
         },
-        format: null,
+        format: null
       },
       {
-        selector: "parameter",
-        leadingUnderscore: "require",
+        selector: 'parameter',
+        leadingUnderscore: 'require',
         format: null,
-        modifiers: ["unused"],
-      },
+        modifiers: ['unused']
+      }
     ]
   }
 };
