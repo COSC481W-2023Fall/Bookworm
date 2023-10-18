@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { fetchAllBooks, fetchBookByISBN } from './models/book';
+import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
 
 // load our .env file
 dotenv.config();
@@ -36,6 +36,12 @@ app.get('/api/books', async (req, res) => {
   }
 
   return res.status(200).json(books);
+});
+
+app.get('/api/books/total', async (_, res) => {
+  const count = await fetchBookCount();
+
+  return res.status(200).json(count);
 });
 
 app.get('/api/books/:isbn', async (req, res) => {

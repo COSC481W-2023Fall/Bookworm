@@ -27,7 +27,11 @@ export async function paginateBooks(offset: number, limit: number) {
         return [];
     }
 
-    // this has to be converted to unknown first, otherwise TypeScript
-    // screams at us
-    return res.data as unknown as IBook[];
+    return res.data as IBook[];
+}
+
+export async function getBookCount() {
+    const res = await axios.get(`${BASE_URL}/books/total`);
+
+    return res.data as number;
 }

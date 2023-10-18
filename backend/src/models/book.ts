@@ -43,7 +43,7 @@ export async function fetchBookByISBN(isbn: string): Promise<Ibook | null> {
   await connect(DATABASE_URL);
 
   // TODO: Cache recently fetched books?
-  const res = await Book.findOne({ isbn }).exec();
+  const res = await Book.findOne({ isbn });
 
   return res;
 }
@@ -78,4 +78,16 @@ export async function fetchAllBooks(
     .limit(limit);
 
   return res;
+}
+
+/**
+ * Fetches the total number of books in the database.
+ * @returns A promise containing the total number of books.
+ */
+export async function fetchBookCount() {
+  await connect(DATABASE_URL);
+
+  const count = await Book.find().estimatedDocumentCount();
+
+  return count;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Image, List } from 'antd';
-import { IBook, paginateBooks } from '../services';
+import { IBook, getBookCount, paginateBooks } from '../services';
 
 type PaginationPosition = 'top' | 'bottom' | 'both';
 
@@ -12,6 +12,7 @@ const BrowsePage: React.FC = () => {
   const [limit, _] = useState(5);
   const [offset, setOffset] = useState(0);
   const [books, setBooks] = useState<IBook[]>([])
+  const [count, setCount] = useState(0)
 
   useEffect(() => {
     async function fetchBooks() {
@@ -23,6 +24,17 @@ const BrowsePage: React.FC = () => {
     return;
   }, [offset]);
 
+  useEffect(() => {
+    async function fetchCount() {
+      const res = await getBookCount();
+      setCount(res);
+      console.log(count);
+    }
+
+    fetchCount();
+    return;
+  });
+
   return (
     <>
       <List
@@ -30,7 +42,7 @@ const BrowsePage: React.FC = () => {
           position,
           align,
           pageSize: limit,
-          total: 100,
+          total: count,
           showSizeChanger: false,  // TODO: Allow size changing
           async onChange(page, pageSize) {
             setOffset((page - 1) * pageSize);
