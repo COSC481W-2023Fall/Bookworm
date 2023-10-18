@@ -1,8 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./signupApp.tsx";
-import "./signup-styles.css";
+import App from "./App";
+import "./styles.css"
 import { BrowserRouter } from "react-router-dom";
+
+
+
 
 ReactDOM.render(
   <React.StrictMode>
@@ -12,5 +15,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
-
-export default App;

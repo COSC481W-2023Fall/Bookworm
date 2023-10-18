@@ -1,11 +1,12 @@
-import { Typography } from 'antd';
-import Navbar from '../components/Navbar';
+import React from 'react';
+import Navbar from '../components/navbar';
 import Bookshelf from '../components/Bookshelf';
-import styles from './Home.module.css';
+import { Typography } from 'antd';
 
-function Home(): JSX.Element {
-  // Temporary book retrieval for testign the bookshelf component.
-  const shelf1 = [
+
+const Home: React.FC = () => {
+
+  const tempBooks = [
     {
       isbn: '0156007754'
     },
@@ -13,43 +14,26 @@ function Home(): JSX.Element {
       isbn: '0765365278'
     },
     {
-      isbn: ' 0060883286'
+      isbn: '006112009X'
     },
     {
-      isbn: '1939905214'
+      isbn: '1846940583'
     },
     {
       isbn: '198481785X'
-    }
-  ];
-  const shelf2 = [
-    {
-      isbn: '0670826901'
-    },
-    {
-      isbn: '1324093021'
-    },
-    {
-      isbn: '0593466349'
-    }
-  ];
-
-  const blurb = `Welcome to Bookworm, the ultimate haven for passionate readers and bibliophiles alike! 
-    Dive into a vibrant community of book enthusiasts and bibliophiles as you embark on a literary journey like no other. 
-    Bookworm isn't just a social media app; it's a sanctuary for readers, a digital haven for bookworms of all kinds.`;
+    } 
+  ]
 
   return (
-    <div className={styles.homePage}>
+    <div className='homePage'>
       <Navbar />
-      <div className={styles.content}>
-        <Typography.Paragraph strong className={styles.blurb}>
-          {blurb}
-        </Typography.Paragraph>
+      <div className='content'>
+        <Typography.Paragraph strong className='blurb'>Meet "BookWorms," the ultimate haven for passionate readers and bibliophiles alike! BookWorms isn't just a book review application....</Typography.Paragraph>
       </div>
-      <Bookshelf shelfName='Book Shelf' books={shelf1} />
-      <Bookshelf shelfName='Recommendations' books={shelf2} />
+      <Bookshelf shelfName={ 'Book Shelf' } books={ tempBooks } />
+      <Bookshelf shelfName={ 'Recommendations'} books={ tempBooks } />
     </div>
   );
-}
+};
 
 export default Home;
