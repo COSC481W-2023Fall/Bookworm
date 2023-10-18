@@ -32,7 +32,7 @@ app.get('/api/books', async (req, res) => {
   const books = await fetchAllBooks(offset, limit);
 
   if (books === null) {
-    return res.status(404).send('Empty database');
+    return res.sendStatus(400);
   }
 
   return res.status(200).json(books);
