@@ -1,4 +1,5 @@
 import { Schema, model, connect, Date } from 'mongoose';
+import { DATABASE_URL } from '.';
 
 interface Ibook {
   title: string;
@@ -20,5 +21,25 @@ const bookSchema = new Schema<Ibook>({
   genres: { type: [String], required: true }
 });
 
-const Book = model<Ibook>('Book', bookSchema);
-export default Book;
+/**
+ * Model for representing an individual Book.
+ */
+export const Book = model<Ibook>('Book', bookSchema);
+
+/**
+ * Fetches a single book by ISBN.
+ * 
+ * For fetching books by ISBN13, use {@link fetchBookByISBN13} instead
+ * 
+ * Returns null if a book with the provided ISBN is not found.
+ * @param isbn The ISBN of the book to fetch from the database.
+ * @returns A promise containing a single, potentially-null book document.
+ */
+export async function fetchBookByISBN(isbn: string): Promise<Ibook | null> {
+  await connect(DATABASE_URL);
+
+  // TODO: Cache recently fetched books?
+  const res = await Book.findOne({ isbn }).exec();
+
+  return res;
+}
