@@ -1,5 +1,6 @@
-import { describe, expect, test } from '@jest/globals';
+import { afterAll, describe, expect, test } from '@jest/globals';
 import { fetchAllBooks, fetchBookByISBN } from '../../src/models/book';
+import mongoose from 'mongoose';
 
 describe('Fetch a single book', () => {
   test('Fetch book with ISBN 0618346252', async () => {
@@ -37,3 +38,8 @@ describe('Fetch multiple books', () => {
     expect(valid).not.toBeNull();
   });
 });
+
+afterAll(done => {
+  mongoose.connection.close();
+  done();
+})
