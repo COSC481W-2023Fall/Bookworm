@@ -36,4 +36,4 @@ describe('Fetch multiple books', () => {
     expect(zeroLimit).toBeNull();
     expect(valid).not.toBeNull();
   });
-})
+});
