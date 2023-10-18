@@ -49,6 +49,8 @@ jobs:
           cache-dependency-path: backend/package-lock.json
 
       - name: Run Backend Tests
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           cd backend
           npm ci
