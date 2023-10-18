@@ -17,7 +17,34 @@ module.exports = {
       'warn',
       { allowConstantExport: true }
     ],
+    'no-unused-vars': 0,
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_'
+      }
+    ],
     'react/react-in-jsx-scope': 'off',
-    'react/jsx-uses-react': 'off'
+    'react/jsx-uses-react': 'off',
+    '@typescript-eslint/naming-convention': [
+      'error',
+      {
+        selector: ['parameter', 'variable'],
+        leadingUnderscore: 'forbid',
+        filter: {
+          regex: '_*',
+          match: false
+        },
+        format: null
+      },
+      {
+        selector: 'parameter',
+        leadingUnderscore: 'require',
+        format: null,
+        modifiers: ['unused']
+      }
+    ]
   }
 };

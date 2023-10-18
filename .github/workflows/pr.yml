@@ -22,6 +22,7 @@ jobs:
         run: npm run lint
   tests:
     runs-on: ubuntu-latest
+    environment: Staging
     steps:
       - name: Chekout Repository
         uses: actions/checkout@v3
@@ -48,6 +49,8 @@ jobs:
           cache-dependency-path: backend/package-lock.json
 
       - name: Run Backend Tests
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           cd backend
           npm ci
