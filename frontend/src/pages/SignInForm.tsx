@@ -27,7 +27,7 @@ function SigninForm() {
     return (
         <Form name="basic"  autoComplete="off" onFinish={handlerFinish} onFinishFailed={handlerFinishFailed}>
 
-        <Form.Item name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
+        <Form.Item name="email" rules={[{ type: 'email', message: 'The input is not valid E-mail!',},{ required: true, message: 'Please input your email!' }]}>
           <Input placeholder = "email" prefix = {<MailOutlined />}/>
         </Form.Item>
     
