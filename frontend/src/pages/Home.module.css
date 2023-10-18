@@ -1,0 +1,16 @@
+.title {
+  min-width: 215px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.blurb {
+  font-size: 1.3rem;
+  justify-self: left;
+}

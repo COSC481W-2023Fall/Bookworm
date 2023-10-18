@@ -1,0 +1,18 @@
+@import './global.module.css';
+
+body {
+  height: 100vh;
+  min-width: 1200px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-image: linear-gradient(
+    var(--accent-color),
+    white,
+    white,
+    white,
+    var(--accent-color)
+  );
+  background-size: contain;
+  background-repeat: no-repeat;
+  font-family: 'Inter', sans-serif;
+}

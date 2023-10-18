@@ -1,0 +1,54 @@
+name: PR
+on: [pull_request]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      
+      - name: Install Node.JS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      
+      - run: npm ci
+        
+      - name: Run Prettier Check
+        run: npm run prettier:check
+
+      - name: Run ESLint
+        run: npm run lint
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chekout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.JS v18 For Frontend
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Run Frontend Tests
+        run: |
+          cd frontend
+          npm ci
+          npm test
+          cd ..
+
+      - name: Install Node.JS v18 For Backend
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Run Backend Tests
+        run: |
+          cd backend
+          npm ci
+          npm test
