@@ -11,11 +11,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get('/ping', (_, res) => {
+app.get('/api/ping', (_, res) => {
   res.status(200).send('Pong!');
 });
 
-app.get('/books', async (req, res) => {
+app.get('/api/books', async (req, res) => {
   const offset = parseInt((req.query.offset ?? '') as string, 10);
   const limit = parseInt((req.query.limit ?? '') as string, 10);
 
@@ -38,7 +38,7 @@ app.get('/books', async (req, res) => {
   return res.status(200).json(books);
 });
 
-app.get('/books/:isbn', async (req, res) => {
+app.get('/api/books/:isbn', async (req, res) => {
   const { isbn } = req.params;
 
   const book = await fetchBookByISBN(isbn);
