@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { fetchBookByISBN } from './models/book';
+import { fetchAllBooks, fetchBookByISBN } from './models/book';
 
 // load our .env file
 dotenv.config();
@@ -14,6 +14,29 @@ app.use(cors());
 
 app.get('/ping', (_, res) => {
   res.status(200).send('Pong!');
+});
+
+app.get('/books', async (req, res) => {
+  const offset = parseInt((req.query.offset ?? '') as string);
+  const limit = parseInt((req.query.limit ?? '') as string);
+  
+  // `parseInt` returns `NaN` on failure.
+  // Annoyingly, directly comparing said result to `NaN` gives linting errors
+  if (Number.isNaN(offset) || offset < 0) {
+    return await res.status(400).send('offset must be a non-negative number');
+  }
+
+  if (Number.isNaN(limit) || limit <= 0) {
+    return await res.status(400).send('limit must be a number greater than zero'); 
+  }
+
+  const books = await fetchAllBooks(offset, limit);
+
+  if (books === null) {
+    return await res.status(404).send("Empty database");
+  }
+
+  await res.status(200).json(books);
 });
 
 app.get('/books/:isbn', async (req, res) => {
