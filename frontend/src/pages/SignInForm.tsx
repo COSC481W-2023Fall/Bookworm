@@ -9,7 +9,7 @@ function SigninForm() {
   const navigate = useNavigate()
     const handlerFinish = (val:{email: string, password: string}) => {
         console.log(val)
-        axios.post('http://localhost:3000/signin', val)
+        axios.post('http://localhost:3000/sign-in', val)
         .then(res => {
           if(res.data.success){
             navigate('/')

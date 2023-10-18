@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
 });
 
 // Sign in route
-app.post('/signin', async (req, res) => {
+app.post('/sign-in', async (req, res) => {
   try {
       const { email, password } = req.body;
 
@@ -75,7 +75,7 @@ app.post('/signin', async (req, res) => {
 });
 
 // Sign out route
-app.get('/signout', (req, res) => {
+app.get('/sign-out', (req, res) => {
   res.clearCookie('token')
   return res.json({sucess: true})
 })
