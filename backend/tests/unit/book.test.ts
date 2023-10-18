@@ -39,7 +39,7 @@ describe('Fetch multiple books', () => {
   });
 });
 
-afterAll(done => {
+afterAll((done) => {
   mongoose.connection.close();
   done();
-})
+});
