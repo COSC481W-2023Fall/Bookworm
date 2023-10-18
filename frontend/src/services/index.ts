@@ -5,33 +5,35 @@ const PORT = 3001;
 const BASE_URL = `http://localhost:${PORT}/api`;
 
 export type IBook = {
-    Title: string;
-    Author: string;
-    isbn: string;
-    page_count: number;
-    publication_date: Date;
-    publisher: string;
-    genres: string[];
-  }
+  Title: string;
+  Author: string;
+  isbn: string;
+  page_count: number;
+  publication_date: Date;
+  publisher: string;
+  genres: string[];
+};
 
 export async function fetchBookByISBN(isbn: string) {
-    const res = await axios.get(`${BASE_URL}/books/${isbn}`);
+  const res = await axios.get(`${BASE_URL}/books/${isbn}`);
 
-    return res.data as IBook | null;
+  return res.data as IBook | null;
 }
 
 export async function paginateBooks(offset: number, limit: number) {
-    const res = await axios.get(`${BASE_URL}/books?offset=${offset}&limit=${limit}`);
+  const res = await axios.get(
+    `${BASE_URL}/books?offset=${offset}&limit=${limit}`
+  );
 
-    if (res.status !== 200) {
-        return [];
-    }
+  if (res.status !== 200) {
+    return [];
+  }
 
-    return res.data as IBook[];
+  return res.data as IBook[];
 }
 
 export async function getBookCount() {
-    const res = await axios.get(`${BASE_URL}/books/total`);
+  const res = await axios.get(`${BASE_URL}/books/total`);
 
-    return res.data as number;
+  return res.data as number;
 }
