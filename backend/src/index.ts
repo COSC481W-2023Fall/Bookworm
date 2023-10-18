@@ -13,15 +13,17 @@ app.use(express.json());
 app.use(cors());
 
 // Define the MongoDB connection URL
-// Replace with your MongoDB Atlas credential
-const dbURL = 'mongodb+srv://gliao:tyghbn5888@mern.chmp221.mongodb.net/users'; 
+const mongodbUri = process.env.MONGODB_URI;
 
-// Connect to MongoDB
-mongoose.connect(dbURL);
-// Get the default connection
+if (!mongodbUri) {
+  console.error('MongoDB connection URL is missing in the .env file.');
+  process.exit(1);
+}
+
+mongoose.connect(mongodbUri);
+
 const db = mongoose.connection;
 
-// Handle connection events
 db.on('error', (error) => {
   console.error('MongoDB connection error:', error);
 });
