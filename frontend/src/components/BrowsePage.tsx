@@ -9,19 +9,29 @@ type PaginationAlign = 'start' | 'center' | 'end';
 
 const books = [
   {
-    isbn: '0156007754'
+    isbn: '0156007754',
+    author:'tasha',
+    pagecount:'44'
   },
   {
-    isbn: '0765365278'
+    isbn: '0765365278',
+    author:'tasha',
+    pagecount:'44'
   },
   {
-    isbn: ' 0060883286'
+    isbn: ' 0060883286',
+    author:'tasha',
+    pagecount:'44'
   },
   {
-    isbn: '1939905214'
+    isbn: '1939905214',
+    author:'tasha',
+    pagecount:'44'
   },
   {
-    isbn: '198481785X'
+    isbn: '198481785X',
+    author:'tasha',
+    pagecount:'44'
   }
 ];
 
@@ -37,17 +47,19 @@ const BrowsePage: React.FC = () => {
         pagination={{ 
           position,
           align,
-          defaultPageSize: 3,
+          pageSize: 5,
          }}
         dataSource={books}
         renderItem={(book) => (
           <List.Item>
             <List.Item.Meta
               avatar={
-                <Image src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} />
+                <Image src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-S.jpg`} />
               }
               title={<a href="https://ant.design">{book.isbn}</a>} // change href to book page out of scope
-              description="this is a book"
+              description={'Author:'+ book.author}
+              
+             
             />
           </List.Item>
         )}
