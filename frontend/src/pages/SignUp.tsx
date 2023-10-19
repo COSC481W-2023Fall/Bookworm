@@ -1,5 +1,16 @@
-function SignUp(): JSX.Element {
-  return <div>Sign Up</div>;
-}
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./signupApp.tsx";
+import "./signup-styles.css";
+import { BrowserRouter } from "react-router-dom";
 
-export default SignUp;
+ReactDOM.render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>,
+  document.getElementById("root")
+);
+
+export default App;
