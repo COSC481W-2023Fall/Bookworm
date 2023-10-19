@@ -12,15 +12,15 @@ interface NavbarProps {
 }
 
 function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
-
-  // If user signed in, it displays a greeting with the username and a "Sign Out" button. 
+  
+  // If usersigned in, it displays a greeting with the username and a "Sign Out" button. 
   // If not signed in, it displays "Sign In" and a "Sign Out" button.
   const items: MenuProps['items'] = auth
   ? [
       {
         label: (
           <Typography.Text strong className={styles.menuLink}>
-            Hi, {username}
+            Hi {username}
           </Typography.Text>
         ),
         key: 'hi-username'

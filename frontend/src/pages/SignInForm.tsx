@@ -36,12 +36,12 @@ function SigninForm() {
           <Input placeholder = "email" prefix = {<MailOutlined />}/>
         </Form.Item>
     
-        <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
-          <Input.Password placeholder = "password" prefix = {<LockOutlined />}/>
+        <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]} style={{ borderRadius: '20px' }}>
+          <Input.Password placeholder = "password" prefix = {<LockOutlined />} />
         </Form.Item>  
 
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" style={{width: '300px',height: '40px', borderRadius: '20px', backgroundColor: 'var(--secondary-button-background)' }}>
             Sign in
           </Button>
         </Form.Item>

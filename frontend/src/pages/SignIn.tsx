@@ -1,14 +1,19 @@
-import './SignIn.module.css'
+import './SigninC.css'
 import SigninForm from './SignInForm'
+import { Typography } from 'antd';
 
 function SignIn(): JSX.Element {
   return (
     <div className = "signin-container">
         <div className = "signin-wrap">
             <div className = "signin-form">
-                <h1>BookWorm</h1>
-                <h1>Sign in</h1>
-                <SigninForm />
+              <Typography.Title level={1} className='title'>
+                BookWorm
+              </Typography.Title>
+              <Typography.Title level={2} className='title'>
+                Sign in
+              </Typography.Title>
+              <SigninForm />
             </div>           
         </div>
     </div>
