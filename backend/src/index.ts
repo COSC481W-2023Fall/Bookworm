@@ -5,7 +5,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser'
 import jwt, { VerifyErrors } from 'jsonwebtoken';
-import dbC from './config/db';
 // import User from './models/user.js'
 // load our .env file
 import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
@@ -22,28 +21,26 @@ app.use(cors({
   credentials: true,
 }));
 
-// Connect to MongoDB
-dbC();
 
 // Define the MongoDB connection URL
-// const mongodbUri = process.env.MONGODB_URI;
+const mongodbUri = process.env.MONGODB_URI;
 
-// if (!mongodbUri) {
-//   console.error('MongoDB connection URL is missing in the .env file.');
-//   process.exit(1);
-// }
+if (!mongodbUri) {
+  console.error('MongoDB connection URL is missing in the .env file.');
+  process.exit(1);
+}
 
-// mongoose.connect(mongodbUri);
+mongoose.connect(mongodbUri);
 
-// const db = mongoose.connection;
+const db = mongoose.connection;
 
-// db.on('error', (error) => {
-//   console.error('MongoDB connection error:', error);
-// });
+db.on('error', (error) => {
+  console.error('MongoDB connection error:', error);
+});
 
-// db.once('open', () => {
-//   console.log('Connected to MongoDB');
-// });
+db.once('open', () => {
+  console.log('Connected to MongoDB');
+});
 // Define user model. Email address is the primary, username should be unique too.
 interface IUser {
   username: string;

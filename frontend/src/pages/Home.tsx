@@ -43,11 +43,11 @@ function Home(): JSX.Element {
 
   const onSearch = () => {};
 
+  // const { auth, username, handleSignout } = useAuth();
   const { auth, username, handleSignout } = useAuth();
-
   return (
     <div className={styles.homePage}>
-      <Navbar auth={auth} username={username} handleSignout={handleSignout} />
+      <Navbar auth={auth} username={username} handleSignout={handleSignout} /> 
       <div className={styles.content}>
         <Typography.Paragraph strong className={styles.blurb}>
           {blurb}

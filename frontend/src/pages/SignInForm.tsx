@@ -2,7 +2,7 @@ import { Button, Form, Input } from 'antd';
 import { MailOutlined , LockOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import {SignData, fetchSignIn} from '../services/index'
+import {SignData, fetchSignIn } from '../services/index'
 
 
 function SigninForm() {
