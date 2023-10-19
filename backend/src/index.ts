@@ -162,11 +162,11 @@ app.get('/api/books', async (req: Request, res: Response) => {
   const offset = parseInt((req.query.offset || '') as string, 10);
   const limit = parseInt((req.query.limit || '') as string, 10);
 
-  if (isNaN(offset) || offset < 0) {
+  if (Number.isNaN(offset) || offset < 0) {
     return res.status(400).send('Offset must be a non-negative number');
   }
 
-  if (isNaN(limit) || limit <= 0) {
+  if (Number.isNaN(limit) || limit <= 0) {
     return res.status(400).send('Limit must be a number greater than zero');
   }
 
@@ -192,7 +192,7 @@ app.get('/api/books/total', async (_, res: Response) => {
 
 app.get(
   '/api/books/:isbn',
-  async (req: Request<{ isbn: string }, {}, {}>, res: Response) => {
+  async (req: Request<{ isbn: string }, object, object>, res: Response) => {
     const { isbn } = req.params;
 
     try {
