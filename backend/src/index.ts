@@ -97,7 +97,7 @@ interface DecodedToken {
 }
 
 // homepage route
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   const token = req.cookies.token
   if(!token) {
       return res.json({message: 'we need token please provide it'})
@@ -112,10 +112,9 @@ app.get('/', (req, res) => {
 });
 
 // Sign in route
-app.post('/sign-in', async (req, res) => {
+app.post('/api/sign-in', async (req, res) => {
   try {
-      const { email, password } = req.body;
-
+      const { email, password } = req.body.val;
       // Find the user in the database
       const user = await User.findOne({ email });
 
@@ -143,7 +142,7 @@ app.post('/sign-in', async (req, res) => {
 });
 
 // Sign out route
-app.get('/sign-out', (req, res) => {
+app.get('/api/sign-out', (req, res) => {
   const token = req.cookies.token
   res.clearCookie('token')
   return res.json({success: true})

@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { fetchHome, fetchSignOut} from '../services/index'
 
 const useAuth = () => {
   const [auth, setAuth] = useState(false);
@@ -9,25 +10,35 @@ const useAuth = () => {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    axios.get('http://localhost:3001')
-      .then(res => {
+    const fetchData = async () => {
+      try {
+        const res = await fetchHome();
+        console.log(res)
         if (res.data.success) {
           setAuth(true);
           setUsername(res.data.name);
         } else {
           setAuth(false);
         }
-      });
-  }, []);
+      } catch (error) {
+        console.error('Error fetching home data:', error);
+      }
+    };
 
-  const handleSignout = () => {
-    axios.get('http://localhost:3001/sign-out')
-      .then(res => {
-        if (res.data.success) {
-          location.reload();
-        }
-      })
-      .catch(err => console.log(err));
+    fetchData();
+  
+  }, []); 
+  
+
+  const handleSignout = async () => {
+    try {
+      const res = await fetchSignOut();
+      if (res.data.success) {
+        location.reload();
+      }
+    } catch (error) {
+      console.error('Error handling sign out:', error);
+    }
   };
 
   return { auth, username, handleSignout };

@@ -2,6 +2,7 @@ import { Button, Form, Input } from 'antd';
 import { MailOutlined , LockOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {SignData, fetchSignIn} from '../services/index'
 
 
 function SigninForm() {
@@ -10,21 +11,21 @@ function SigninForm() {
 
   const navigate = useNavigate()
 
-  // handle the submission of a sign-in form. It communicates with a server endpoint  to perform
-  //  user authentication.
-    const handlerFinish = (val:{email: string, password: string}) => {
-        // console.log(val)
-        axios.post('http://localhost:3001/sign-in', val)
-        .then(res => {
-          if(res.data.success){
-            navigate('/')
-          } else {
-            alert(res.data.message)
-          }
-        })
-        .catch(err => console.log(err))
+  const handlerFinish = async (val:SignData) => {
+    try {
+      const res = await fetchSignIn(val);   
+      if (res.data.success) {
+        navigate('/');
+      } else {
+        alert(res.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    // Handle the error as needed (e.g., display an error message to the user)
     }
-
+  };
+    
+    
     const handlerFinishFailed = (val: any) => {
         console.log(val)
     }

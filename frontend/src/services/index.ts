@@ -37,3 +37,25 @@ export async function getBookCount() {
 
   return res.data as number;
 }
+
+export type SignData = {
+  email: string;
+  password: string;
+};
+
+
+export async function fetchSignIn(val: SignData ) {
+  const res = await axios.post(`${BASE_URL}/sign-in`, {val});
+  return res;
+}
+
+export async function fetchSignOut() {
+  const res = await axios.get(`${BASE_URL}/sign-out`);
+  return res;
+}
+
+export async function fetchHome( ) {
+  const res = await axios.get(`${BASE_URL}`);
+  return res;
+}
+
