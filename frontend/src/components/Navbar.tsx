@@ -17,9 +17,11 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
     ? [
         {
           label: (
-            <Typography.Text strong className={styles.menuLink}>
-              Hi {username}
-            </Typography.Text>
+            <Button type="text">
+              <Typography.Text strong className={styles.menuLink}>
+                Hi {username}
+              </Typography.Text>
+            </Button>
           ),
           key: 'hi-username'
         },
