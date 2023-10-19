@@ -2,9 +2,7 @@ import { Typography } from 'antd';
 import Navbar from '../components/Navbar';
 import Bookshelf from '../components/Bookshelf';
 import styles from './Home.module.css';
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-
+import useAuth from './UserAuth';
 
 function Home(): JSX.Element {
   // Temporary book retrieval for testign the bookshelf component.
@@ -45,38 +43,7 @@ function Home(): JSX.Element {
 
   const onSearch = () => {};
 
-
-  const [auth, setAuth] = useState(false);
-  const [username, setUsername] = useState('');
-  // const [message, setMessage] = useState('');
-
-  axios.defaults.withCredentials = true;
-  
-  // this useEffect hook is responsible for fetching user authentication information from the server 
-  useEffect(() => {
-    axios.get('http://localhost:3000')
-      .then(res => {
-        if (res.data.success) {
-          setAuth(true);
-          setUsername(res.data.name);
-        } else {
-          setAuth(false);
-        }
-      });
-  }, []);
-
-  // handle sign-out procedure by sending an HTTP request to the 'sign-out' endpoint on the server 
-  // and refreshing the page upon receiving information.
-  const handleSignout = () => {
-    axios.get('http://localhost:3000/sign-out')
-      .then(res => {
-        if (res.data.success) {
-          location.reload(); 
-        }
-      })
-      .catch(err => console.log(err));
-  };
-
+  const { auth, username, handleSignout } = useAuth();
 
   return (
     <div className={styles.homePage}>

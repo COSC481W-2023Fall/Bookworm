@@ -5,7 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser'
 import jwt, { VerifyErrors } from 'jsonwebtoken';
-// import db from './config/db';
+import dbC from './config/db';
 // import User from './models/user.js'
 // load our .env file
 import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
@@ -23,27 +23,27 @@ app.use(cors({
 }));
 
 // Connect to MongoDB
-// db();
+dbC();
 
 // Define the MongoDB connection URL
-const mongodbUri = process.env.MONGODB_URI;
+// const mongodbUri = process.env.MONGODB_URI;
 
-if (!mongodbUri) {
-  console.error('MongoDB connection URL is missing in the .env file.');
-  process.exit(1);
-}
+// if (!mongodbUri) {
+//   console.error('MongoDB connection URL is missing in the .env file.');
+//   process.exit(1);
+// }
 
-mongoose.connect(mongodbUri);
+// mongoose.connect(mongodbUri);
 
-const db = mongoose.connection;
+// const db = mongoose.connection;
 
-db.on('error', (error) => {
-  console.error('MongoDB connection error:', error);
-});
+// db.on('error', (error) => {
+//   console.error('MongoDB connection error:', error);
+// });
 
-db.once('open', () => {
-  console.log('Connected to MongoDB');
-});
+// db.once('open', () => {
+//   console.log('Connected to MongoDB');
+// });
 // Define user model. Email address is the primary, username should be unique too.
 interface IUser {
   username: string;
@@ -73,9 +73,11 @@ app.post('/register', async (req: Request, res: Response) => {
   // Password hashing and salting, use bcrypt
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
+  console.log(password)
 
   // Create user
   const user = new User({ username, email, password: hashedPassword });
+  console.log(hashedPassword)
 
   try {
     // Save to DB
@@ -121,12 +123,10 @@ app.post('/sign-in', async (req, res) => {
           return res.json({ success: false, message: 'User not found' });
       }
 
-      // password hashing and salting, use bcrypt
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+      const passwordMatch = await bcrypt.compare(password, user.password);
 
       // Check if the password matches
-      if (user.password!== password) {
+      if (!passwordMatch) {
           return res.json({ success: false, message: 'Invalid password' });
       }
 
@@ -134,8 +134,6 @@ app.post('/sign-in', async (req, res) => {
       const name = user.username
       const token = jwt.sign({name},'bookwormctrlcsbookwormctrlcs', {expiresIn:'1d'})
       res.cookie('token', token)
-      // console.log(token)
-      // console.log(name)
       return res.json({success: true, message: 'sign in sucessfully'})
       
   } catch (error) {

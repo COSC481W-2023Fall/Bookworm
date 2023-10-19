@@ -14,7 +14,7 @@ function SigninForm() {
   //  user authentication.
     const handlerFinish = (val:{email: string, password: string}) => {
         // console.log(val)
-        axios.post('http://localhost:3000/sign-in', val)
+        axios.post('http://localhost:3001/sign-in', val)
         .then(res => {
           if(res.data.success){
             navigate('/')
@@ -33,10 +33,10 @@ function SigninForm() {
         <Form name="basic"  autoComplete="off" onFinish={handlerFinish} onFinishFailed={handlerFinishFailed}>
 
         <Form.Item name="email" rules={[{ type: 'email', message: 'The input is not valid E-mail!',},{ required: true, message: 'Please input your email!' }]}>
-          <Input placeholder = "email" prefix = {<MailOutlined />}/>
+          <Input placeholder = "email" prefix = {<MailOutlined />} />
         </Form.Item>
     
-        <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]} style={{ borderRadius: '20px' }}>
+        <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]} >
           <Input.Password placeholder = "password" prefix = {<LockOutlined />} />
         </Form.Item>  
 
