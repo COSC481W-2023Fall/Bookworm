@@ -1,33 +1,65 @@
 import { Link } from 'react-router-dom';
 import { Menu, Input, Typography, ConfigProvider } from 'antd';
 import type { MenuProps } from 'antd';
+import { Button } from 'antd';
 import styles from './Navbar.module.css';
 
-function Navbar(): JSX.Element {
-  const onSearch = () => {};
 
-  const items: MenuProps['items'] = [
-    {
-      label: (
-        <Link to='/sign-in'>
+interface NavbarProps {
+  auth: boolean;
+  username: string;
+  handleSignout: () => void;
+}
+
+function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
+
+  // If user signed in, it displays a greeting with the username and a "Sign Out" button. 
+  // If not signed in, it displays "Sign In" and a "Sign Out" button.
+  const items: MenuProps['items'] = auth
+  ? [
+      {
+        label: (
           <Typography.Text strong className={styles.menuLink}>
-            Sign In
+            Hi, {username}
           </Typography.Text>
-        </Link>
-      ),
-      key: '/sign-in'
-    },
-    {
-      label: (
-        <Link to='/sign-up'>
-          <Typography.Text strong className={styles.menuLink}>
-            Join
-          </Typography.Text>
-        </Link>
-      ),
-      key: '/sign-up'
-    }
-  ];
+        ),
+        key: 'hi-username'
+      },
+      {
+        label: (
+          <Button type="link" onClick={handleSignout}>
+            <Typography.Text strong className={styles.menuLink}>
+              Sign Out
+            </Typography.Text>
+          </Button>
+        ),
+        key: '/sign-out'
+      }
+    ]
+  : [
+      {
+        label: (
+          <Link to='/sign-in'>
+            <Typography.Text strong className={styles.menuLink}>
+              Sign In
+            </Typography.Text>
+          </Link>
+        ),
+        key: '/sign-in'
+      },
+      {
+        label: (
+          <Link to='/sign-up'>
+            <Typography.Text strong className={styles.menuLink}>
+              Join
+            </Typography.Text>
+          </Link>
+        ),
+        key: '/sign-up'
+      }
+    ];
+
+
 
   return (
     <div className={styles.navbar}>
@@ -45,7 +77,7 @@ function Navbar(): JSX.Element {
           className={styles.search}
           placeholder='Book Title, Author, ISBN'
           size='large'
-          onSearch={onSearch}
+          // onSearch={onSearch}
           enterButton
         />
       </ConfigProvider>

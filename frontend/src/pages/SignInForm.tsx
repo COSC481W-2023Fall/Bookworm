@@ -5,10 +5,15 @@ import { useNavigate } from 'react-router-dom';
 
 
 function SigninForm() {
+
   axios.defaults.withCredentials = true
+
   const navigate = useNavigate()
+
+  // handle the submission of a sign-in form. It communicates with a server endpoint  to perform
+  //  user authentication.
     const handlerFinish = (val:{email: string, password: string}) => {
-        console.log(val)
+        // console.log(val)
         axios.post('http://localhost:3000/sign-in', val)
         .then(res => {
           if(res.data.success){

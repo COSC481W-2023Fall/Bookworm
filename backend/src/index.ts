@@ -11,6 +11,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser())
 app.use(cors({
   origin: 'http://localhost:5173',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -27,13 +28,14 @@ interface DecodedToken {
   exp: number;
 }
 
+// homepage route
 app.get('/', (req, res) => {
   const token = req.cookies.token
   if(!token) {
       return res.json({message: 'we need token please provide it'})
   } else {
       try {
-          const decoded = jwt.verify(token, 'our-jsonwebtoken-secret-key')as DecodedToken;
+          const decoded = jwt.verify(token, 'bookwormctrlcsbookwormctrlcs')as DecodedToken;
           res.json({success: true, name: decoded.name})
         } catch(err) {
           return res.json({message: 'Authentication error.'})
@@ -64,8 +66,10 @@ app.post('/sign-in', async (req, res) => {
 
       // Successful login   
       const name = user.username
-      const token = jwt.sign({name},'our-jsonwebtoken-secret-key', {expiresIn:'1d'})
+      const token = jwt.sign({name},'bookwormctrlcsbookwormctrlcs', {expiresIn:'1d'})
       res.cookie('token', token)
+      // console.log(token)
+      // console.log(name)
       return res.json({success: true, message: 'sign in sucessfully'})
       
   } catch (error) {
@@ -76,8 +80,9 @@ app.post('/sign-in', async (req, res) => {
 
 // Sign out route
 app.get('/sign-out', (req, res) => {
+  const token = req.cookies.token
   res.clearCookie('token')
-  return res.json({sucess: true})
+  return res.json({success: true})
 })
 
 app.get('/ping', (_, res) => {
