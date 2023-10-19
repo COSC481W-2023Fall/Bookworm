@@ -3,8 +3,8 @@ import mongoose, { Document, Model, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import cookieParser from 'cookie-parser'
-import jwt, { VerifyErrors } from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
 // import User from './models/user.js'
 // load our .env file
 import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
@@ -14,13 +14,14 @@ const PORT = process.env.PORT || 3001;
 
 const app = express();
 app.use(express.json());
-app.use(cookieParser())
-app.use(cors({
-  origin: 'http://localhost:5173',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-}));
-
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true
+  })
+);
 
 // Define the MongoDB connection URL
 const mongodbUri = process.env.MONGODB_URI;
@@ -51,10 +52,13 @@ interface IUser {
 const userSchema: Schema<IUser & Document> = new Schema({
   username: { type: String, unique: true },
   email: { type: String, unique: true },
-  password: String,
+  password: String
 });
 
-const User: Model<IUser & Document> = mongoose.model<IUser & Document>('User', userSchema);
+const User: Model<IUser & Document> = mongoose.model<IUser & Document>(
+  'User',
+  userSchema
+);
 
 export default User;
 
@@ -70,21 +74,22 @@ app.post('/register', async (req: Request, res: Response) => {
   // Password hashing and salting, use bcrypt
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
-  console.log(password)
+  console.log(password);
 
   // Create user
   const user = new User({ username, email, password: hashedPassword });
-  console.log(hashedPassword)
+  console.log(hashedPassword);
 
   try {
     // Save to DB
     await user.save();
-    res.json({ message: 'Registration successful!' });
+    return res.json({ message: 'Registration successful!' });
   } catch (error) {
-    res.status(400).json({ error: 'Registration failed. User may already exist.' });
+    return res
+      .status(400)
+      .json({ error: 'Registration failed. User may already exist.' });
   }
 });
-
 
 // Define an interface named DecodedToken
 interface DecodedToken {
@@ -95,61 +100,63 @@ interface DecodedToken {
 
 // homepage route
 app.get('/api', (req, res) => {
-  const token = req.cookies.token
-  if(!token) {
-      return res.json({message: 'we need token please provide it'})
-  } else {
-      try {
-          const decoded = jwt.verify(token, 'bookwormctrlcsbookwormctrlcs')as DecodedToken;
-          res.json({success: true, name: decoded.name})
-        } catch(err) {
-          return res.json({message: 'Authentication error.'})
-        }
-  }      
+  const { token } = req.cookies;
+  if (!token) {
+    return res.json({ message: 'we need token please provide it' });
+  }
+  try {
+    const decoded = jwt.verify(
+      token,
+      'bookwormctrlcsbookwormctrlcs'
+    ) as DecodedToken;
+    return res.json({ success: true, name: decoded.name });
+  } catch (err) {
+    return res.json({ message: 'Authentication error.' });
+  }
 });
 
 // Sign in route
 app.post('/api/sign-in', async (req, res) => {
   try {
-      const { email, password } = req.body.val;
-      // Find the user in the database
-      const user = await User.findOne({ email });
+    const { email, password } = req.body.val;
+    // Find the user in the database
+    const user = await User.findOne({ email });
 
-      if (!user) {
-          return res.json({ success: false, message: 'User not found' });
-      }
+    if (!user) {
+      return res.json({ success: false, message: 'User not found' });
+    }
 
-      const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, user.password);
 
-      // Check if the password matches
-      if (!passwordMatch) {
-          return res.json({ success: false, message: 'Invalid password' });
-      }
+    // Check if the password matches
+    if (!passwordMatch) {
+      return res.json({ success: false, message: 'Invalid password' });
+    }
 
-      // Successful login   
-      const name = user.username
-      const token = jwt.sign({name},'bookwormctrlcsbookwormctrlcs', {expiresIn:'1d'})
-      res.cookie('token', token)
-      return res.json({success: true, message: 'sign in sucessfully'})
-      
+    // Successful login
+    const name = user.username;
+    const token = jwt.sign({ name }, 'bookwormctrlcsbookwormctrlcs', {
+      expiresIn: '1d'
+    });
+    res.cookie('token', token);
+    return res.json({ success: true, message: 'sign in sucessfully' });
   } catch (error) {
-      console.error('Error during login:', error);
-      res.json({ success: false, message: 'Internal server error' });
+    console.error('Error during login:', error);
+    return res.json({ success: false, message: 'Internal server error' });
   }
 });
 
 // Sign out route
 app.get('/api/sign-out', (req, res) => {
-  const token = req.cookies.token
-  res.clearCookie('token')
-  return res.json({success: true})
-})
+  // const { token } = req.cookies;
+  res.clearCookie('token');
+  return res.json({ success: true });
+});
 
 // API routes for books
 app.get('/api/ping', (_, res) => {
   res.status(200).send('Pong!');
 });
-
 
 app.get('/api/books', async (req: Request, res: Response) => {
   const offset = parseInt((req.query.offset || '') as string, 10);
@@ -183,22 +190,24 @@ app.get('/api/books/total', async (_, res: Response) => {
   }
 });
 
-app.get('/api/books/:isbn', async (req: Request<{ isbn: string }, {}, {}>, res: Response) => {
-  const { isbn } = req.params;
+app.get(
+  '/api/books/:isbn',
+  async (req: Request<{ isbn: string }, {}, {}>, res: Response) => {
+    const { isbn } = req.params;
 
-  try {
-    const book = await fetchBookByISBN(isbn);
-    if (!book) {
-      return res.status(404).send(`No book found with ISBN ${isbn}`);
+    try {
+      const book = await fetchBookByISBN(isbn);
+      if (!book) {
+        return res.status(404).send(`No book found with ISBN ${isbn}`);
+      }
+      return res.status(200).json(book);
+    } catch (error) {
+      return res.status(500).json({ error: 'Server error' });
     }
-    return res.status(200).json(book);
-  } catch (error) {
-    return res.status(500).json({ error: 'Server error' });
   }
-});
+);
 
 // Start the server
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });
-

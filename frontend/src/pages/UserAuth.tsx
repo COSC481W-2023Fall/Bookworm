@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { fetchHome, fetchSignOut} from '../services/index'
+import { fetchHome, fetchSignOut } from '../services/index';
 
 const useAuth = () => {
   const [auth, setAuth] = useState(false);
@@ -13,7 +12,7 @@ const useAuth = () => {
     const fetchData = async () => {
       try {
         const res = await fetchHome();
-        console.log(res)
+        console.log(res);
         if (res.data.success) {
           setAuth(true);
           setUsername(res.data.name);
@@ -26,9 +25,7 @@ const useAuth = () => {
     };
 
     fetchData();
-  
-  }, []); 
-  
+  }, []);
 
   const handleSignout = async () => {
     try {
