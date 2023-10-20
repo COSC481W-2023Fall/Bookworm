@@ -23,9 +23,6 @@ function SigninForm() {
     }
   };
 
-  const handlerFinishFailed = (val: any) => {
-    console.log(val);
-  };
 
   return (
     <Form
