@@ -7,7 +7,7 @@ function App() {
     username: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    confirmPassword: ''
   });
 
   const handleChange = (e) => {
@@ -23,7 +23,10 @@ function App() {
     }
 
     try {
-      const response = await axios.post('http://localhost:3001/register', formData);
+      const response = await axios.post(
+        'http://localhost:3001/register',
+        formData
+      );
       alert(response.data.message);
     } catch (error) {
       alert('Registration failed. User may already exist.');
@@ -31,50 +34,50 @@ function App() {
   };
 
   return (
-    <div className="container">
+    <div className='container'>
       <h1>Bookwormer Registration</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username:</label>
+        <label htmlFor='username'>Username:</label>
         <input
-          type="text"
-          id="username"
-          name="username"
+          type='text'
+          id='username'
+          name='username'
           value={formData.username}
           onChange={handleChange}
           required
         />
         <br />
-        <label htmlFor="email">Email:</label>
+        <label htmlFor='email'>Email:</label>
         <input
-          type="email"
-          id="email"
-          name="email"
+          type='email'
+          id='email'
+          name='email'
           value={formData.email}
           onChange={handleChange}
           required
         />
         <br />
-        <label htmlFor="password">Password:</label>
+        <label htmlFor='password'>Password:</label>
         <input
-          type="password"
-          id="password"
-          name="password"
+          type='password'
+          id='password'
+          name='password'
           value={formData.password}
           onChange={handleChange}
           required
         />
         <br />
-        <label htmlFor="confirmPassword">Confirm Password:</label>
+        <label htmlFor='confirmPassword'>Confirm Password:</label>
         <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
+          type='password'
+          id='confirmPassword'
+          name='confirmPassword'
           value={formData.confirmPassword}
           onChange={handleChange}
           required
         />
         <br />
-        <button type="submit">Sign Up</button>
+        <button type='submit'>Sign Up</button>
       </form>
     </div>
   );

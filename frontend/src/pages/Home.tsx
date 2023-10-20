@@ -2,6 +2,7 @@ import { Typography } from 'antd';
 import Navbar from '../components/Navbar';
 import Bookshelf from '../components/Bookshelf';
 import styles from './Home.module.css';
+import useAuth from './UserAuth';
 
 function Home(): JSX.Element {
   // Temporary book retrieval for testign the bookshelf component.
@@ -38,9 +39,13 @@ function Home(): JSX.Element {
     Dive into a vibrant community of book enthusiasts and bibliophiles as you embark on a literary journey like no other. 
     Bookworm isn't just a social media app; it's a sanctuary for readers, a digital haven for bookworms of all kinds.`;
 
+  const onSearch = () => {};
+
+  // const { auth, username, handleSignout } = useAuth();
+  const { auth, username, handleSignout } = useAuth();
   return (
     <div className={styles.homePage}>
-      <Navbar />
+      <Navbar auth={auth} username={username} handleSignout={handleSignout} />
       <div className={styles.content}>
         <Typography.Paragraph strong className={styles.blurb}>
           {blurb}

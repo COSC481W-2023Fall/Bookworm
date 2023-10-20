@@ -1,0 +1,16 @@
+.signin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.signin-wrap {
+  text-align: center;
+}
+
+.signin-form {
+  width: 300px;
+  padding: 20px;
+  font-size: 13rem;
+}
