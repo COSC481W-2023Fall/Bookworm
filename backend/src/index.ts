@@ -74,7 +74,6 @@ app.post('/register', async (req: Request, res: Response) => {
   // Password hashing and salting, use bcrypt
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
-  console.log(password);
 
   // Create user
   const user = new User({ username, email, password: hashedPassword });
