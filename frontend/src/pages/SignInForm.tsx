@@ -22,13 +22,8 @@ function SigninForm() {
     }
   };
 
-
   return (
-    <Form
-      name='basic'
-      autoComplete='off'
-      onFinish={handlerFinish}
-    >
+    <Form name='basic' autoComplete='off' onFinish={handlerFinish}>
       <Form.Item
         name='email'
         rules={[
