@@ -19,7 +19,6 @@ function SigninForm() {
       }
     } catch (error) {
       console.error(error);
-      // Handle the error as needed (e.g., display an error message to the user)
     }
   };
 
@@ -29,7 +28,6 @@ function SigninForm() {
       name='basic'
       autoComplete='off'
       onFinish={handlerFinish}
-      onFinishFailed={handlerFinishFailed}
     >
       <Form.Item
         name='email'

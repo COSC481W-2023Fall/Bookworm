@@ -43,16 +43,19 @@ export type SignData = {
   password: string;
 };
 
+// Perform an asynchronous sign-in request using Axios.
 export async function fetchSignIn(val: SignData) {
   const res = await axios.post(`${BASE_URL}/sign-in`, { val });
   return res;
 }
 
+// Perform an asynchronous sign-out request using axios
 export async function fetchSignOut() {
   const res = await axios.get(`${BASE_URL}/sign-out`);
   return res;
 }
 
+// Perform an asynchronous homepage request using axios
 export async function fetchHome() {
   const res = await axios.get(`${BASE_URL}`);
   return res;

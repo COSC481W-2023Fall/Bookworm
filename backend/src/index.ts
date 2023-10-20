@@ -146,7 +146,6 @@ app.post('/api/sign-in', async (req, res) => {
 
 // Sign out route
 app.get('/api/sign-out', (req, res) => {
-  // const { token } = req.cookies;
   res.clearCookie('token');
   return res.json({ success: true });
 });
