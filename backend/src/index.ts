@@ -78,7 +78,6 @@ app.post('/register', async (req: Request, res: Response) => {
 
   // Create user
   const user = new User({ username, email, password: hashedPassword });
-  console.log(hashedPassword);
 
   try {
     // Save to DB
