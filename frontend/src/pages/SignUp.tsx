@@ -1,6 +1,7 @@
 // Import necessary libraries
 import React, { useState } from 'react';
 import axios from 'axios';
+import './signup-styles.css';
 
 function SignUp() {
   const [formData, setFormData] = useState({
