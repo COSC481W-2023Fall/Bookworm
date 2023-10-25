@@ -42,6 +42,8 @@ db.on('error', (error) => {
 db.once('open', () => {
   console.log('Connected to MongoDB');
 });
+
+// TODO: This should not be here. This should be imported from models/user.ts instead
 // Define user model. Email address is the primary, username should be unique too.
 interface IUser {
   username: string;
@@ -49,17 +51,20 @@ interface IUser {
   password: string;
 }
 
+// TODO: This should not be here. This should be imported from models/user.ts instead
 const userSchema: Schema<IUser & Document> = new Schema({
   username: { type: String, unique: true },
   email: { type: String, unique: true },
   password: String
 });
 
+// TODO: This should not be here. This should be imported from models/user.ts instead
 const User: Model<IUser & Document> = mongoose.model<IUser & Document>(
   'User',
   userSchema
 );
 
+// TODO: This should not be here. This should be exported from models/user.ts instead
 export default User;
 
 // Handle registration form submission
@@ -70,6 +75,8 @@ app.post('/register', async (req: Request, res: Response) => {
   if (password !== confirmPassword) {
     return res.status(400).json({ error: 'Passwords do not match.' });
   }
+
+  // TODO: All of the following code should be abstracted away in models/user.ts instead. Maybe inside of a "registerUser" function?
 
   // Password hashing and salting, use bcrypt
   const saltRounds = 10;
@@ -90,6 +97,7 @@ app.post('/register', async (req: Request, res: Response) => {
 });
 
 // Define an interface named DecodedToken
+// TODO: This should not be here. This should be imported from models/user.ts instead
 interface DecodedToken {
   name: string;
   iat: number;
@@ -117,6 +125,8 @@ app.get('/api', (req, res) => {
 app.post('/api/sign-in', async (req, res) => {
   try {
     const { email, password } = req.body.val;
+
+    // TODO: All of the following logic should be in models/user.ts instead. Maybe under a "signInUser" function?
     // Find the user in the database
     const user = await User.findOne({ email });
 
