@@ -24,14 +24,14 @@ app.use(
 );
 
 // Define the MongoDB connection URL
-const mongodbUri = process.env.MONGODB_URI;
+const dbUrl = process.env.DATABASE_URL;
 
-if (!mongodbUri) {
+if (!dbUrl) {
   console.error('MongoDB connection URL is missing in the .env file.');
   process.exit(1);
 }
 
-mongoose.connect(mongodbUri);
+mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
 
