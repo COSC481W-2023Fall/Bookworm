@@ -4,9 +4,10 @@ import axios from 'axios';
 const PORT = 3001;
 const BASE_URL = `http://localhost:${PORT}/api`;
 
+// TODO: Duplicate code
 export type IBook = {
-  Title: string;
-  Author: string;
+  title: string;
+  author: string;
   isbn: string;
   page_count: number;
   publication_date: Date;

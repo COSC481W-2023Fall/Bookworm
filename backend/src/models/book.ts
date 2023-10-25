@@ -6,8 +6,8 @@ const DATABASE_URL = process.env.DATABASE_URL ?? '';
 
 // TODO: change capitalization in the db
 interface Ibook {
-  Title: string;
-  Author: string;
+  title: string;
+  author: string;
   isbn: string;
   page_count: number;
   publication_date: Date;
@@ -16,8 +16,8 @@ interface Ibook {
 }
 
 const bookSchema = new Schema<Ibook>({
-  Title: { type: String, required: true },
-  Author: { type: String, required: true },
+  title: { type: String, required: true },
+  author: { type: String, required: true },
   isbn: { type: String, required: true },
   page_count: { type: Number, required: true },
   publication_date: { type: Date, required: true },
