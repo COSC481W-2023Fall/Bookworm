@@ -1,7 +1,7 @@
 // Import necessary libraries
 import React, { useState } from 'react';
-import axios from 'axios';
 import './signup-styles.css';
+import { submitRegistrationData } from '../services';
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -24,10 +24,7 @@ function SignUp() {
     }
 
     try {
-      const response = await axios.post(
-        'http://localhost:3001/api/register',
-        formData
-      );
+      const response = await submitRegistrationData<typeof formData>(formData);
       alert(response.data.message);
     } catch (error) {
       alert('Registration failed. User may already exist.');

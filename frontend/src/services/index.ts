@@ -64,3 +64,11 @@ export async function fetchHome() {
   const res = await axios.get(`${BASE_URL}`);
   return res;
 }
+
+// Registers a new user by submitted form data
+export async function submitRegistrationData<T>(formData: T) {
+  return await axios.post(
+    `${BASE_URL}/register`,
+    formData
+  );
+}
