@@ -53,8 +53,8 @@ export default function BrowsePage() {
                 src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-S.jpg`}
               />
             }
-            title={<a href='https://ant.design'>{book.Title}</a>} // change href to book page out of scope
-            description={`Author:${book.Author}`}
+            title={<a href='https://ant.design'>{book.title}</a>} // change href to book page out of scope
+            description={`Author:${book.author}`}
           />
         </List.Item>
       )}
