@@ -10,9 +10,10 @@ const BASE_URL = import.meta.env.DEV
   ? `http://localhost:${PORT}/api`
   : 'https://capstone.caseycodes.dev/api';
 
+// TODO: Duplicate code
 export type IBook = {
-  Title: string;
-  Author: string;
+  title: string;
+  author: string;
   isbn: string;
   page_count: number;
   publication_date: Date;
