@@ -17,7 +17,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:80', 'https://capstone.caseycodes.dev'],
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:80',
+      'https://capstone.caseycodes.dev'
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true
   })
