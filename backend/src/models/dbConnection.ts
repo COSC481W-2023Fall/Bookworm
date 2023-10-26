@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
-
 // Define the MongoDB connection URL
 dotenv.config();
 // const mongodbUri = process.env.MONGODB_URI;
@@ -15,13 +14,5 @@ if (!mongodbUri) {
 mongoose.connect(mongodbUri);
 
 const db = mongoose.connection;
-
-db.on('error', (error) => {
-  console.error('MongoDB connection error:', error);
-});
-
-db.once('open', () => {
-  console.log('Connected to MongoDB');
-});
 
 export default db;

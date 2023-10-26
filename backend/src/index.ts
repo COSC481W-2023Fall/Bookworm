@@ -4,7 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import Db from './models/dbConnection';
+import db from './models/dbConnection';
 import User from './models/user';
 // load our .env file
 import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
@@ -23,7 +23,13 @@ app.use(
   })
 );
 
-Db
+db.on('error', (error) => {
+  console.error('MongoDB connection error:', error);
+});
+
+db.once('open', () => {
+  console.log('Connected to MongoDB');
+});
 
 // Handle registration form submission
 app.post('/register', async (req: Request, res: Response) => {
@@ -102,7 +108,6 @@ app.post('/api/sign-in', async (req, res) => {
     res.cookie('token', token);
     return res.json({ success: true, message: 'sign in sucessfully' });
   } catch (error) {
-    console.error('Error during login:', error);
     return res.json({ success: false, message: 'Internal server error' });
   }
 });
@@ -167,9 +172,10 @@ app.get(
   }
 );
 
-app.get('/api/:bookId',(req, res) => {
-  const {bookId} = req.params
-})
+// app.get('/api/:bookId', (req, res) => {
+//   const { bookId } = req.params;
+
+// });
 
 // Start the server
 app.listen(PORT, () => {
