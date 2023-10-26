@@ -1,11 +1,11 @@
-import express, { Request, Response } from 'express';
-import mongoose, { Document, Model, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import cookieParser from 'cookie-parser';
+import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-// import User from './models/user.js'
+import Db from './models/dbConnection';
+import User from './models/user';
 // load our .env file
 import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
 
@@ -23,44 +23,7 @@ app.use(
   })
 );
 
-// Define the MongoDB connection URL
-const mongodbUri = process.env.MONGODB_URI;
-
-if (!mongodbUri) {
-  console.error('MongoDB connection URL is missing in the .env file.');
-  process.exit(1);
-}
-
-mongoose.connect(mongodbUri);
-
-const db = mongoose.connection;
-
-db.on('error', (error) => {
-  console.error('MongoDB connection error:', error);
-});
-
-db.once('open', () => {
-  console.log('Connected to MongoDB');
-});
-// Define user model. Email address is the primary, username should be unique too.
-interface IUser {
-  username: string;
-  email: string;
-  password: string;
-}
-
-const userSchema: Schema<IUser & Document> = new Schema({
-  username: { type: String, unique: true },
-  email: { type: String, unique: true },
-  password: String
-});
-
-const User: Model<IUser & Document> = mongoose.model<IUser & Document>(
-  'User',
-  userSchema
-);
-
-export default User;
+Db
 
 // Handle registration form submission
 app.post('/register', async (req: Request, res: Response) => {
@@ -203,6 +166,10 @@ app.get(
     }
   }
 );
+
+app.get('/api/:bookId',(req, res) => {
+  const {bookId} = req.params
+})
 
 // Start the server
 app.listen(PORT, () => {
