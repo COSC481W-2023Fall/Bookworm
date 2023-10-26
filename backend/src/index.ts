@@ -6,6 +6,7 @@ import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import db from './models/dbConnection';
 import User from './models/user';
+
 // load our .env file
 import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
 
@@ -17,8 +18,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: 'http://localhost:5173',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:80',
+      'https://capstone.caseycodes.dev'
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true
   })
 );
@@ -32,13 +37,15 @@ db.once('open', () => {
 });
 
 // Handle registration form submission
-app.post('/register', async (req: Request, res: Response) => {
+app.post('/api/register', async (req: Request, res: Response) => {
   const { username, email, password, confirmPassword } = req.body;
 
   // Check input password
   if (password !== confirmPassword) {
     return res.status(400).json({ error: 'Passwords do not match.' });
   }
+
+  // TODO: All of the following code should be abstracted away in models/user.ts instead. Maybe inside of a "registerUser" function?
 
   // Password hashing and salting, use bcrypt
   const saltRounds = 10;
@@ -59,6 +66,7 @@ app.post('/register', async (req: Request, res: Response) => {
 });
 
 // Define an interface named DecodedToken
+// TODO: This should not be here. This should be imported from models/user.ts instead
 interface DecodedToken {
   name: string;
   iat: number;
@@ -86,6 +94,8 @@ app.get('/api', (req, res) => {
 app.post('/api/sign-in', async (req, res) => {
   try {
     const { email, password } = req.body.val;
+
+    // TODO: All of the following logic should be in models/user.ts instead. Maybe under a "signInUser" function?
     // Find the user in the database
     const user = await User.findOne({ email });
 

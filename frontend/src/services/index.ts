@@ -2,11 +2,18 @@ import axios from 'axios';
 
 // TODO: Ideally, this would reference the backend environment variables
 const PORT = 3001;
-const BASE_URL = `http://localhost:${PORT}/api`;
 
+// We need this so that development builds don't make API calls on production,
+// and so that production doesn't reference localhost as in the end user's
+// machine via the browser.
+const BASE_URL = import.meta.env.DEV
+  ? `http://localhost:${PORT}/api`
+  : 'https://capstone.caseycodes.dev/api';
+
+// TODO: Duplicate code
 export type IBook = {
-  Title: string;
-  Author: string;
+  title: string;
+  author: string;
   isbn: string;
   page_count: number;
   publication_date: Date;
@@ -59,4 +66,9 @@ export async function fetchSignOut() {
 export async function fetchHome() {
   const res = await axios.get(`${BASE_URL}`);
   return res;
+}
+
+// Registers a new user by submitted form data
+export async function submitRegistrationData<T>(formData: T) {
+  return axios.post(`${BASE_URL}/register`, formData);
 }
