@@ -5,7 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
-// import User from './models/user.js'
+
 // load our .env file
 import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
 
@@ -17,8 +17,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: 'http://localhost:5173',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:80',
+      'https://capstone.caseycodes.dev'
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true
   })
 );
@@ -63,7 +67,7 @@ const User: Model<IUser & Document> = mongoose.model<IUser & Document>(
 export default User;
 
 // Handle registration form submission
-app.post('/register', async (req: Request, res: Response) => {
+app.post('/api/register', async (req: Request, res: Response) => {
   const { username, email, password, confirmPassword } = req.body;
 
   // Check input password
