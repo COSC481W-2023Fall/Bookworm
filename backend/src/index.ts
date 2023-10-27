@@ -178,10 +178,6 @@ app.get(
   }
 );
 
-app.get('/api/:bookId',(req, res) => {
-  const {bookId} = req.params
-})
-
 // Start the server
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
