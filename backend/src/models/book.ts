@@ -91,3 +91,29 @@ export async function fetchBookCount() {
 
   return count;
 }
+
+/**
+ * Fetches books by Title or Author
+ * 
+ * @param title 
+ * @param author 
+ * @returns An array of books that match the search criteria
+ */
+export async function fetchBooksByTitleOrAuthor(title: string | undefined, author: string | undefined) {
+  // Use the Book model to perform the search
+  const query: any = {};
+  if (title) {
+    query.title = { $regex: title, $options: 'i' }; 
+  }
+  if (author) {
+    query.author = { $regex: author, $options: 'i' }; 
+  }
+  try {
+    const books = await Book.find(query);
+    return books;
+  } catch (error) {
+    // Handle the error, e.g., log it and return an error response
+    console.error('Error fetching books:', error);
+    throw error;
+  }
+}
