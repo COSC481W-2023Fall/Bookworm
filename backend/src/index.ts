@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 
 // load our .env file
-import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
+import { fetchAllBooks, fetchBookByISBN, fetchBookCount, fetchBooksByTitleOrAuthor } from './models/book';
 
 dotenv.config();
 const PORT = process.env.PORT || 3001;
@@ -201,6 +201,35 @@ app.get('/api/books/total', async (_, res: Response) => {
   }
 });
 
+
+//searching books by isbn/author/title/genre
+app.get('/api/books/search', async (req: Request, res: Response) => {
+  const isbn = req.query.isbn as string | undefined;
+  const title = req.query.title as string | undefined;
+  const author = req.query.author as string | undefined;
+
+  try {
+    let book;
+
+    if (isbn) {
+      book = await fetchBookByISBN(isbn);
+    } else if (title || author) {
+      // Handle title and author search using the database function
+      book = await fetchBooksByTitleOrAuthor(title, author);
+    }
+
+    if (!book) {
+      return res.status(404).send('No book found matching the search criteria.');
+    }
+
+    return res.status(200).json(book);
+  } catch (error) {
+    console.error('Error during book search:', error);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
 app.get(
   '/api/books/:isbn',
   async (req: Request<{ isbn: string }, object, object>, res: Response) => {
@@ -217,7 +246,6 @@ app.get(
     }
   }
 );
-
 // Start the server
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
