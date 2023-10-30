@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Browse from './pages/Browse';
+import Bookshelf from './pages/Shelf';
 
 function App(): JSX.Element {
   return (
@@ -20,6 +21,7 @@ function App(): JSX.Element {
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/browse' element={<Browse />} />
+        <Route path='/shelf' element={<Bookshelf />} />
       </Routes>
     </ConfigProvider>
   );
