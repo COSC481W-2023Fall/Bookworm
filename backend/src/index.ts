@@ -1,10 +1,13 @@
-import express, { Request, Response } from 'express';
-import mongoose, { Document, Model, Schema } from 'mongoose';
-import bcrypt from 'bcrypt';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import cookieParser from 'cookie-parser';
-import jwt from 'jsonwebtoken';
+import express, { Request, Response } from 'express';
+import databaseConnection from './databaseConnection';
+import {
+  authenticateUser,
+  handleTokenVerification,
+  registerUser
+} from './models/user';
 
 // load our .env file
 import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
@@ -27,49 +30,13 @@ app.use(
   })
 );
 
-// Define the MongoDB connection URL
-const dbUrl = process.env.DATABASE_URL;
-
-if (!dbUrl) {
-  console.error('MongoDB connection URL is missing in the .env file.');
-  process.exit(1);
-}
-
-mongoose.connect(dbUrl);
-
-const db = mongoose.connection;
-
-db.on('error', (error) => {
+// Connect to mongoDB
+databaseConnection.on('error', (error) => {
   console.error('MongoDB connection error:', error);
 });
-
-db.once('open', () => {
+databaseConnection.once('open', () => {
   console.log('Connected to MongoDB');
 });
-
-// TODO: This should not be here. This should be imported from models/user.ts instead
-// Define user model. Email address is the primary, username should be unique too.
-interface IUser {
-  username: string;
-  email: string;
-  password: string;
-}
-
-// TODO: This should not be here. This should be imported from models/user.ts instead
-const userSchema: Schema<IUser & Document> = new Schema({
-  username: { type: String, unique: true },
-  email: { type: String, unique: true },
-  password: String
-});
-
-// TODO: This should not be here. This should be imported from models/user.ts instead
-const User: Model<IUser & Document> = mongoose.model<IUser & Document>(
-  'User',
-  userSchema
-);
-
-// TODO: This should not be here. This should be exported from models/user.ts instead
-export default User;
 
 // Handle registration form submission
 app.post('/api/register', async (req: Request, res: Response) => {
@@ -80,49 +47,14 @@ app.post('/api/register', async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Passwords do not match.' });
   }
 
-  // TODO: All of the following code should be abstracted away in models/user.ts instead. Maybe inside of a "registerUser" function?
-
-  // Password hashing and salting, use bcrypt
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-  // Create user
-  const user = new User({ username, email, password: hashedPassword });
-
-  try {
-    // Save to DB
-    await user.save();
-    return res.json({ message: 'Registration successful!' });
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ error: 'Registration failed. User may already exist.' });
-  }
+  await registerUser(username, email, password, res);
+  return res.status(200);
 });
-
-// Define an interface named DecodedToken
-// TODO: This should not be here. This should be imported from models/user.ts instead
-interface DecodedToken {
-  name: string;
-  iat: number;
-  exp: number;
-}
 
 // homepage route
 app.get('/api', (req, res) => {
   const { token } = req.cookies;
-  if (!token) {
-    return res.json({ message: 'we need token please provide it' });
-  }
-  try {
-    const decoded = jwt.verify(
-      token,
-      'bookwormctrlcsbookwormctrlcs'
-    ) as DecodedToken;
-    return res.json({ success: true, name: decoded.name });
-  } catch (err) {
-    return res.json({ message: 'Authentication error.' });
-  }
+  handleTokenVerification(token, res);
 });
 
 // Sign in route
@@ -130,32 +62,11 @@ app.post('/api/sign-in', async (req, res) => {
   try {
     const { email, password } = req.body.val;
 
-    // TODO: All of the following logic should be in models/user.ts instead. Maybe under a "signInUser" function?
-    // Find the user in the database
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.json({ success: false, message: 'User not found' });
-    }
-
-    const passwordMatch = await bcrypt.compare(password, user.password);
-
-    // Check if the password matches
-    if (!passwordMatch) {
-      return res.json({ success: false, message: 'Invalid password' });
-    }
-
-    // Successful login
-    const name = user.username;
-    const token = jwt.sign({ name }, 'bookwormctrlcsbookwormctrlcs', {
-      expiresIn: '1d'
-    });
-    res.cookie('token', token);
-    return res.json({ success: true, message: 'sign in sucessfully' });
+    await authenticateUser(email, password, res);
   } catch (error) {
-    console.error('Error during login:', error);
     return res.json({ success: false, message: 'Internal server error' });
   }
+  return res.status(200);
 });
 
 // Sign out route
