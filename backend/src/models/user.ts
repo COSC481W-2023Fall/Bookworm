@@ -15,6 +15,22 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: [true, 'Password is required']
+  },
+  reading_bookshelf: {
+    type: [String],
+    required: false
+  },
+  completed_bookshelf: {
+    type: [String],
+    required: false
+  },
+  dropped_bookshelf: {
+    type: [String],
+    required: false
+  },
+  plan_to_bookshelf: {
+    type: [String],
+    required: false
   }
 });
 
