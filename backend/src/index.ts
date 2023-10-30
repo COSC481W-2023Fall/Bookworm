@@ -48,7 +48,7 @@ app.post('/api/register', async (req: Request, res: Response) => {
   }
 
   await registerUser(username, email, password, res);
-  return null;
+  return res.status(200);
 });
 
 // homepage route
@@ -66,7 +66,7 @@ app.post('/api/sign-in', async (req, res) => {
   } catch (error) {
     return res.json({ success: false, message: 'Internal server error' });
   }
-  return null;
+  return res.status(200);
 });
 
 // Sign out route
