@@ -69,6 +69,9 @@ export const authenticateUser = async (
       message: 'Sign in successfully'
     });
   } catch (error) {
+    // TODO: Not sure why this error is logged to console rather than returned to user. Needs testing
+
+    // eslint-disable-next-line no-console
     console.error('Error during authentication:', error);
     return res.json({
       success: false,

@@ -32,9 +32,11 @@ app.use(
 
 // Connect to mongoDB
 databaseConnection.on('error', (error) => {
+  // eslint-disable-next-line no-console
   console.error('MongoDB connection error:', error);
 });
 databaseConnection.once('open', () => {
+  // eslint-disable-next-line no-console
   console.log('Connected to MongoDB');
 });
 
@@ -131,5 +133,6 @@ app.get(
 
 // Start the server
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`Listening on port ${PORT}`);
 });
