@@ -7,7 +7,11 @@ import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 
 // load our .env file
+<<<<<<< HEAD
 import { fetchAllBooks, fetchBookByISBN, fetchBookCount, fetchBooksByTitleOrAuthor } from './models/book';
+=======
+import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
+>>>>>>> b896769 (book page)
 
 dotenv.config();
 const PORT = process.env.PORT || 3001;
@@ -201,6 +205,7 @@ app.get('/api/books/total', async (_, res: Response) => {
   }
 });
 
+<<<<<<< HEAD
 
 //searching books by isbn/author/title/genre
 app.get('/api/books/search', async (req: Request, res: Response) => {
@@ -230,6 +235,8 @@ app.get('/api/books/search', async (req: Request, res: Response) => {
 });
 
 
+=======
+>>>>>>> b896769 (book page)
 app.get(
   '/api/books/:isbn',
   async (req: Request<{ isbn: string }, object, object>, res: Response) => {
@@ -246,6 +253,10 @@ app.get(
     }
   }
 );
+<<<<<<< HEAD
+=======
+
+>>>>>>> b896769 (book page)
 // Start the server
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

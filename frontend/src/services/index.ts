@@ -19,10 +19,21 @@ export type IBook = {
   publication_date: Date;
   publisher: string;
   genres: string[];
+<<<<<<< HEAD
+=======
+  text_reviews_count: string;
+  ratings_count: string;
+  average_rating: string;
+  isbn13: string;
+>>>>>>> b896769 (book page)
 };
 
 export async function fetchBookByISBN(isbn: string) {
   const res = await axios.get(`${BASE_URL}/books/${isbn}`);
+<<<<<<< HEAD
+=======
+  //console.log(res);
+>>>>>>> b896769 (book page)
 
   return res.data as IBook | null;
 }

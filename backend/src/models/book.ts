@@ -3,9 +3,20 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 const DATABASE_URL = process.env.DATABASE_URL ?? '';
+<<<<<<< HEAD
 
 // TODO: change capitalization in the db
 interface Ibook {
+=======
+console.log(DATABASE_URL);
+
+// TODO: change capitalization in the db
+interface Ibook {
+  text_reviews_count: string;
+  ratings_count: string;
+  average_rating: string;
+  isbn13: string;
+>>>>>>> b896769 (book page)
   title: string;
   author: string;
   isbn: string;
@@ -22,7 +33,15 @@ const bookSchema = new Schema<Ibook>({
   page_count: { type: Number, required: true },
   publication_date: { type: Date, required: true },
   publisher: { type: String, required: true },
+<<<<<<< HEAD
   genres: { type: [String], required: true }
+=======
+  genres: { type: [String], required: true },
+  text_reviews_count: {type:String,required:true},
+  ratings_count: {type:String,required:true},
+  average_rating: {type:String,required:true},
+  isbn13: {type:String,required:true},
+>>>>>>> b896769 (book page)
 });
 
 /**
@@ -43,7 +62,16 @@ export async function fetchBookByISBN(isbn: string): Promise<Ibook | null> {
   await connect(DATABASE_URL);
 
   // TODO: Cache recently fetched books?
+<<<<<<< HEAD
   const res = await Book.findOne({ isbn });
+=======
+  //console.log(isbn);
+  const res = await Book.findOne({ isbn });
+  console.log(res);
+  console.log(typeof res);
+  console.log(Array.isArray(res) ? res.length : 'Not an array');
+
+>>>>>>> b896769 (book page)
 
   return res;
 }
@@ -91,6 +119,7 @@ export async function fetchBookCount() {
 
   return count;
 }
+<<<<<<< HEAD
 
 /**
  * Fetches books by Title or Author
@@ -117,3 +146,5 @@ export async function fetchBooksByTitleOrAuthor(title: string | undefined, autho
     throw error;
   }
 }
+=======
+>>>>>>> b896769 (book page)
