@@ -19,6 +19,11 @@ export type IBook = {
   publication_date: Date;
   publisher: string;
   genres: string[];
+  reviews: [{
+    username: String;
+    content: String;
+    created_at: Date;
+  }]
 };
 
 export async function fetchBookByISBN(isbn: string) {
