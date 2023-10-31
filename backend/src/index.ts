@@ -143,18 +143,28 @@ app.route('/api/books/:isbn/reviews')
   .get(async (_, res) => res.status(200).json(res.locals.book.reviews))
 
   // create a new review
-  .post(async (_, res) => res.status(201))
+  // TODO: Unimplemented
+  .post(async (req, res) => res.status(201));
 
 app.route('/api/books/:isbn/reviews/:reviewId')
   .all(checkBookISBN)
+  
+  // TODO: Need a middleware to lock these routes behind logged in users only
+  //.all(checkLogin)
+
+  // TODO: Need a middleware to check the provided review ID
+  //.all(checkReviewID)
 
   // return a single review
+  // TODO: Unimplemented
   .get(async (_, res) => res.status(200))
 
   // edit an existing review
+  // TODO: Unimplemented
   .put(async (_, res) => res.status(200))
 
   // delete an existing reivew
+  // TODO: Unimplemented
   .delete(async (_, res) => res.status(204))
 
 // Start the server
