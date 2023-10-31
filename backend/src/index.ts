@@ -1,7 +1,7 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import databaseConnection from './databaseConnection';
 import {
   authenticateUser,
@@ -114,21 +114,34 @@ app.get('/api/books/total', async (_, res: Response) => {
   }
 });
 
-app.get(
-  '/api/books/:isbn',
-  async (req: Request<{ isbn: string }, object, object>, res: Response) => {
-    const { isbn } = req.params;
+/**
+ * Express middleware to check that the requested ISBN references a book in the database.
+ *
+ * If the book is found, this will pass a `book` local response variable, which contains the book's data.
+ * @param req The incoming express request.
+ * @param res The outbound express response.
+ * @param next The express 'next' middleware callback.
+ */
+async function checkBookISBN(req: Request, res: Response, next: NextFunction) {
+  const { isbn } = req.params;
 
-    try {
-      const book = await fetchBookByISBN(isbn);
-      if (!book) {
-        return res.status(404).send(`No book found with ISBN ${isbn}`);
-      }
-      return res.status(200).json(book);
-    } catch (error) {
-      return res.status(500).json({ error: 'Server error' });
+  try {
+    const book = await fetchBookByISBN(isbn);
+    if (!book) {
+      return res.status(404).send(`No book found with ISBN ${isbn}`);
     }
+
+    // this will save us from having to query for the actual book data again once
+    // this middleware exits
+    res.locals.book = book;
+    return next();
+  } catch (error) {
+    return res.status(500).json({ error: 'Server error' });
   }
+}
+
+app.get('/api/books/:isbn', checkBookISBN, async (_: Request, res: Response) =>
+  res.status(200).json(res.locals.book)
 );
 
 // Start the server
