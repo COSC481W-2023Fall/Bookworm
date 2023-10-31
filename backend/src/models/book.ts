@@ -55,8 +55,6 @@ export const Book = model<Ibook>('Book', bookSchema);
  * @returns A promise containing a single, potentially-null book document.
  */
 export async function fetchBookByISBN(isbn: string): Promise<Ibook | null> {
-  await connect(DATABASE_URL);
-
   // TODO: Cache recently fetched books?
   const res = await Book.findOne({ isbn });
 
@@ -83,8 +81,6 @@ export async function fetchAllBooks(
 ): Promise<Ibook[] | null> {
   if (offset < 0 || limit <= 0) return null;
 
-  await connect(DATABASE_URL);
-
   // TODO: Using `.skip` is not an efficient way to paginate queries at scale
   // Ref: https://stackoverflow.com/questions/5539955/how-to-paginate-with-mongoose-in-node-js
   const res = await Book.find()
@@ -100,8 +96,6 @@ export async function fetchAllBooks(
  * @returns A promise containing the total number of books.
  */
 export async function fetchBookCount() {
-  await connect(DATABASE_URL);
-
   const count = await Book.find().estimatedDocumentCount();
 
   return count;
