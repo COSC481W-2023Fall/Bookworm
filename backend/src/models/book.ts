@@ -3,11 +3,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 const DATABASE_URL = process.env.DATABASE_URL ?? '';
-<<<<<<< HEAD
-
-// TODO: change capitalization in the db
-interface Ibook {
-=======
 console.log(DATABASE_URL);
 
 // TODO: change capitalization in the db
@@ -16,7 +11,6 @@ interface Ibook {
   ratings_count: string;
   average_rating: string;
   isbn13: string;
->>>>>>> b896769 (book page)
   title: string;
   author: string;
   isbn: string;
@@ -33,15 +27,11 @@ const bookSchema = new Schema<Ibook>({
   page_count: { type: Number, required: true },
   publication_date: { type: Date, required: true },
   publisher: { type: String, required: true },
-<<<<<<< HEAD
-  genres: { type: [String], required: true }
-=======
   genres: { type: [String], required: true },
   text_reviews_count: {type:String,required:true},
   ratings_count: {type:String,required:true},
   average_rating: {type:String,required:true},
   isbn13: {type:String,required:true},
->>>>>>> b896769 (book page)
 });
 
 /**
@@ -62,16 +52,12 @@ export async function fetchBookByISBN(isbn: string): Promise<Ibook | null> {
   await connect(DATABASE_URL);
 
   // TODO: Cache recently fetched books?
-<<<<<<< HEAD
-  const res = await Book.findOne({ isbn });
-=======
   //console.log(isbn);
   const res = await Book.findOne({ isbn });
   console.log(res);
   console.log(typeof res);
   console.log(Array.isArray(res) ? res.length : 'Not an array');
 
->>>>>>> b896769 (book page)
 
   return res;
 }
@@ -119,32 +105,3 @@ export async function fetchBookCount() {
 
   return count;
 }
-<<<<<<< HEAD
-
-/**
- * Fetches books by Title or Author
- * 
- * @param title 
- * @param author 
- * @returns An array of books that match the search criteria
- */
-export async function fetchBooksByTitleOrAuthor(title: string | undefined, author: string | undefined) {
-  // Use the Book model to perform the search
-  const query: any = {};
-  if (title) {
-    query.title = { $regex: title, $options: 'i' }; 
-  }
-  if (author) {
-    query.author = { $regex: author, $options: 'i' }; 
-  }
-  try {
-    const books = await Book.find(query);
-    return books;
-  } catch (error) {
-    // Handle the error, e.g., log it and return an error response
-    console.error('Error fetching books:', error);
-    throw error;
-  }
-}
-=======
->>>>>>> b896769 (book page)

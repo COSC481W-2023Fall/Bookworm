@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 import React, { useState } from 'react';
->>>>>>> b896769 (book page)
 import { Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import styles from './Bookshelf.module.css';
@@ -12,8 +9,6 @@ interface BookType {
 
 interface BookshelfProps {
   shelfName: string;
-<<<<<<< HEAD
-=======
   books: IBook[];
 }
 
@@ -64,7 +59,6 @@ interface BookType {
 
 interface BookshelfProps {
   shelfName: string;
->>>>>>> b896769 (book page)
   books: BookType[];
 }
 
@@ -95,7 +89,4 @@ function Bookshelf({ shelfName, books }: BookshelfProps): JSX.Element {
 }
 
 export default Bookshelf;
-<<<<<<< HEAD
-=======
 */
->>>>>>> b896769 (book page)
