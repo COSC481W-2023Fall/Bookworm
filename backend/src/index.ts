@@ -2,7 +2,6 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
-import databaseConnection from './databaseConnection';
 import {
   authenticateUser,
   handleTokenVerification,
@@ -10,10 +9,13 @@ import {
 } from './models/user';
 
 import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
+import connectToDb from './databaseConnection';
 
 // load our .env file
 dotenv.config();
 const PORT = process.env.PORT || 3001;
+
+connectToDb();
 
 const app = express();
 app.use(express.json());
@@ -29,16 +31,6 @@ app.use(
     credentials: true
   })
 );
-
-// Connect to mongoDB
-databaseConnection.on('error', (error) => {
-  // eslint-disable-next-line no-console
-  console.error('MongoDB connection error:', error);
-});
-databaseConnection.once('open', () => {
-  // eslint-disable-next-line no-console
-  console.log('Connected to MongoDB');
-});
 
 // Handle registration form submission
 app.post('/api/register', async (req: Request, res: Response) => {
