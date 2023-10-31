@@ -1,10 +1,13 @@
-import { Schema, model, connect, Date } from 'mongoose';
+import { Schema, model, connect, Date, now } from 'mongoose';
 import dotenv from 'dotenv';
 
 dotenv.config();
 const DATABASE_URL = process.env.DATABASE_URL ?? '';
 
-interface Ibook {
+/**
+ * Represents a book in the database.
+ */
+export interface Ibook {
   title: string;
   author: string;
   isbn: string;
@@ -16,10 +19,17 @@ interface Ibook {
 }
 
 interface IReview {
+  _id: string;
   username: string;
   content: string;
   created_at: Date;
 }
+
+const reviewSchema = new Schema<IReview>({
+  username: { type: String, required: true },
+  content: { type: String, required: true },
+  created_at: { type: Date, required: true, default: now }
+});
 
 const bookSchema = new Schema<Ibook>({
   title: { type: String, required: true },
@@ -29,17 +39,7 @@ const bookSchema = new Schema<Ibook>({
   publication_date: { type: Date, required: true },
   publisher: { type: String, required: true },
   genres: { type: [String], required: true },
-  reviews: {
-    type: [
-      {
-        username: String,
-        content: String,
-        created_at: Date
-      }
-    ],
-    required: true,
-    default: []
-  }
+  reviews: [reviewSchema]
 });
 
 /**

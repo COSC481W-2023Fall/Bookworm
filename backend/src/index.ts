@@ -8,7 +8,7 @@ import {
   registerUser
 } from './models/user';
 
-import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
+import { Ibook, fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
 import connectToDb from './databaseConnection';
 
 // load our .env file
@@ -152,8 +152,22 @@ app.route('/api/books/:isbn/reviews/:reviewId')
   // TODO: Need a middleware to lock these routes behind logged in users only
   //.all(checkLogin)
 
-  // TODO: Need a middleware to check the provided review ID
-  //.all(checkReviewID)
+  .all(async (req, res, next) => {
+    const { reviewId } = req.params;
+    
+    const reviews = (res.locals.book as Ibook).reviews;
+    const reviewIdSet = new Set(reviews.map(review => review._id));
+
+    if (!reviewIdSet.has(reviewId)) {
+      return res.status(404).send(`No review found with ID ${reviewId}`);
+    }
+
+    // We don't need to check array length in this case, as we already
+    // checked if the review ID was valid
+    res.locals.review = reviews.filter(review => review._id == reviewId)[0];
+
+    return next();
+  })
 
   // return a single review
   // TODO: Unimplemented
