@@ -23,9 +23,7 @@ const userSchema = new Schema({
 });
 
 // Create the User model using the defined schema
-const User = mongoose.model('User', userSchema);
-
-export default User;
+export const User = mongoose.model('User', userSchema);
 
 /**
  * Authenticates a user by checking the provided email and password.

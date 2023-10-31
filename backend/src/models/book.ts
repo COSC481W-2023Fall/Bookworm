@@ -16,8 +16,8 @@ interface Ibook {
 }
 
 interface IReview {
-  username: String;
-  content: String;
+  username: string;
+  content: string;
   created_at: Date;
 }
 
@@ -30,11 +30,13 @@ const bookSchema = new Schema<Ibook>({
   publisher: { type: String, required: true },
   genres: { type: [String], required: true },
   reviews: {
-    type: [{
-      username: String,
-      content: String,
-      created_at: Date
-    }],
+    type: [
+      {
+        username: String,
+        content: String,
+        created_at: Date
+      }
+    ],
     required: true,
     default: []
   }
