@@ -48,8 +48,6 @@ export const Book = model<Ibook>('Book', bookSchema);
 /**
  * Fetches a single book by ISBN.
  *
- * For fetching books by ISBN13, use {@link fetchBookByISBN13} instead
- *
  * Returns null if a book with the provided ISBN is not found.
  * @param isbn The ISBN of the book to fetch from the database.
  * @returns A promise containing a single, potentially-null book document.
