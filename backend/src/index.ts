@@ -8,7 +8,12 @@ import {
   registerUser
 } from './models/user';
 
-import { Ibook, fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
+import {
+  Ibook,
+  fetchAllBooks,
+  fetchBookByISBN,
+  fetchBookCount
+} from './models/book';
 import connectToDb from './databaseConnection';
 
 // load our .env file
@@ -136,7 +141,8 @@ app.get('/api/books/:isbn', checkBookISBN, async (_: Request, res: Response) =>
   res.status(200).json(res.locals.book)
 );
 
-app.route('/api/books/:isbn/reviews')
+app
+  .route('/api/books/:isbn/reviews')
   .all(checkBookISBN)
 
   // return all reviews
@@ -146,17 +152,20 @@ app.route('/api/books/:isbn/reviews')
   // TODO: Unimplemented
   .post(async (req, res) => res.status(201));
 
-app.route('/api/books/:isbn/reviews/:reviewId')
+app
+  .route('/api/books/:isbn/reviews/:reviewId')
   .all(checkBookISBN)
-  
+
   // TODO: Need a middleware to lock these routes behind logged in users only
-  //.all(checkLogin)
+  // .all(checkLogin)
 
   .all(async (req, res, next) => {
     const { reviewId } = req.params;
-    
-    const reviews = (res.locals.book as Ibook).reviews;
-    const reviewIdSet = new Set(reviews.map(review => review._id));
+
+    const { reviews } = res.locals.book as Ibook;
+
+    // eslint-disable-next-line no-underscore-dangle
+    const reviewIdSet = new Set(reviews.map((review) => review._id));
 
     if (!reviewIdSet.has(reviewId)) {
       return res.status(404).send(`No review found with ID ${reviewId}`);
@@ -164,7 +173,9 @@ app.route('/api/books/:isbn/reviews/:reviewId')
 
     // We don't need to check array length in this case, as we already
     // checked if the review ID was valid
-    res.locals.review = reviews.filter(review => review._id == reviewId)[0];
+    // eslint-disable-next-line no-underscore-dangle
+    const review = reviews.filter((r) => r._id === reviewId)[0];
+    res.locals.review = review;
 
     return next();
   })
@@ -179,7 +190,7 @@ app.route('/api/books/:isbn/reviews/:reviewId')
 
   // delete an existing reivew
   // TODO: Unimplemented
-  .delete(async (_, res) => res.status(204))
+  .delete(async (_, res) => res.status(204));
 
 // Start the server
 app.listen(PORT, () => {

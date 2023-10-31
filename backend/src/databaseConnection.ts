@@ -29,4 +29,3 @@ export default function connectToDb() {
     console.log('Connected to MongoDB');
   });
 }
-
