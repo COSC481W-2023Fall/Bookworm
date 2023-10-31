@@ -1,5 +1,5 @@
 import Navbar from '../components/Navbar';
-import SearchPage from '../components/SearchPage';
+import SearchDisplay from '../components/SearchDisplay';
 import styles from './Home.module.css';
 import useAuth from './UserAuth';
 
@@ -9,7 +9,7 @@ function Search(): JSX.Element {
     <div className={styles.homePage}>
       <Navbar auth={auth} username={username} handleSignout={handleSignout} />
 
-      <SearchPage />
+      <SearchDisplay />
     </div>
   );
 }

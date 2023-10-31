@@ -94,7 +94,7 @@ export async function fetchBookCount() {
 
 /**
  * Searches the database on title, author, and isbn for matching records.
- * 
+ *
  * Returns null for invalid parameters.
  * @param query The string to match
  * @param offset The number of entries to skip. Must not be negative.
@@ -126,7 +126,7 @@ export async function searchBooks(
 
 /**
  * Gets the total number of books that match a particular search query.
- * 
+ *
  * @param query The string to match.
  * @returns Promise containing the amount of matching books.
  */

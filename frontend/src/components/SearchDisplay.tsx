@@ -1,36 +1,38 @@
 import { useEffect, useState } from 'react';
 import { Image, List } from 'antd';
-import { IBook, getBookCount, paginateBooks } from '../services';
+import { useSearchParams, Link } from 'react-router-dom';
+import { IBook, searchBookCount, searchBooks } from '../services';
 
 type PaginationPosition = 'top' | 'bottom' | 'both';
 
 type PaginationAlign = 'start' | 'center' | 'end';
 
-export default function BrowsePage() {
+export default function SearchDisplay() {
   const [position] = useState<PaginationPosition>('bottom');
   const [align] = useState<PaginationAlign>('center');
   const [limit, _] = useState(5);
   const [offset, setOffset] = useState(0);
   const [books, setBooks] = useState<IBook[]>([]);
   const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    async function fetchBooks() {
-      const res = await paginateBooks(offset, limit);
-      setBooks(res);
-    }
-
-    fetchBooks();
-  }, [offset, limit]);
+  const [searchParams, _setSearchParams] = useSearchParams();
 
   useEffect(() => {
     async function fetchCount() {
-      const res = await getBookCount();
+      const res = await searchBookCount(searchParams.get('q') || '');
       setCount(res);
     }
 
     fetchCount();
-  });
+  }, [searchParams]);
+
+  useEffect(() => {
+    async function fetchBooks() {
+      const res = await searchBooks(searchParams.get('q') || '', offset, limit);
+      setBooks(res);
+    }
+
+    fetchBooks();
+  }, [searchParams, offset, limit]);
 
   return (
     <List
@@ -53,7 +55,7 @@ export default function BrowsePage() {
                 src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-S.jpg`}
               />
             }
-            title={<a href='https://ant.design'>{book.title}</a>} // change href to book page out of scope
+            title={<Link to={`/book/${book.isbn}`}>{book.title}</Link>}
             description={`Author:${book.author}`}
           />
         </List.Item>

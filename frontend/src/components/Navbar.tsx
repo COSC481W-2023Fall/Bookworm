@@ -76,9 +76,11 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
 
   return (
     <div className={styles.navbar}>
-      <Typography.Title level={1} className='title'>
-        BookWorm
-      </Typography.Title>
+      <Link to='/' style={{ textDecoration: 'none' }}>
+        <Typography.Title level={1} className='title'>
+          BookWorm
+        </Typography.Title>
+      </Link>
       <ConfigProvider
         theme={{
           token: {

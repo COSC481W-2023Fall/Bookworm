@@ -10,7 +10,13 @@ import {
 } from './models/user';
 
 // load our .env file
-import { fetchAllBooks, fetchBookByISBN, fetchBookCount, searchBooks, searchCount } from './models/book';
+import {
+  fetchAllBooks,
+  fetchBookByISBN,
+  fetchBookCount,
+  searchBooks,
+  searchCount
+} from './models/book';
 
 dotenv.config();
 const PORT = process.env.PORT || 3001;
