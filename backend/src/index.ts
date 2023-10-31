@@ -144,6 +144,27 @@ app.get('/api/books/:isbn', checkBookISBN, async (_: Request, res: Response) =>
   res.status(200).json(res.locals.book)
 );
 
+app.route('/api/books/:isbn/reviews')
+  .all(checkBookISBN)
+
+  // return all reviews
+  .get(async (_, res) => res.status(200).json(res.locals.book.reviews))
+
+  // create a new review
+  .post(async (_, res) => res.status(201))
+
+app.route('/api/books/:isbn/reviews/:reviewId')
+  .all(checkBookISBN)
+
+  // return a single review
+  .get(async (_, res) => res.status(200))
+
+  // edit an existing review
+  .put(async (_, res) => res.status(200))
+
+  // delete an existing reivew
+  .delete(async (_, res) => res.status(204))
+
 // Start the server
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
