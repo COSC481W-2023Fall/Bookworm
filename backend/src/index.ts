@@ -9,9 +9,9 @@ import {
   registerUser
 } from './models/user';
 
-// load our .env file
 import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
 
+// load our .env file
 dotenv.config();
 const PORT = process.env.PORT || 3001;
 
