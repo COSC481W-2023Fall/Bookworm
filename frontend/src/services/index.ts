@@ -45,6 +45,28 @@ export async function getBookCount() {
   return res.data as number;
 }
 
+export async function searchBooks(
+  query: string,
+  offset: number,
+  limit: number
+) {
+  const res = await axios.get(
+    `${BASE_URL}/search?q=${query}&offset=${offset}&limit=${limit}`
+  );
+
+  if (res.status !== 200) {
+    return [];
+  }
+
+  return res.data as IBook[];
+}
+
+export async function searchBookCount(query: string) {
+  const res = await axios.get(`${BASE_URL}/search/total?q=${query}`);
+
+  return res.data as number;
+}
+
 export type SignData = {
   email: string;
   password: string;

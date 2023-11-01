@@ -1,7 +1,10 @@
 @import './global.module.css';
 
+html {
+  height: 100%;
+}
+
 body {
-  height: 100vh;
   min-width: 1200px;
   max-width: 1200px;
   margin: 0 auto;
@@ -12,7 +15,9 @@ body {
     white,
     var(--accent-color)
   );
-  background-size: contain;
+  background-position: center;
+  background-size: cover;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   font-family: 'Inter', sans-serif;
 }

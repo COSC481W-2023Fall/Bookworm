@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
-import { Menu, Input, Typography, ConfigProvider } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Button, Menu, Input, Typography, ConfigProvider } from 'antd';
 import type { MenuProps } from 'antd';
-import { Button } from 'antd';
 import styles from './Navbar.module.css';
 
 interface NavbarProps {
@@ -11,6 +11,21 @@ interface NavbarProps {
 }
 
 function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
+  const [searchText, setSearchText] = useState('');
+  const navigate = useNavigate();
+
+  const handleInput = (event: { target: { value: string } }) => {
+    const text = event.target.value;
+    setSearchText(text);
+  };
+
+  const onSearch = () => {
+    navigate({
+      pathname: '/search',
+      search: `?q=${searchText}`
+    });
+  };
+
   // If usersigned in, it displays a greeting with the username and a "Sign Out" button.
   // If not signed in, it displays "Sign In" and a "Sign Up" button.
   const items: MenuProps['items'] = auth
@@ -61,9 +76,11 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
 
   return (
     <div className={styles.navbar}>
-      <Typography.Title level={1} className='title'>
-        BookWorm
-      </Typography.Title>
+      <Link to='/' style={{ textDecoration: 'none' }}>
+        <Typography.Title level={1} className='title'>
+          BookWorm
+        </Typography.Title>
+      </Link>
       <ConfigProvider
         theme={{
           token: {
@@ -75,7 +92,8 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
           className={styles.search}
           placeholder='Book Title, Author, ISBN'
           size='large'
-          // onSearch={onSearch}
+          onChange={handleInput}
+          onSearch={onSearch}
           enterButton
         />
       </ConfigProvider>
