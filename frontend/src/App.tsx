@@ -1,10 +1,11 @@
-import { Routes, Route } from 'react-router-dom';
-import './App.css';
 import { ConfigProvider } from 'antd';
+import { Route, Routes } from 'react-router-dom';
+import './App.css';
+import Browse from './pages/Browse';
 import Home from './pages/Home';
+import ProfileLayout from './pages/ProfileLayout';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import Browse from './pages/Browse';
 
 function App(): JSX.Element {
   return (
@@ -20,6 +21,7 @@ function App(): JSX.Element {
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/browse' element={<Browse />} />
+        <Route path='/profile' element={<ProfileLayout />} />
       </Routes>
     </ConfigProvider>
   );
