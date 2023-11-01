@@ -1,6 +1,6 @@
 import { afterAll, describe, expect, test } from '@jest/globals';
 import mongoose from 'mongoose';
-import { fetchAllBooks, fetchBookByISBN } from '../../src/models/book';
+import { fetchAllBooks, fetchBookByISBN, searchBooks } from '../../src/models/book';
 
 describe('Fetch a single book', () => {
   test('Fetch book with ISBN 0618346252', async () => {
@@ -36,6 +36,16 @@ describe('Fetch multiple books', () => {
     expect(negativeOffset).toBeNull();
     expect(zeroLimit).toBeNull();
     expect(valid).not.toBeNull();
+  });
+});
+
+describe('Search through all books', () => {
+  test('Make a search', async () => {
+    const books = await searchBooks('hitchhiker', 0, 5);
+
+    expect(books).not.toBe(null);
+    expect(books![0].isbn).toBe('0517226952');
+    expect(books?.length).toBe(5);
   });
 });
 

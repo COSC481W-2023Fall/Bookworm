@@ -99,7 +99,7 @@ export async function fetchBookCount() {
  * @param query The string to match
  * @param offset The number of entries to skip. Must not be negative.
  * @param limit The number of entries to show on each page. Must be greater than 0.
- * @returns An array of the matching books.
+ * @returns An array of the matching books or null document.
  */
 export async function searchBooks(
   query: string,
