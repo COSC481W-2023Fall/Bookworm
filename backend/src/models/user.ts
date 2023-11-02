@@ -179,10 +179,9 @@ export const registerUser = async (
  * @param username the username of a certain user
  * @returns A promise containing a single, potentially-null user document.
  */
-export async function UserByUserName(username: string): Promise<Iuser | null> {
+export async function fetchUserByUserName(username: string): Promise<Iuser | null> {
   await connect(DATABASE_URL);
 
-  
   const res = await User.findOne({ username });
 
   return res;
