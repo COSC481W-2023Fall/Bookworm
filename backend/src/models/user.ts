@@ -1,7 +1,21 @@
 import bcrypt from 'bcrypt';
 import { Response } from 'express';
 import jwt from 'jsonwebtoken';
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, connect } from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
+const DATABASE_URL = process.env.DATABASE_URL ?? '';
+
+interface Iuser {
+  username: string;
+  email: string;
+  password: string;
+  reading_bookshelf:string[];
+  completed_bookshelf:string[];
+  dropped_bookshelf:string[];
+  plan_to_bookshelf:string[];
+}
 
 // Define user schema. Email address is the primary, username should be unique too.
 const userSchema = new Schema({
@@ -39,7 +53,7 @@ const userSchema = new Schema({
 });
 
 // Create the User model using the defined schema
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model<Iuser>('User', userSchema);
 
 export default User;
 
@@ -158,3 +172,18 @@ export const registerUser = async (
       .json({ error: 'Registration failed. User may already exist.' });
   }
 };
+
+/**
+ * fetches a single user by username
+ * 
+ * @param username the username of a certain user
+ * @returns A promise containing a single, potentially-null user document.
+ */
+export async function UserByUserName(username: string): Promise<Iuser | null> {
+  await connect(DATABASE_URL);
+
+  
+  const res = await User.findOne({ username });
+
+  return res;
+}
