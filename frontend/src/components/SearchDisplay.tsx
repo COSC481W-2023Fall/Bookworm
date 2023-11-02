@@ -18,7 +18,10 @@ export default function SearchDisplay() {
 
   useEffect(() => {
     async function fetchCount() {
-      const res = await searchBookCount(searchParams.get('q') || '');
+      const res = await searchBookCount(
+        searchParams.get('q') || '',
+        searchParams.get('fields') || ''
+      );
       setCount(res);
     }
 
@@ -27,7 +30,12 @@ export default function SearchDisplay() {
 
   useEffect(() => {
     async function fetchBooks() {
-      const res = await searchBooks(searchParams.get('q') || '', offset, limit);
+      const res = await searchBooks(
+        searchParams.get('q') || '',
+        searchParams.get('fields') || '',
+        offset,
+        limit
+      );
       setBooks(res);
     }
 

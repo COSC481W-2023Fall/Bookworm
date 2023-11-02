@@ -122,7 +122,12 @@ app.get('/api/search', async (req: Request, res: Response) => {
   }
 
   try {
-    const books = await searchBooks(req.query.q as string, offset, limit);
+    const books = await searchBooks(
+      (req.query.q ? req.query.q : '') as string,
+      (req.query.fields ? req.query.fields : '') as string,
+      offset,
+      limit
+    );
     if (!books) {
       return res.sendStatus(400);
     }
@@ -134,7 +139,10 @@ app.get('/api/search', async (req: Request, res: Response) => {
 
 app.get('/api/search/total', async (req: Request, res: Response) => {
   try {
-    const count = await searchCount(req.query.q as string);
+    const count = await searchCount(
+      (req.query.q ? req.query.q : '') as string,
+      (req.query.fields ? req.query.fields : '') as string
+    );
     return res.status(200).json(count);
   } catch (error) {
     return res.status(500).json({ error: 'Server error' });
