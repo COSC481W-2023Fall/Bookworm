@@ -12,6 +12,7 @@ const BASE_URL = import.meta.env.DEV
 
 // TODO: Duplicate code
 export type IBook = {
+  average_rating: number | undefined;
   title: string;
   author: string;
   isbn: string;
