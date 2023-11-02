@@ -133,8 +133,6 @@ export async function searchBooks(
 export async function searchCount(query: string): Promise<number | null> {
   await connect(DATABASE_URL);
 
-  await connect(DATABASE_URL);
-
   const regQuery = new RegExp(query, 'i');
   const res = await Book.find({
     $or: [{ title: regQuery }, { author: regQuery }, { isbn: regQuery }]
