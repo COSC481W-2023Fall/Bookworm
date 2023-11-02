@@ -73,7 +73,9 @@ more" read.`;
             </ConfigProvider>
           </div>
           <div className={styles.right}>
-            <Typography.Title style={{marginTop: '0px'}}>{book.title}</Typography.Title>
+            <Typography.Title style={{ marginTop: '0px' }}>
+              {book.title}
+            </Typography.Title>
             <Typography.Paragraph>{book.author}</Typography.Paragraph>
             <Typography.Paragraph>{desc}</Typography.Paragraph>
           </div>
