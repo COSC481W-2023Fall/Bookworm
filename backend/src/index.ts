@@ -5,8 +5,9 @@ import express, { Request, Response } from 'express';
 import databaseConnection from './databaseConnection';
 import {
   authenticateUser,
-  handleTokenVerification,
-  registerUser
+  registerUser,
+  resetPassword,
+  verifyJwtToken
 } from './models/user';
 
 // load our .env file
@@ -54,7 +55,12 @@ app.post('/api/register', async (req: Request, res: Response) => {
 // homepage route
 app.get('/api', (req, res) => {
   const { token } = req.cookies;
-  handleTokenVerification(token, res);
+  const isLogin = verifyJwtToken(token, 'bookwormctrlcsbookwormctrlcs')
+  if(isLogin) {
+    return res.json({ success: true, name: isLogin  });
+  } else {
+    return res.json({success: false, message: 'Authentication error.' });
+  }
 });
 
 // Sign in route
@@ -74,6 +80,36 @@ app.get('/api/sign-out', (req, res) => {
   res.clearCookie('token');
   return res.json({ success: true });
 });
+
+// Reset Password route
+app.post('/api/reset-password', async(req, res) => {
+  const password = req.body.val
+  const { token } = req.cookies;
+
+  if(!password || !token) {
+    res.status(400).json('Missing required paramaters')
+  }
+
+  try {
+    const isLogin = verifyJwtToken(token, 'bookwormctrlcsbookwormctrlcs');
+
+    if(!isLogin) {
+      return res.status(400).json('invalid token');
+    }
+
+    const isReset = await resetPassword(password, isLogin)
+      if(isReset) {
+        return res.status(200).json('Reset successfully')
+      }
+      else {
+        return res.status(400).json('Update unccessfully')
+      }
+  } catch(error) {
+    return res.status(500).json('Internal server error')
+  }
+
+  }
+);
 
 // API routes for books
 app.get('/api/ping', (_, res) => {

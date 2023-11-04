@@ -1,6 +1,7 @@
 import type { FormInstance } from 'antd';
 import { Button, Form, Input, Space } from 'antd';
 import React from 'react';
+import { fetchResetPassword } from '../services/index';
 
 const SubmitButton = ({ form }: { form: FormInstance }) => {
     const [submittable, setSubmittable] = React.useState(false);
@@ -31,8 +32,13 @@ const SubmitButton = ({ form }: { form: FormInstance }) => {
 function SetPassword() {
     const [form] = Form.useForm();
 
+    const handlerFinish = (val: { password: string, password2: string }) => {
+        
+        const {password} = val
+        const data = fetchResetPassword(password);
+        console.log(data)
+    }
 
-    
 
     return (
         <Form
@@ -41,6 +47,7 @@ function SetPassword() {
         autoComplete="off"
         style={{ maxWidth: 600,padding: '0 50px' }}
         layout="vertical"
+        onFinish={handlerFinish}
         >
             <h1>Set Password</h1>
 

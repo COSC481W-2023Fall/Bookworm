@@ -60,10 +60,8 @@ export const authenticateUser = async (
     }
 
     // Successful login
-    const name = user.username;
-    const token = jwt.sign({ name }, 'bookwormctrlcsbookwormctrlcs', {
-      expiresIn: '1d'
-    });
+    const name = user.username
+    const token = jwt.sign({ name }, 'bookwormctrlcsbookwormctrlcs');
 
     res.cookie('token', token);
     return res.json({
@@ -76,39 +74,6 @@ export const authenticateUser = async (
       success: false,
       message: 'Internal Server Error'
     });
-  }
-};
-
-/**
- * Define an interface named DecodedToken
- * @interface DecodedToken
- */
-interface DecodedToken {
-  name: string;
-}
-
-/**
- * Handles the verification of a JWT (JSON Web Token) and responds accordingly.
- * @param token - The JWT to be verified.
- * @param res - The Express response object for sending the verification result.
- * @returns A JSON response indicating the success or failure of the token verification process.
- */
-export const handleTokenVerification = (
-  token: string | undefined,
-  res: Response
-) => {
-  if (!token) {
-    return res.json({ message: 'We need a token, please provide it.' });
-  }
-
-  try {
-    const decoded = jwt.verify(
-      token,
-      'bookwormctrlcsbookwormctrlcs'
-    ) as DecodedToken;
-    return res.json({ success: true, name: decoded.name });
-  } catch (err) {
-    return res.json({ message: 'Authentication error.' });
   }
 };
 
@@ -140,5 +105,44 @@ export const registerUser = async (
     res
       .status(400)
       .json({ error: 'Registration failed. User may already exist.' });
+  }
+};
+
+
+export const resetPassword = async (
+  newPassword: string,
+  name: string
+) => {
+  try {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const updatedUser = await User.findOneAndUpdate(
+      { username: name },
+      { $set: { password: hashedPassword } },
+      { new: true }
+    );
+    if(updatedUser) {
+      return true;
+    }
+    return false;
+  } catch(error) {
+    return false;
+  }
+}
+
+interface JwtPayload {
+  name: string;
+}
+
+// Function to verify JWT token and get payload
+export const verifyJwtToken = (token:string, secret:string) => {
+  try {
+    // Verify the token using the provided secret
+    const decoded = jwt.verify(token, secret) as JwtPayload;
+
+    // If verification is successful, return the decoded payload
+    return decoded.name;
+  } catch (error) {
+    // If there's an error during verification, return null or handle it as needed
+    return null;
   }
 };

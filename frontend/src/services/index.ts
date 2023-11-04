@@ -72,3 +72,8 @@ export async function fetchHome() {
 export async function submitRegistrationData<T>(formData: T) {
   return axios.post(`${BASE_URL}/register`, formData);
 }
+
+// Registers a new user by submitted form data
+export async function fetchResetPassword(val:String){
+  return axios.post(`${BASE_URL}/reset-password`, {val});
+}
