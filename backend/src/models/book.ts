@@ -14,7 +14,7 @@ export interface Ibook {
   reviews: IReview[];
 }
 
-interface IReview {
+export interface IReview {
   _id: string;
   username: string;
   content: string;

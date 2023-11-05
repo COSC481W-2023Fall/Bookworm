@@ -1,7 +1,7 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import express, { NextFunction, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import {
   authenticateUser,
   handleTokenVerification,
@@ -11,10 +11,10 @@ import {
 import {
   Ibook,
   fetchAllBooks,
-  fetchBookByISBN,
   fetchBookCount
 } from './models/book';
 import connectToDb from './databaseConnection';
+import { checkBookISBN, checkReviewID, requireLogin } from './middleware';
 
 // load our .env file
 dotenv.config();
@@ -111,32 +111,6 @@ app.get('/api/books/total', async (_, res: Response) => {
   }
 });
 
-/**
- * Express middleware to check that the requested ISBN references a book in the database.
- *
- * If the book is found, this will pass a `book` local response variable, which contains the book's data.
- * @param req The incoming express request.
- * @param res The outbound express response.
- * @param next The express 'next' middleware callback.
- */
-async function checkBookISBN(req: Request, res: Response, next: NextFunction) {
-  const { isbn } = req.params;
-
-  try {
-    const book = await fetchBookByISBN(isbn);
-    if (!book) {
-      return res.status(404).send(`No book found with ISBN ${isbn}`);
-    }
-
-    // this will save us from having to query for the actual book data again once
-    // this middleware exits
-    res.locals.book = book;
-    return next();
-  } catch (error) {
-    return res.status(500).json({ error: 'Server error' });
-  }
-}
-
 app.get('/api/books/:isbn', checkBookISBN, async (_: Request, res: Response) =>
   res.status(200).json(res.locals.book)
 );
@@ -155,30 +129,8 @@ app
 app
   .route('/api/books/:isbn/reviews/:reviewId')
   .all(checkBookISBN)
-
-  // TODO: Need a middleware to lock these routes behind logged in users only
-  // .all(checkLogin)
-
-  .all(async (req, res, next) => {
-    const { reviewId } = req.params;
-
-    const { reviews } = res.locals.book as Ibook;
-
-    // eslint-disable-next-line no-underscore-dangle
-    const reviewIdSet = new Set(reviews.map((review) => review._id));
-
-    if (!reviewIdSet.has(reviewId)) {
-      return res.status(404).send(`No review found with ID ${reviewId}`);
-    }
-
-    // We don't need to check array length in this case, as we already
-    // checked if the review ID was valid
-    // eslint-disable-next-line no-underscore-dangle
-    const review = reviews.filter((r) => r._id === reviewId)[0];
-    res.locals.review = review;
-
-    return next();
-  })
+  .all(checkReviewID)
+  .all(requireLogin)
 
   // return a single review
   // TODO: Unimplemented

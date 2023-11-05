@@ -3,8 +3,14 @@ import { Response } from 'express';
 import jwt from 'jsonwebtoken';
 import mongoose, { Schema } from 'mongoose';
 
+export interface IUser {
+  username: string;
+  email: string;
+  password: string;
+}
+
 // Define user schema. Email address is the primary, username should be unique too.
-const userSchema = new Schema({
+const userSchema = new Schema<IUser>({
   username: {
     type: String,
     required: true,
@@ -84,7 +90,7 @@ export const authenticateUser = async (
  * Define an interface named DecodedToken
  * @interface DecodedToken
  */
-interface DecodedToken {
+export interface DecodedToken {
   name: string;
 }
 
