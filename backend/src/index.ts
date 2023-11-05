@@ -9,12 +9,14 @@ import {
 } from './models/user';
 
 import {
+  Book,
+  IReview,
   Ibook,
   fetchAllBooks,
   fetchBookCount
 } from './models/book';
 import connectToDb from './databaseConnection';
-import { checkBookISBN, checkReviewID, requireLogin } from './middleware';
+import { checkBookISBN, checkReviewAuthor, checkReviewID, requireLogin } from './middleware';
 
 // load our .env file
 dotenv.config();
@@ -134,15 +136,31 @@ app
 
   // return a single review
   // TODO: Unimplemented
-  .get(async (_, res) => res.status(200))
+  .get(async (_, res) => {
+    return res.status(200).json(res.locals.review)
+  })
 
   // edit an existing review
   // TODO: Unimplemented
-  .put(async (_, res) => res.status(200))
+  .put(checkReviewAuthor, async (_, res) => res.status(200))
 
   // delete an existing reivew
   // TODO: Unimplemented
-  .delete(async (_, res) => res.status(204));
+  .delete(checkReviewAuthor, async (_, res) => {
+    const book = res.locals.book as Ibook;
+    const review = res.locals.review as IReview;
+
+    // TODO: Surely there's a cleaner way of doing this?
+    try {
+      const newReviews = book.reviews.filter(r => r._id != review._id);
+      await Book.findOneAndUpdate({ isbn: book.isbn }, { reviews: newReviews });
+
+      return res.status(204);
+    }
+    catch (error) {
+      return res.status(500);
+    }
+  });
 
 // Start the server
 app.listen(PORT, () => {
