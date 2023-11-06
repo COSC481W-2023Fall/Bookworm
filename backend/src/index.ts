@@ -28,7 +28,6 @@ import {
   checkReviewID,
   requireLogin
 } from './middleware';
-// import { StringExpression } from 'mongoose';
 
 // load our .env file
 dotenv.config();
