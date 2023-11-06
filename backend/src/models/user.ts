@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { Response } from 'express';
+import { Response, response } from 'express';
 import jwt from 'jsonwebtoken';
 import mongoose, { Schema, connect } from 'mongoose';
 import dotenv from 'dotenv';
@@ -11,10 +11,10 @@ interface Iuser {
   username: string;
   email: string;
   password: string;
-  reading_bookshelf:string[];
-  completed_bookshelf:string[];
-  dropped_bookshelf:string[];
-  plan_to_bookshelf:string[];
+  reading_bookshelf: string[];
+  completed_bookshelf: string[];
+  dropped_bookshelf: string[];
+  plan_to_bookshelf: string[];
 }
 
 // Define user schema. Email address is the primary, username should be unique too.
@@ -175,14 +175,101 @@ export const registerUser = async (
 
 /**
  * fetches a single user by username
- * 
+ *
  * @param username the username of a certain user
  * @returns A promise containing a single, potentially-null user document.
  */
-export async function fetchUserByUserName(username: string): Promise<Iuser | null> {
+export async function fetchUserByUserName(
+  username: string
+): Promise<Iuser | null> {
   await connect(DATABASE_URL);
 
   const res = await User.findOne({ username });
 
   return res;
 }
+
+export const addBooktoShelf = async (
+  isbn: string,
+  shelf: number,
+  username: string,
+  res: Response
+) => {
+  await connect(DATABASE_URL);
+  const user = fetchUserByUserName(username);
+  try {
+    // Save to DB
+    switch (shelf) {
+      case 1:
+        await User.updateOne(
+          { username: user },
+          { $push: { reading_bookshelf: isbn } }
+        );
+        break;
+      case 2:
+        await User.updateOne(
+          { username: user },
+          { $push: { completed_bookshelf_bookshelf: isbn } }
+        );
+        break;
+      case 3:
+        await User.updateOne(
+          { username: user },
+          { $push: { dropped_bookshelf: isbn } }
+        );
+        break;
+      case 4:
+        await User.updateOne(
+          { username: user },
+          { $push: { plan_to_bookshelf: isbn } }
+        );
+        break;
+      default: throw Error;
+    }
+  } catch (error) {
+    res.status(400).json({ error: 'invalid bookshelf' });
+  }
+};
+
+
+export const removeBookFromShelf = async (
+  isbn: string,
+  shelf: number,
+  username: string,
+  res: Response
+) => {
+  await connect(DATABASE_URL);
+  const user = fetchUserByUserName(username);
+  try {
+    // Save to DB
+    switch (shelf) {
+      case 1:
+        await User.updateOne(
+          { username: user },
+          { $pull: { reading_bookshelf: isbn } }
+        );
+        break;
+      case 2:
+        await User.updateOne(
+          { username: user },
+          { $pull: { completed_bookshelf_bookshelf: isbn } }
+        );
+        break;
+      case 3:
+        await User.updateOne(
+          { username: user },
+          { $pull: { dropped_bookshelf: isbn } }
+        );
+        break;
+      case 4:
+        await User.updateOne(
+          { username: user },
+          { $pull: { plan_to_bookshelf: isbn } }
+        );
+        break;
+      default: throw Error;
+    }
+  } catch (error) {
+    res.status(400).json({ error: 'invalid bookshelf' });
+  }
+};
