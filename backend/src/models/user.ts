@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const DATABASE_URL = process.env.DATABASE_URL ?? '';
 
-interface Iuser {
+interface IUser {
   username: string;
   email: string;
   password: string;
@@ -182,7 +182,7 @@ export const registerUser = async (
  */
 export async function fetchUserByUserName(
   username: string
-): Promise<Iuser | null> {
+): Promise<IUser | null> {
   await connect(DATABASE_URL);
 
   const res = await User.findOne({ username });
