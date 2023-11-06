@@ -12,10 +12,6 @@ function BookView(): JSX.Element {
   const [book, setBook] = useState<IBook | null>(null);
 
   const coverImageUrl = `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
-  const desc = `The sun is down. But the moon is UP, and so are busy babies everywhere!
-Just right for toddlers who are not ready to say good night--and for their
-parents who are--this funny and sweet bedtime book is the perfect "one
-more" read.`;
 
   useEffect(() => {
     async function fetchBook() {
