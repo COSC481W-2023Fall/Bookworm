@@ -1,7 +1,7 @@
+import { UploadOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Layout, Menu } from 'antd';
+import { Button, Image, Layout, Menu, Upload } from 'antd';
 import { useState } from 'react';
-import UserAvatar from '../components/Avatar.tsx';
 import Navbar from '../components/Navbar';
 import EditProfile from './EditProfile';
 import SetPassword from './SetPassword';
@@ -65,14 +65,13 @@ function ProfileLayout(): JSX.Element {
         <Navbar auth={auth} username={username} handleSignout={handleSignout} />
         <Layout style = {{background:"none", padding: '10px 0'}}>
             <Sider style = {{background:"none"}} >
-                {/* <Image style = {{padding: '20px 0'}}
+                <Image style = {{padding: '20px 0'}}
                 width={200}
                 src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
                 />
                 <Upload>
                     <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                </Upload> */}
-                <UserAvatar />
+                </Upload>
                 <Menu onClick={onClick} selectedKeys={[current]} items={items} />
             </Sider>
 

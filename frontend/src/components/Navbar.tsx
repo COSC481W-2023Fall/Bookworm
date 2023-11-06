@@ -16,11 +16,13 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
     ? [
         {
           label: (
+            <Link to="Profile">
             <Button type='text'>
               <Typography.Text strong className={styles.menuLink}>
                 Hi {username}
               </Typography.Text>
             </Button>
+            </Link>
           ),
           key: 'hi-username'
         },
