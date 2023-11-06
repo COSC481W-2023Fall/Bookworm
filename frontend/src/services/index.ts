@@ -12,6 +12,7 @@ const BASE_URL = import.meta.env.DEV
 
 // TODO: Duplicate code
 export type IBook = {
+  average_rating: number;
   title: string;
   author: string;
   isbn: string;
@@ -19,6 +20,7 @@ export type IBook = {
   publication_date: Date;
   publisher: string;
   genres: string[];
+  description: string | null;
 };
 
 export async function fetchBookByISBN(isbn: string) {
