@@ -20,6 +20,7 @@ export type IBook = {
   publication_date: Date;
   publisher: string;
   genres: string[];
+  description: string | null;
 };
 
 export async function fetchBookByISBN(isbn: string) {

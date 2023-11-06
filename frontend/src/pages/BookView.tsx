@@ -77,7 +77,9 @@ more" read.`;
               {book.title}
             </Typography.Title>
             <Typography.Paragraph>{book.author}</Typography.Paragraph>
-            <Typography.Paragraph>{desc}</Typography.Paragraph>
+            <Typography.Paragraph>
+              {book.description ? book.description : 'Description not found.'}
+            </Typography.Paragraph>
           </div>
         </div>
       ) : (

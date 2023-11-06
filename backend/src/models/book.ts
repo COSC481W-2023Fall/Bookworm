@@ -13,6 +13,7 @@ interface Ibook {
   publication_date: Date;
   publisher: string;
   genres: string[];
+  description: string | null;
 }
 
 const bookSchema = new Schema<Ibook>({
@@ -22,7 +23,8 @@ const bookSchema = new Schema<Ibook>({
   page_count: { type: Number, required: true },
   publication_date: { type: Date, required: true },
   publisher: { type: String, required: true },
-  genres: { type: [String], required: true }
+  genres: { type: [String], required: true },
+  description: { type: String || null, required: true }
 });
 
 /**
