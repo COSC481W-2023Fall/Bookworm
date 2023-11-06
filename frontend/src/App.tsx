@@ -1,10 +1,11 @@
-import { Routes, Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { ConfigProvider } from 'antd';
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import Browse from './pages/Browse';
+import Search from './pages/Search';
+import BookView from './pages/BookView';
 
 function App(): JSX.Element {
   return (
@@ -19,7 +20,8 @@ function App(): JSX.Element {
         <Route path='/' element={<Home />} />
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/sign-up' element={<SignUp />} />
-        <Route path='/browse' element={<Browse />} />
+        <Route path='/search' element={<Search />} />
+        <Route path='/book/:isbn' element={<BookView />} />
       </Routes>
     </ConfigProvider>
   );
