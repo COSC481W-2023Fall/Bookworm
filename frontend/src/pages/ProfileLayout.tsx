@@ -1,11 +1,13 @@
-import { UploadOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Button, Image, Layout, Menu, Upload } from 'antd';
+import { Layout, Menu } from 'antd';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import UserAvatar from '../components/Avatar';
 import Navbar from '../components/Navbar';
 import EditProfile from './EditProfile';
 import SetPassword from './SetPassword';
 import useAuth from './UserAuth';
+
 
 const { Content, Sider} = Layout;
 
@@ -20,6 +22,8 @@ function ProfileLayout(): JSX.Element {
     // 'current': Represents the current state and is initially set to '1'
     // 'setCurrent': Funciton to update the 'current' state
     const [current, setCurrent] = useState('1');
+
+    const navigate = useNavigate();
 
 
     /**
@@ -42,6 +46,8 @@ function ProfileLayout(): JSX.Element {
                 return (<EditProfile />);
             case '2':
                 return (<SetPassword />);
+            case '3':
+                navigate('/bookshelf'); // Redirect to the sign-in page
             default:
                 break;
             }
@@ -57,21 +63,21 @@ function ProfileLayout(): JSX.Element {
         {
             label: "Set Password",
             key: '2',
+        },
+        {
+            label: "Bookshelf",
+            key: '3',
         }
+
     ]
+
 
     return (
     <Layout style= {{background:'none', padding:'0 50px'}}>
         <Navbar auth={auth} username={username} handleSignout={handleSignout} />
         <Layout style = {{background:"none", padding: '10px 0'}}>
             <Sider style = {{background:"none"}} >
-                <Image style = {{padding: '20px 0'}}
-                width={200}
-                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                />
-                <Upload>
-                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                </Upload>
+                <UserAvatar />
                 <Menu onClick={onClick} selectedKeys={[current]} items={items} />
             </Sider>
 
@@ -83,8 +89,7 @@ function ProfileLayout(): JSX.Element {
                 background: 'none',
                 justifyContent: 'center',
                 textAlign: 'center'
-                }}
-            >
+                }}>
                 {componentsSwtich(current)}
             </Content>
         </Layout>
