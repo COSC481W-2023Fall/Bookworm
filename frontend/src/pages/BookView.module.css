@@ -32,3 +32,7 @@
 #ratingStars {
   min-width: 200px;
 }
+.shelfSelector {
+  margin-left: 0; 
+  margin-right: auto;
+}
