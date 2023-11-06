@@ -2,18 +2,27 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
-import databaseConnection from './databaseConnection';
 import {
   authenticateUser,
   handleTokenVerification,
   registerUser
 } from './models/user';
 
-// load our .env file
-import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
+import {
+  Book,
+  IReview,
+  Ibook,
+  fetchAllBooks,
+  fetchBookCount
+} from './models/book';
+import connectToDb from './databaseConnection';
+import { checkBookISBN, checkReviewAuthor, checkReviewID, requireLogin } from './middleware';
 
+// load our .env file
 dotenv.config();
 const PORT = process.env.PORT || 3001;
+
+connectToDb();
 
 const app = express();
 app.use(express.json());
@@ -29,14 +38,6 @@ app.use(
     credentials: true
   })
 );
-
-// Connect to mongoDB
-databaseConnection.on('error', (error) => {
-  console.error('MongoDB connection error:', error);
-});
-databaseConnection.once('open', () => {
-  console.log('Connected to MongoDB');
-});
 
 // Handle registration form submission
 app.post('/api/register', async (req: Request, res: Response) => {
@@ -112,24 +113,57 @@ app.get('/api/books/total', async (_, res: Response) => {
   }
 });
 
-app.get(
-  '/api/books/:isbn',
-  async (req: Request<{ isbn: string }, object, object>, res: Response) => {
-    const { isbn } = req.params;
-
-    try {
-      const book = await fetchBookByISBN(isbn);
-      if (!book) {
-        return res.status(404).send(`No book found with ISBN ${isbn}`);
-      }
-      return res.status(200).json(book);
-    } catch (error) {
-      return res.status(500).json({ error: 'Server error' });
-    }
-  }
+app.get('/api/books/:isbn', checkBookISBN, async (_: Request, res: Response) =>
+  res.status(200).json(res.locals.book)
 );
+
+app
+  .route('/api/books/:isbn/reviews')
+  .all(checkBookISBN)
+
+  // return all reviews
+  .get(async (_, res) => res.status(200).json(res.locals.book.reviews))
+
+  // create a new review
+  // TODO: Unimplemented
+  .post(async (req, res) => res.status(201));
+
+app
+  .route('/api/books/:isbn/reviews/:reviewId')
+  .all(checkBookISBN)
+  .all(checkReviewID)
+  .all(requireLogin)
+
+  // return a single review
+  // TODO: Unimplemented
+  .get(async (_, res) => {
+    return res.status(200).json(res.locals.review)
+  })
+
+  // edit an existing review
+  // TODO: Unimplemented
+  .put(checkReviewAuthor, async (_, res) => res.status(200))
+
+  // delete an existing reivew
+  // TODO: Unimplemented
+  .delete(checkReviewAuthor, async (_, res) => {
+    const book = res.locals.book as Ibook;
+    const review = res.locals.review as IReview;
+
+    // TODO: Surely there's a cleaner way of doing this?
+    try {
+      const newReviews = book.reviews.filter(r => r._id != review._id);
+      await Book.findOneAndUpdate({ isbn: book.isbn }, { reviews: newReviews });
+
+      return res.status(204);
+    }
+    catch (error) {
+      return res.status(500);
+    }
+  });
 
 // Start the server
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`Listening on port ${PORT}`);
 });

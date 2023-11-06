@@ -18,7 +18,7 @@ interface Iuser {
 }
 
 // Define user schema. Email address is the primary, username should be unique too.
-const userSchema = new Schema({
+const userSchema = new Schema<IUser>({
   username: {
     type: String,
     required: true,
@@ -53,9 +53,7 @@ const userSchema = new Schema({
 });
 
 // Create the User model using the defined schema
-const User = mongoose.model<Iuser>('User', userSchema);
-
-export default User;
+export const User = mongoose.model('User', userSchema);
 
 /**
  * Authenticates a user by checking the provided email and password.
@@ -101,6 +99,9 @@ export const authenticateUser = async (
       message: 'Sign in successfully'
     });
   } catch (error) {
+    // TODO: Not sure why this error is logged to console rather than returned to user. Needs testing
+
+    // eslint-disable-next-line no-console
     console.error('Error during authentication:', error);
     return res.json({
       success: false,
@@ -113,7 +114,7 @@ export const authenticateUser = async (
  * Define an interface named DecodedToken
  * @interface DecodedToken
  */
-interface DecodedToken {
+export interface DecodedToken {
   name: string;
 }
 
