@@ -1,7 +1,13 @@
-import { Link, useNavigate } from 'react-router-dom';
+import {
+  Link,
+  createSearchParams,
+  useLocation,
+  useNavigate,
+  useSearchParams
+} from 'react-router-dom';
 import { useState } from 'react';
-import { Button, Menu, Input, Typography, ConfigProvider } from 'antd';
-import type { MenuProps } from 'antd';
+import { Button, Menu, Input, Typography, ConfigProvider, Select } from 'antd';
+import type { MenuProps, SelectProps } from 'antd';
 import styles from './Navbar.module.css';
 
 interface NavbarProps {
@@ -13,6 +19,30 @@ interface NavbarProps {
 function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
   const [searchText, setSearchText] = useState('');
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchFields: SelectProps['options'] = [
+    {
+      label: 'title',
+      value: 'title'
+    },
+    {
+      label: 'author',
+      value: 'author'
+    },
+    {
+      label: 'isbn',
+      value: 'isbn'
+    },
+    {
+      label: 'publisher',
+      value: 'publisher'
+    },
+    {
+      label: 'genres',
+      value: 'genres'
+    }
+  ];
+  const location = useLocation();
 
   const handleInput = (event: { target: { value: string } }) => {
     const text = event.target.value;
@@ -22,7 +52,17 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
   const onSearch = () => {
     navigate({
       pathname: '/search',
-      search: `?q=${searchText}`
+      search: createSearchParams({
+        q: searchText,
+        fields: searchParams.get('fields') || ''
+      }).toString()
+    });
+  };
+
+  const handleFields = (value: string[]) => {
+    setSearchParams({
+      q: searchParams.get('q') || '',
+      fields: value.join(',')
     });
   };
 
@@ -88,14 +128,28 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
           }
         }}
       >
-        <Input.Search
-          className={styles.search}
-          placeholder='Book Title, Author, ISBN'
-          size='large'
-          onChange={handleInput}
-          onSearch={onSearch}
-          enterButton
-        />
+        <div className={styles.searchContainer}>
+          <Input.Search
+            className={styles.search}
+            placeholder='Book Title, Author, ISBN'
+            size='large'
+            onChange={handleInput}
+            onSearch={onSearch}
+            enterButton
+          />
+          {location.pathname === '/search' ? (
+            <Select
+              mode='multiple'
+              className={styles.fieldSelection}
+              defaultValue={['title', 'author', 'isbn', 'publisher', 'genres']}
+              options={searchFields}
+              onChange={handleFields}
+              placeholder='searching title, author, isbn, publisher, genres'
+            />
+          ) : (
+            <div />
+          )}
+        </div>
       </ConfigProvider>
       <Menu mode='horizontal' items={items} className={styles.menu} />
     </div>
