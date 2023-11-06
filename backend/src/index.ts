@@ -195,7 +195,6 @@ app
   .put(checkReviewAuthor, async (_, res) => res.status(200))
 
   // delete an existing reivew
-  // TODO: Unimplemented
   .delete(checkReviewAuthor, async (_, res) => {
     const book = res.locals.book as Ibook;
     const review = res.locals.review as IReview;
