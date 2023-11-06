@@ -16,7 +16,12 @@ import {
   fetchBookCount
 } from './models/book';
 import connectToDb from './databaseConnection';
-import { checkBookISBN, checkReviewAuthor, checkReviewID, requireLogin } from './middleware';
+import {
+  checkBookISBN,
+  checkReviewAuthor,
+  checkReviewID,
+  requireLogin
+} from './middleware';
 
 // load our .env file
 dotenv.config();
@@ -136,9 +141,7 @@ app
 
   // return a single review
   // TODO: Unimplemented
-  .get(async (_, res) => {
-    return res.status(200).json(res.locals.review)
-  })
+  .get(async (_, res) => res.status(200).json(res.locals.review))
 
   // edit an existing review
   // TODO: Unimplemented
@@ -151,12 +154,12 @@ app
 
     // TODO: Surely there's a cleaner way of doing this?
     try {
-      const newReviews = book.reviews.filter(r => r._id != review._id);
+      // eslint-disable-next-line no-underscore-dangle
+      const newReviews = book.reviews.filter((r) => r._id !== review._id);
       await Book.findOneAndUpdate({ isbn: book.isbn }, { reviews: newReviews });
 
       return res.status(204);
-    }
-    catch (error) {
+    } catch (error) {
       return res.status(500);
     }
   });
