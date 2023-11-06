@@ -190,6 +190,13 @@ export async function fetchUserByUserName(
   return res;
 }
 
+/**
+ * Add a book to a given users bookshelf of choice
+ * @param isbn isbn of a book
+ * @param shelf shelf to add book to represented by enumeration
+ * @param username username of user adding book to shelf
+ * @param res The Express response object for sending the registration result.
+ */
 export const addBooktoShelf = async (
   isbn: string,
   shelf: number,
@@ -232,7 +239,13 @@ export const addBooktoShelf = async (
   }
 };
 
-
+/**
+ * remove a book to a given users bookshelf of choice
+ * @param isbn isbn of a book
+ * @param shelf shelf to add book to represented by enumeration
+ * @param username username of user adding book to shelf
+ * @param res The Express response object for sending the registration result.
+ */
 export const removeBookFromShelf = async (
   isbn: string,
   shelf: number,
