@@ -19,3 +19,14 @@
 .menuLink {
   font-size: 1.25rem;
 }
+
+.searchContainer {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 0px;
+  align-items: center;
+}
+
+.fieldSelection {
+  min-width: 400px;
+}
