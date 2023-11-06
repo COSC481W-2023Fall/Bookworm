@@ -1,0 +1,58 @@
+.user-info-edit {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  label {
+    margin: 10px;
+  }
+  
+  input {
+    max-height: 50px;
+    max-width: auto;
+  }
+
+  textarea {
+    width: 500px;
+    height: 300px;
+    min-width: 50px;
+    min-height: 100px;
+  }
+
+  select, input, textarea {
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 20px 0;
+    cursor: pointer;
+  }
+  
+  
+  /* .fireworks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  } */
+  
+  
+  /* @keyframes fireworks {
+    0% { transform: translateY(0); opacity: 0; }
+    50% { transform: translateY(-20px); opacity: 1; }
+    100% { transform: translateY(0); opacity: 0; }
+  } */
+  
