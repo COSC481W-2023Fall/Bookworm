@@ -119,8 +119,6 @@ export async function searchBooks(
 ): Promise<Ibook[] | null> {
   if (offset < 0 || limit <= 0) return null;
 
-  await connect(DATABASE_URL);
-
   const regQuery = new RegExp(query, 'i');
 
   const searchFields = fields.split(',');
@@ -161,8 +159,6 @@ export async function searchCount(
   query: string,
   fields: string
 ): Promise<number | null> {
-  await connect(DATABASE_URL);
-
   const regQuery = new RegExp(query, 'i');
 
   const searchFields = fields.split(',');
