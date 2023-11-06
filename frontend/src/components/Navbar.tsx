@@ -1,7 +1,6 @@
-import { Link } from 'react-router-dom';
-import { Menu, Input, Typography, ConfigProvider } from 'antd';
 import type { MenuProps } from 'antd';
-import { Button } from 'antd';
+import { Button, ConfigProvider, Input, Menu, Typography } from 'antd';
+import { Link } from 'react-router-dom';
 import styles from './Navbar.module.css';
 
 interface NavbarProps {
@@ -24,6 +23,16 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
             </Button>
           ),
           key: 'hi-username'
+        },
+        {
+          label: (
+            <Link to='/profile'>
+              <Typography.Text strong className={styles.menuLink}>
+                Profile
+              </Typography.Text>
+            </Link>
+          ),
+          key: '/profile'
         },
         {
           label: (
@@ -79,7 +88,8 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
           enterButton
         />
       </ConfigProvider>
-      <Menu mode='horizontal' items={items} className={styles.menu} />
+      <Menu mode='horizontal' items={items} className={styles.menuLink} />
+      {/* <Menu mode='inline' items={items} className={styles.menu} /> */}
     </div>
   );
 }

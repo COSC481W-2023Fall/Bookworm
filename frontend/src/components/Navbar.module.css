@@ -14,8 +14,10 @@
   border-bottom: none;
   line-height: 0px;
   background: none;
+  display: flex;
+  justify-content: right;
 }
 
 .menuLink {
   font-size: 1.25rem;
-}
+} 

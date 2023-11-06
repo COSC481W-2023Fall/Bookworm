@@ -4,7 +4,6 @@ import { useState } from 'react';
 import UserAvatar from '../components/Avatar.tsx';
 import Navbar from '../components/Navbar';
 import EditProfile from './EditProfile';
-import Profile from './Profile';
 import SetPassword from './SetPassword';
 import useAuth from './UserAuth';
 
@@ -40,10 +39,8 @@ function ProfileLayout(): JSX.Element {
     const componentsSwtich = (key:String) => {
         switch (key) {
             case '1':
-                return (<Profile />);
-            case '2':
                 return (<EditProfile />);
-            case '3':
+            case '2':
                 return (<SetPassword />);
             default:
                 break;
@@ -54,16 +51,12 @@ function ProfileLayout(): JSX.Element {
     // Menu items configuration for rendering a menu.Each item has a label and a key.
     const items: MenuProps['items'] = [
         {
-            label: 'Profile',
+            label: "Edit Profile",
             key: '1',
         },
         {
-            label: "Edit Profile",
-            key: '2',
-        },
-        {
             label: "Set Password",
-            key: '3',
+            key: '2',
         }
     ]
 
