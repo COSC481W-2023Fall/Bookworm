@@ -12,7 +12,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "antd": "^5.10.0",
+    "antd": "^5.11.0",
     "axios": "^1.5.1",
     "backend": "^0.0.0",
     "bcrypt": "^5.1.1",
