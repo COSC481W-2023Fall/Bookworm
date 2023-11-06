@@ -15,3 +15,9 @@
   align-items: center;
   justify-content: space-around;
 }
+
+.bookList img {
+  width: 180px;
+  height: 271px;
+  object-fit: cover;
+}

@@ -10,7 +10,13 @@ import {
 } from './models/user';
 
 // load our .env file
-import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
+import {
+  fetchAllBooks,
+  fetchBookByISBN,
+  fetchBookCount,
+  searchBooks,
+  searchCount
+} from './models/book';
 
 dotenv.config();
 const PORT = process.env.PORT || 3001;
@@ -98,6 +104,46 @@ app.get('/api/books', async (req: Request, res: Response) => {
       return res.sendStatus(400);
     }
     return res.status(200).json(books);
+  } catch (error) {
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.get('/api/search', async (req: Request, res: Response) => {
+  const offset = parseInt((req.query.offset || '') as string, 10);
+  const limit = parseInt((req.query.limit || '') as string, 10);
+
+  if (Number.isNaN(offset) || offset < 0) {
+    return res.status(400).send('Offset must be a non-negative number');
+  }
+
+  if (Number.isNaN(limit) || limit <= 0) {
+    return res.status(400).send('Limit must be a number greater than zero');
+  }
+
+  try {
+    const books = await searchBooks(
+      (req.query.q ? req.query.q : '') as string,
+      (req.query.fields ? req.query.fields : '') as string,
+      offset,
+      limit
+    );
+    if (!books) {
+      return res.sendStatus(400);
+    }
+    return res.status(200).json(books);
+  } catch (error) {
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.get('/api/search/total', async (req: Request, res: Response) => {
+  try {
+    const count = await searchCount(
+      (req.query.q ? req.query.q : '') as string,
+      (req.query.fields ? req.query.fields : '') as string
+    );
+    return res.status(200).json(count);
   } catch (error) {
     return res.status(500).json({ error: 'Server error' });
   }
