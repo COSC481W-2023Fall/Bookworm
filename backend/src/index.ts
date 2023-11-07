@@ -207,7 +207,7 @@ app
   });
 
 app
-  .route('/api/addtoshelf/user/:username/bookshelf/:shelfid/book/:isbn')
+  .route('/api/addtoshelf/bookshelf/:shelfid/book/:isbn')
   .all(requireLogin)
   //add book to book shelf
   .put(checkIfBookInShelf,async (_, res) => {
