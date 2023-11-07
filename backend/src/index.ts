@@ -3,9 +3,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import {
+  IUser,
   authenticateUser,
   handleTokenVerification,
-  registerUser
+  registerUser,
+  addBooktoShelf
 } from './models/user';
 
 import {
@@ -18,7 +20,7 @@ import {
   searchCount
 } from './models/book';
 import connectToDb from './databaseConnection';
-import { checkBookISBN, checkReviewAuthor, checkReviewID, requireLogin } from './middleware';
+import { checkBookISBN, checkIfBookInShelf, checkReviewAuthor, checkReviewID, requireLogin } from './middleware';
 
 // load our .env file
 dotenv.config();
@@ -204,8 +206,29 @@ app
     }
   });
 
+app
+  .route('/api/addtoshelf/user/:username/bookshelf/:shelfid/book/:isbn')
+  .all(requireLogin)
+  //add book to book shelf
+  .put(checkIfBookInShelf,async (_, res) => {
+    const book= res.locals.book as Ibook;
+    const user= res.locals.user as IUser;
+    const shelfid=res.locals.bookshelf as number;
+    try{
+      await addBooktoShelf(book.isbn, shelfid, user.username, res)
+      return res.status(204);
+    }
+    catch (error){
+      return res.status(500);
+    }
+    
+  })
+  
+
 // Start the server
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Listening on port ${PORT}`);
 });
+
+
