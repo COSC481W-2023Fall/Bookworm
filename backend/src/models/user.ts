@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { Response, response } from 'express';
+import { Response } from 'express';
 import jwt from 'jsonwebtoken';
 import mongoose, { Schema, connect } from 'mongoose';
 import dotenv from 'dotenv';
@@ -232,7 +232,8 @@ export const addBooktoShelf = async (
           { $push: { plan_to_bookshelf: isbn } }
         );
         break;
-      default: throw Error;
+      default:
+        throw Error;
     }
   } catch (error) {
     res.status(400).json({ error: 'invalid bookshelf' });
@@ -281,7 +282,8 @@ export const removeBookFromShelf = async (
           { $pull: { plan_to_bookshelf: isbn } }
         );
         break;
-      default: throw Error;
+      default:
+        throw Error;
     }
   } catch (error) {
     res.status(400).json({ error: 'invalid bookshelf' });

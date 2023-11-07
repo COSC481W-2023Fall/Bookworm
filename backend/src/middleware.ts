@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { IReview, Ibook, fetchBookByISBN } from './models/book';
 import jwt from 'jsonwebtoken';
+import { IReview, Ibook, fetchBookByISBN } from './models/book';
 import { DecodedToken, IUser, User, removeBookFromShelf } from './models/user';
 
 /**
@@ -148,14 +148,14 @@ export async function checkIfBookInShelf(
   if (user.reading_bookshelf.includes(book.isbn)) {
     return removeBookFromShelf(book.isbn, 1, user.username, res);
   }
-  else if (user.reading_bookshelf.includes(book.isbn)) {
+  if (user.reading_bookshelf.includes(book.isbn)) {
     return removeBookFromShelf(book.isbn, 2, user.username, res);
   }
-  else if (user.dropped_bookshelf.includes(book.isbn)) {
+  if (user.dropped_bookshelf.includes(book.isbn)) {
     return removeBookFromShelf(book.isbn, 3, user.username, res);
   }
-  else if (user.plan_to_bookshelf.includes(book.isbn)) {
+  if (user.plan_to_bookshelf.includes(book.isbn)) {
     return removeBookFromShelf(book.isbn, 4, user.username, res);
   }
-  else return next();
+  return next();
 }
