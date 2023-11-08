@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { IBook, fetchBookByISBN } from '../services';
-import Navbar from '../components/Navbar';
-import useAuth from './UserAuth';
 import {
   Button,
   ConfigProvider,
@@ -13,6 +10,9 @@ import {
   Select,
   Form
 } from 'antd';
+import { IBook, fetchBookByISBN, addBookToShelf } from '../services';
+import Navbar from '../components/Navbar';
+import useAuth from './UserAuth';
 import styles from './BookView.module.css';
 
 function BookView(): JSX.Element {
@@ -31,9 +31,16 @@ function BookView(): JSX.Element {
     fetchBook();
   }, [isbn]);
 
-  const handleChangeShelfSelector = (value: string) => {
-    //TODO: add book to shelf on change
-    console.log(`selected ${value}`);
+  const handleChangeShelfSelector = (value: number) => {
+    //  TODO: add book to shelf on change
+    if (book != null) {
+      if (value > 0) {
+        const shelfID = value;
+        return addBookToShelf(book.isbn, shelfID);
+      }
+      // TODO: write code to remove book if id is 1
+    }
+    return false;
   };
 
   return (
@@ -62,16 +69,16 @@ function BookView(): JSX.Element {
             <div className={styles.shelfSelector}>
               <Form.Item label='Add to bookshelf:'>
                 <Select
-                  placeholder={'select bookshelf'}
+                  placeholder='select bookshelf'
                   onChange={handleChangeShelfSelector}
                   options={[
-                    { value: 'No shelf', label: 'No Shelf' },
-                    { value: 'Reading Bookshelf', label: 'Reading' },
-                    { value: 'Completed Bookshelf', label: 'Completed' },
-                    { value: 'dropped Bookshelf', label: 'dropped' },
-                    { value: 'Plan to read Bookshelf', label: 'Plan to read' }
+                    { value: 0, label: 'No Shelf' },
+                    { value: 1, label: 'Reading' },
+                    { value: 2, label: 'Completed' },
+                    { value: 3, label: 'dropped' },
+                    { value: 4, label: 'Plan to read' }
                   ]}
-                ></Select>
+                />
               </Form.Item>
             </div>
             <div>

@@ -27,6 +27,7 @@ import {
   checkReviewID,
   requireLogin
 } from './middleware';
+import { StringExpression } from 'mongoose';
 
 // load our .env file
 dotenv.config();
@@ -210,16 +211,16 @@ app
   });
 
 app
-  .route('/api/addtoshelf/bookshelf/:shelfid/book/:isbn')
+  .route('/api/addtoshelf')
   .all(requireLogin)
   // add book to book shelf
-  .put(checkIfBookInShelf, async (_, res) => {
-    const book = res.locals.book as Ibook;
-    const user = res.locals.user as IUser;
-    const shelfid = res.locals.bookshelf as number;
+  .put(checkIfBookInShelf, async (req: Request, res: Response) => {
     try {
-      await addBooktoShelf(book.isbn, shelfid, user.username, res);
-      return res.status(204);
+      const isbn = req.query.isbn as string;
+      const user = res.locals.user as IUser;
+      const shelfid = req.query.shelfid as string;
+      addBooktoShelf(isbn, shelfid, user.username, res);
+      return res.status(201);
     } catch (error) {
       return res.status(500);
     }

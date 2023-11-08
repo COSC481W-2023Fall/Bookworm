@@ -129,7 +129,7 @@ export async function checkReviewAuthor(
   const user = res.locals.user as IUser;
   const review = res.locals.review as IReview;
 
-  if (user.username != review.username) {
+  if (user.username !== review.username) {
     return res
       .status(403)
       .json({ message: "Cannot modify/delete another user's review" });
@@ -139,23 +139,24 @@ export async function checkReviewAuthor(
 }
 
 export async function checkIfBookInShelf(
-  _: Request,
+  req: Request,
   res: Response,
   next: NextFunction
 ) {
+  const isbn = req.query.isbn as string;
   const user = res.locals.user as IUser;
-  const book = res.locals.book as Ibook;
-  if (user.reading_bookshelf.includes(book.isbn)) {
-    return removeBookFromShelf(book.isbn, 1, user.username, res);
+
+  if (user.reading_bookshelf.includes(isbn)) {
+    removeBookFromShelf(isbn, '1', user.username, res);
   }
-  if (user.reading_bookshelf.includes(book.isbn)) {
-    return removeBookFromShelf(book.isbn, 2, user.username, res);
+  if (user.completed_bookshelf.includes(isbn)) {
+    removeBookFromShelf(isbn, '2', user.username, res);
   }
-  if (user.dropped_bookshelf.includes(book.isbn)) {
-    return removeBookFromShelf(book.isbn, 3, user.username, res);
+  if (user.dropped_bookshelf.includes(isbn)) {
+    removeBookFromShelf(isbn, '3', user.username, res);
   }
-  if (user.plan_to_bookshelf.includes(book.isbn)) {
-    return removeBookFromShelf(book.isbn, 4, user.username, res);
+  if (user.plan_to_bookshelf.includes(isbn)) {
+    removeBookFromShelf(isbn, '4', user.username, res);
   }
   return next();
 }

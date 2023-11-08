@@ -106,3 +106,7 @@ export async function fetchHome() {
 export async function submitRegistrationData<T>(formData: T) {
   return axios.post(`${BASE_URL}/register`, formData);
 }
+
+export async function addBookToShelf(isbn: string, shelfID: number) {
+  return axios.put(`${BASE_URL}/addtoshelf/?isbn=${isbn}&shelfid=${shelfID}`);
+}

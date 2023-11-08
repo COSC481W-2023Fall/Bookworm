@@ -199,41 +199,42 @@ export async function fetchUserByUserName(
  */
 export const addBooktoShelf = async (
   isbn: string,
-  shelf: number,
-  username: string,
+  shelf: string,
+  user: string,
   res: Response
 ) => {
   await connect(DATABASE_URL);
-  const user = fetchUserByUserName(username);
+
   try {
     // Save to DB
     switch (shelf) {
-      case 1:
+      case '1':
         await User.updateOne(
           { username: user },
           { $push: { reading_bookshelf: isbn } }
         );
         break;
-      case 2:
+
+      case '2':
         await User.updateOne(
           { username: user },
-          { $push: { completed_bookshelf_bookshelf: isbn } }
+          { $push: { completed_bookshelf: isbn } }
         );
         break;
-      case 3:
+      case '3':
         await User.updateOne(
           { username: user },
           { $push: { dropped_bookshelf: isbn } }
         );
         break;
-      case 4:
+      case '4':
         await User.updateOne(
           { username: user },
           { $push: { plan_to_bookshelf: isbn } }
         );
         break;
       default:
-        throw Error;
+        throw Error('invalid book shelf');
     }
   } catch (error) {
     res.status(400).json({ error: 'invalid bookshelf' });
@@ -249,41 +250,40 @@ export const addBooktoShelf = async (
  */
 export const removeBookFromShelf = async (
   isbn: string,
-  shelf: number,
-  username: string,
+  shelf: string,
+  user: string,
   res: Response
 ) => {
   await connect(DATABASE_URL);
-  const user = fetchUserByUserName(username);
   try {
     // Save to DB
     switch (shelf) {
-      case 1:
+      case '1':
         await User.updateOne(
           { username: user },
           { $pull: { reading_bookshelf: isbn } }
         );
         break;
-      case 2:
+      case '2':
         await User.updateOne(
           { username: user },
-          { $pull: { completed_bookshelf_bookshelf: isbn } }
+          { $pull: { completed_bookshelf: isbn } }
         );
         break;
-      case 3:
+      case '3':
         await User.updateOne(
           { username: user },
           { $pull: { dropped_bookshelf: isbn } }
         );
         break;
-      case 4:
+      case '4':
         await User.updateOne(
           { username: user },
           { $pull: { plan_to_bookshelf: isbn } }
         );
         break;
       default:
-        throw Error;
+        throw Error('invallid book shelf');
     }
   } catch (error) {
     res.status(400).json({ error: 'invalid bookshelf' });
