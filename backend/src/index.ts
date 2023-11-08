@@ -27,7 +27,7 @@ import {
   checkReviewID,
   requireLogin
 } from './middleware';
-import { StringExpression } from 'mongoose';
+// import { StringExpression } from 'mongoose';
 
 // load our .env file
 dotenv.config();
@@ -211,7 +211,7 @@ app
   });
 
 app
-  .route('/api/addtoshelf')
+  .route('/api/bookshelf')
   .all(requireLogin)
   // add book to book shelf
   .put(checkIfBookInShelf, async (req: Request, res: Response) => {
@@ -224,7 +224,9 @@ app
     } catch (error) {
       return res.status(500);
     }
-  });
+  })
+  //  remove book from all bookshelves
+  .delete(checkIfBookInShelf);
 
 // Start the server
 app.listen(PORT, () => {

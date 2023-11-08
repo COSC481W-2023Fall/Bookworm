@@ -108,5 +108,9 @@ export async function submitRegistrationData<T>(formData: T) {
 }
 
 export async function addBookToShelf(isbn: string, shelfID: number) {
-  return axios.put(`${BASE_URL}/addtoshelf/?isbn=${isbn}&shelfid=${shelfID}`);
+  return axios.put(`${BASE_URL}/bookshelf/?isbn=${isbn}&shelfid=${shelfID}`);
+}
+
+export async function removeBookFromShelf(isbn: string) {
+  return axios.delete(`${BASE_URL}/bookshelf/?isbn=${isbn}`);
 }

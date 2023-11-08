@@ -10,7 +10,12 @@ import {
   Select,
   Form
 } from 'antd';
-import { IBook, fetchBookByISBN, addBookToShelf } from '../services';
+import {
+  IBook,
+  fetchBookByISBN,
+  addBookToShelf,
+  removeBookFromShelf
+} from '../services';
 import Navbar from '../components/Navbar';
 import useAuth from './UserAuth';
 import styles from './BookView.module.css';
@@ -38,7 +43,7 @@ function BookView(): JSX.Element {
         const shelfID = value;
         return addBookToShelf(book.isbn, shelfID);
       }
-      // TODO: write code to remove book if id is 1
+      if (value === 0) return removeBookFromShelf(book.isbn);
     }
     return false;
   };
