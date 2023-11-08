@@ -190,6 +190,43 @@ export async function fetchUserByUserName(
   return res;
 }
 
+/** TODO: create get bookshelf function
+ *
+ */
+export async function fetchbookshelf(
+  username: string,
+  shelf: string,
+  res: Response
+) {
+  await connect(DATABASE_URL);
+  try {
+    switch (shelf) {
+      case '1':
+        return res
+          .status(200)
+          .json(User.findOne({ username }, 'reading_bookshelf'));
+      case '2':
+        return res
+          .status(200)
+          .json(User.findOne({ username }, 'completed_bookshelf'));
+      case '3':
+        return res
+          .status(200)
+          .json(User.findOne({ username }, 'dropped_bookshelf'));
+
+      case '4':
+        return res
+          .status(200)
+          .json(User.findOne({ username }, 'plan_to_bookshelf'));
+
+      default:
+        throw Error('invallid bookshelf');
+    }
+  } catch (error) {
+    return res.status(400).json({ error: 'invalid bookshelf' });
+  }
+}
+
 /**
  * Add a book to a given users bookshelf of choice
  * @param isbn isbn of a book

@@ -7,7 +7,8 @@ import {
   authenticateUser,
   handleTokenVerification,
   registerUser,
-  addBooktoShelf
+  addBooktoShelf,
+  fetchbookshelf
 } from './models/user';
 
 import {
@@ -226,7 +227,18 @@ app
     }
   })
   //  remove book from all bookshelves
-  .delete(checkIfBookInShelf);
+  .delete(checkIfBookInShelf)
+
+  //  return a bookshelf
+  .get(async (req: Request, res: Response) => {
+    const shelfid = req.query.shelfid as string;
+    const user = res.locals.user as IUser;
+    try {
+      return await fetchbookshelf(user.username, shelfid, res);
+    } catch (error) {
+      return res.status(500);
+    }
+  });
 
 // Start the server
 app.listen(PORT, () => {
