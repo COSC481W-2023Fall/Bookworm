@@ -29,6 +29,12 @@ export type IBook = {
   ];
   description: string | null;
 };
+export type IUser = {
+  reading_bookshelf: string[];
+  completed_bookshelf: string[];
+  dropped_bookshelf: string[];
+  plan_to_bookshelf: string[];
+};
 
 export async function fetchBookByISBN(isbn: string) {
   const res = await axios.get(`${BASE_URL}/books/${isbn}`);
@@ -113,4 +119,8 @@ export async function addBookToShelf(isbn: string, shelfID: number) {
 
 export async function removeBookFromShelf(isbn: string) {
   return axios.delete(`${BASE_URL}/bookshelf/?isbn=${isbn}`);
+}
+export async function fetchBookShelfs() {
+  const res = await axios.get(`${BASE_URL}/bookshelf/`);
+  return res.data as IUser;
 }

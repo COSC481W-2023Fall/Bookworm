@@ -190,43 +190,14 @@ export async function fetchUserByUserName(
   return res;
 }
 
-/** TODO: create get bookshelf function
- *
- */
-export async function fetchbookshelf(
-  username: string,
-  shelf: string,
-  res: Response
-) {
-  await connect(DATABASE_URL);
-  try {
-    switch (shelf) {
-      case '1':
-        return res
-          .status(200)
-          .json(User.findOne({ username }, 'reading_bookshelf'));
-      case '2':
-        return res
-          .status(200)
-          .json(User.findOne({ username }, 'completed_bookshelf'));
-      case '3':
-        return res
-          .status(200)
-          .json(User.findOne({ username }, 'dropped_bookshelf'));
+export async function fetchBookShelf(username: string, res: Response) {
+  const user = await User.findOne(
+    { username },
+    'reading_bookshelf completed_bookshelf dropped_bookshelf plan_to_bookshelf'
+  );
 
-      case '4':
-        return res
-          .status(200)
-          .json(User.findOne({ username }, 'plan_to_bookshelf'));
-
-      default:
-        throw Error('invallid bookshelf');
-    }
-  } catch (error) {
-    return res.status(400).json({ error: 'invalid bookshelf' });
-  }
+  return res.send(user);
 }
-
 /**
  * Add a book to a given users bookshelf of choice
  * @param isbn isbn of a book
@@ -258,11 +229,13 @@ export const addBooktoShelf = async (
           { $push: { completed_bookshelf: isbn } }
         );
         break;
+
       case '3':
         await User.updateOne(
           { username: user },
           { $push: { dropped_bookshelf: isbn } }
         );
+
         break;
       case '4':
         await User.updateOne(
@@ -273,8 +246,9 @@ export const addBooktoShelf = async (
       default:
         throw Error('invalid book shelf');
     }
+    return res.status(200);
   } catch (error) {
-    res.status(400).json({ error: 'invalid bookshelf' });
+    return res.status(400).json({ error: 'invalid bookshelf' });
   }
 };
 

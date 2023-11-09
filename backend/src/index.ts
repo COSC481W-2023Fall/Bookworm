@@ -8,7 +8,7 @@ import {
   handleTokenVerification,
   registerUser,
   addBooktoShelf,
-  fetchbookshelf
+  fetchBookShelf
 } from './models/user';
 
 import {
@@ -221,20 +221,22 @@ app
       const user = res.locals.user as IUser;
       const shelfid = req.query.shelfid as string;
       addBooktoShelf(isbn, shelfid, user.username, res);
-      return res.status(201);
+      res.status(201);
+      return res.end();
     } catch (error) {
       return res.status(500);
     }
   })
   //  remove book from all bookshelves
-  .delete(checkIfBookInShelf)
+  .delete(checkIfBookInShelf, async (_, res) => res.status(200))
 
   //  return a bookshelf
   .get(async (req: Request, res: Response) => {
-    const shelfid = req.query.shelfid as string;
+    // const shelfid = req.query.shelfid as string;
     const user = res.locals.user as IUser;
     try {
-      return await fetchbookshelf(user.username, shelfid, res);
+      fetchBookShelf(user.username, res);
+      return res.status(200);
     } catch (error) {
       return res.status(500);
     }
