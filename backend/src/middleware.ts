@@ -138,6 +138,35 @@ export async function checkReviewAuthor(
   return next();
 }
 
+/**
+ * Middleware to ensure a non-empty 'content' string is provided in the request body.
+ * 
+ * This is mainly used for book review endpoints.
+ * 
+ * If 'content' is missing or is empty, this will return a 400 status code.
+ * 
+ * This will pass a 'reviewContent' local response variable on success.
+ * 
+ * @param req The incoming express request.
+ * @param res The outbound express response.
+ * @param next The express 'next' middleware callback.
+ */
+export async function ensureContent(
+ req: Request,
+ res: Response,
+ next: NextFunction
+) {
+  const { rawContent } = req.body;
+
+  if (!rawContent) return res.status(400).send('\'content\' is required');
+
+  const content = rawContent as string;
+
+  if (content.length === 0) return res.status(400).send('\'content\' must be a non-empty string');
+
+  return next();
+}
+
 export async function checkIfBookInShelf(
   req: Request,
   res: Response,

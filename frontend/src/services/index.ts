@@ -113,6 +113,15 @@ export async function submitRegistrationData<T>(formData: T) {
   return axios.post(`${BASE_URL}/register`, formData);
 }
 
+/**
+ * Adds a new review to the book with the given ISBN.
+ * @param isbn The ISBN of the book to add the review to.
+ * @param content The content of the review.
+ */
+export async function addReviewByISBN(isbn: string, content: string) {
+  return axios.post(`${BASE_URL}/books/${isbn}/reviews`, { content }, { withCredentials: true });
+}
+
 export async function addBookToShelf(isbn: string, shelfID: number) {
   return axios.put(`${BASE_URL}/bookshelf/?isbn=${isbn}&shelfid=${shelfID}`);
 }
