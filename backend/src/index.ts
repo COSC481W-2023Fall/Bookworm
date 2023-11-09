@@ -2,6 +2,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 import databaseConnection from './databaseConnection';
 import {
   authenticateUser,
@@ -48,8 +49,12 @@ app.post('/api/register', async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Passwords do not match.' });
   }
 
-  await registerUser(username, email, password, res);
-  return res.status(200);
+  const isRegister = await registerUser(username, email, password);
+  if(isRegister) {
+    return res.status(200).json({ message: 'Registration successful!' });
+  } else {
+    return   res.status(400).json({ error: 'Registration failed. User may already exist.' });
+  }
 });
 
 // homepage route
@@ -67,10 +72,24 @@ app.get('/api', (req, res) => {
 app.post('/api/sign-in', async (req, res) => {
   try {
     const { email, password } = req.body.val;
-
-    await authenticateUser(email, password, res);
+    const currentUser = await authenticateUser(email, password);
+    if(currentUser) {
+      // Successful login
+      const token = jwt.sign({ currentUser }, 'bookwormctrlcsbookwormctrlcs');
+      res.cookie('token', token);
+    return res.status(200).json({
+      success: true,
+      message: 'Sign in successfully'
+    });
+    } else {
+      return res.status(200).json({
+        success: false,
+        message: 'Password or Email incorrect'
+      }
+      )
+    }
   } catch (error) {
-    return res.json({ success: false, message: 'Internal server error' });
+    return res.status(400).json({ success: false, message: 'Internal server error' });
   }
   return res.status(200);
 });
@@ -78,7 +97,7 @@ app.post('/api/sign-in', async (req, res) => {
 // Sign out route
 app.get('/api/sign-out', (req, res) => {
   res.clearCookie('token');
-  return res.json({ success: true });
+  return res.status(200).json({ success: true });
 });
 
 // Reset Password route
