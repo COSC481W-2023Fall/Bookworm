@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Button,
   ConfigProvider,
@@ -26,6 +26,11 @@ function BookView(): JSX.Element {
   const [book, setBook] = useState<IBook | null>(null);
 
   const coverImageUrl = `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
+
+  let navigate = useNavigate(); 
+  const routeChange = () =>{ 
+    navigate(`/book/${isbn}/reviews`);
+  }
 
   useEffect(() => {
     async function fetchBook() {
@@ -104,8 +109,8 @@ function BookView(): JSX.Element {
                 }
               }}
             >
-              <Button type='primary' shape='round' size='large'>
-                Want to Buy?
+              <Button type='primary' shape='round' size='large' onClick={routeChange}>
+                See Reviews
               </Button>
             </ConfigProvider>
           </div>
