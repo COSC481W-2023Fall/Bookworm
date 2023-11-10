@@ -1,19 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Tabs, List, Image } from 'antd';
 import type { TabsProps } from 'antd';
 import { Link } from 'react-router-dom';
-import { fetchBookByISBN, fetchBookShelfs, IBook, IUser } from '../services';
+import { fetchBookShelfs, IBook, IUser, searchBooks } from '../services';
 
 export default function ShelfPage(): JSX.Element {
   const [user, setUser] = useState<IUser | null>(null);
-  const [book, setBook] = useState<IBook | null>(null);
-  const [books, setBooks] = useState<IBook[]>([]);
 
+  const [readingBooks, setRBooks] = useState<IBook[]>([]);
+  const [completedBooks, setCBooks] = useState<IBook[]>([]);
+  const [drppedBooks, setDBooks] = useState<IBook[]>([]);
+  const [plannedBooks, setPBooks] = useState<IBook[]>([]);
   const readingShelf = user?.reading_bookshelf;
-
   const completedShelf = user?.completed_bookshelf;
   const droppedShelf = user?.dropped_bookshelf;
   const planToShelf = user?.plan_to_bookshelf;
+  const initialized = useRef(false);
 
   useEffect(() => {
     async function fetchBookShelf() {
@@ -21,29 +23,54 @@ export default function ShelfPage(): JSX.Element {
       setUser(res);
     }
 
-    fetchBookShelf();
+    if (!initialized.current) {
+      initialized.current = true;
+
+      fetchBookShelf();
+    }
   }, []);
 
   useEffect(() => {
-    async function fetchBookInfo() {
-      if (readingShelf != null) {
-        const isbn = readingShelf.pop();
-        const res = await fetchBookByISBN(isbn!);
-        setBook(res);
+    async function fetchbook() {
+      if (readingShelf) {
+        const res = await searchBooks(
+          readingShelf.join('|'),
+          'isbn',
+          0,
+          readingShelf.length
+        );
+        setRBooks(res);
+      }
+      if (completedShelf) {
+        const res = await searchBooks(
+          completedShelf.join('|'),
+          'isbn',
+          0,
+          completedShelf.length
+        );
+        setCBooks(res);
+      }
+      if (droppedShelf) {
+        const res = await searchBooks(
+          droppedShelf.join('|'),
+          'isbn',
+          0,
+          droppedShelf.length
+        );
+        setDBooks(res);
+      }
+      if (planToShelf) {
+        const res = await searchBooks(
+          planToShelf.join('|'),
+          'isbn',
+          0,
+          planToShelf.length
+        );
+        setPBooks(res);
       }
     }
-    fetchBookInfo();
-  }, [readingShelf, books]);
-
-  useEffect(() => {
-    async function addBookToArray() {
-      const nextbooks = books.map((item) => item);
-      nextbooks.push(book!);
-      setBooks(nextbooks);
-    }
-
-    addBookToArray();
-  }, [book]);
+    fetchbook();
+  }, [readingShelf, completedShelf]);
 
   const items: TabsProps['items'] = [
     {
@@ -52,17 +79,17 @@ export default function ShelfPage(): JSX.Element {
       children: (
         <List
           itemLayout='horizontal'
-          dataSource={readingShelf}
-          renderItem={(item) => (
+          dataSource={readingBooks}
+          renderItem={(bookr) => (
             <List.Item>
               <List.Item.Meta
                 avatar={
                   <Image
-                    src={`https://covers.openlibrary.org/b/isbn/${item}-S.jpg`}
+                    src={`https://covers.openlibrary.org/b/isbn/${bookr.isbn}-S.jpg`}
                   />
                 }
-                title={<Link to={`/book/${item}`}>{item}</Link>}
-                description={`Author:${item}`}
+                title={<Link to={`/book/${bookr.isbn}`}>{bookr.title}</Link>}
+                description={`Author:${bookr.author}`}
               />
             </List.Item>
           )}
@@ -75,17 +102,17 @@ export default function ShelfPage(): JSX.Element {
       children: (
         <List
           itemLayout='horizontal'
-          dataSource={completedShelf}
+          dataSource={completedBooks}
           renderItem={(item) => (
             <List.Item>
               <List.Item.Meta
                 avatar={
                   <Image
-                    src={`https://covers.openlibrary.org/b/isbn/${item}-S.jpg`}
+                    src={`https://covers.openlibrary.org/b/isbn/${item.isbn}-S.jpg`}
                   />
                 }
-                title={<Link to={`/book/${item}`}>{item}</Link>}
-                description={`Author:${item}`}
+                title={<Link to={`/book/${item.isbn}`}>{item.title}</Link>}
+                description={`Author:${item.author}`}
               />
             </List.Item>
           )}
@@ -98,17 +125,17 @@ export default function ShelfPage(): JSX.Element {
       children: (
         <List
           itemLayout='horizontal'
-          dataSource={droppedShelf}
+          dataSource={drppedBooks}
           renderItem={(item) => (
             <List.Item>
               <List.Item.Meta
                 avatar={
                   <Image
-                    src={`https://covers.openlibrary.org/b/isbn/${item}-S.jpg`}
+                    src={`https://covers.openlibrary.org/b/isbn/${item.isbn}-S.jpg`}
                   />
                 }
-                title={<Link to={`/book/${item}`}>{item}</Link>}
-                description={`Author:${item}`}
+                title={<Link to={`/book/${item.isbn}`}>{item.title}</Link>}
+                description={`Author:${item.author}`}
               />
             </List.Item>
           )}
@@ -121,17 +148,17 @@ export default function ShelfPage(): JSX.Element {
       children: (
         <List
           itemLayout='horizontal'
-          dataSource={planToShelf}
+          dataSource={plannedBooks}
           renderItem={(item) => (
             <List.Item>
               <List.Item.Meta
                 avatar={
                   <Image
-                    src={`https://covers.openlibrary.org/b/isbn/${item}-S.jpg`}
+                    src={`https://covers.openlibrary.org/b/isbn/${item.isbn}-S.jpg`}
                   />
                 }
-                title={<Link to={`/book/${item}`}>{item}</Link>}
-                description={`Author:${item}`}
+                title={<Link to={`/book/${item.isbn}`}>{item.title}</Link>}
+                description={`Author:${item.author}`}
               />
             </List.Item>
           )}
