@@ -25,7 +25,7 @@ import {
   checkBookISBN,
   checkIfBookInShelf,
   checkReviewAuthor,
-  checkReviewID,
+  checkReviewUsername,
   ensureContent,
   requireLogin
 } from './middleware';
@@ -210,13 +210,12 @@ app
   });
 
 app
-  .route('/api/books/:isbn/reviews/:reviewId')
+  .route('/api/books/:isbn/reviews/:username')
   .all(checkBookISBN)
-  .all(checkReviewID)
+  .all(checkReviewUsername)
   .all(requireLogin)
 
-  // return a single review
-  // TODO: Unimplemented
+  // return a single review by username
   .get(async (_, res) => res.status(200).json(res.locals.review))
 
   // edit an existing review
@@ -230,8 +229,9 @@ app
 
     // TODO: Surely there's a cleaner way of doing this?
     try {
-      // eslint-disable-next-line no-underscore-dangle
-      const newReviews = book.reviews.filter((r) => r._id !== review._id);
+      const newReviews = book.reviews.filter(
+        (r) => r.username !== review.username
+      );
       await Book.findOneAndUpdate({ isbn: book.isbn }, { reviews: newReviews });
 
       return res.status(204);
