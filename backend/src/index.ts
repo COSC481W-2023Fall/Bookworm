@@ -216,8 +216,25 @@ app
   .get(async (_, res) => res.status(200).json(res.locals.review))
 
   // edit an existing review
-  // TODO: Unimplemented
-  .put(checkReviewAuthor, ensureContent, async (_, res) => res.status(200))
+  .put(checkReviewAuthor, ensureContent, async (_, res) => {
+    const book = res.locals.book as Ibook;
+    const currentReview = res.locals.review as IReview;
+
+    currentReview.content = res.locals.content;
+
+    const newReviews = book.reviews.filter(
+      (r) => r.username !== currentReview.username
+    );
+    newReviews.push(currentReview);
+
+    try {
+      await Book.findOneAndUpdate({ isbn: book.isbn }, { reviews: newReviews });
+
+      return res.status(204);
+    } catch (error) {
+      return res.status(500);
+    }
+  })
 
   // delete an existing reivew
   .delete(checkReviewAuthor, async (_, res) => {
