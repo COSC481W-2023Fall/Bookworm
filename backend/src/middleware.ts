@@ -163,5 +163,7 @@ export async function ensureContent(
   if (content.length === 0)
     return res.status(400).send("'content' must be a non-empty string");
 
+  res.locals.content = content;
+
   return next();
 }
