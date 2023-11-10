@@ -180,26 +180,32 @@ app
   .post(requireLogin, ensureContent, async (_, res) => {
     const content = res.locals.reviewContent as string;
     const user = res.locals.user as IUser;
-    let book = res.locals.book as Ibook;
-    
+    const book = res.locals.book as Ibook;
+
     // prevent users from submitting more than one review
-    const reviewExists = book.reviews.filter(review => review.username === user.username).length !== 0;
-    if (reviewExists) return res.status(403).send('Only one review allowed per user');
+    const reviewExists =
+      book.reviews.filter((review) => review.username === user.username)
+        .length !== 0;
+    if (reviewExists)
+      return res.status(403).send('Only one review allowed per user');
 
     const reviewData = {
       content,
       username: user.username
-    }
+    };
 
     try {
-      const updated = await Book.findOneAndUpdate({ isbn: book.isbn }, { $push: { reviews: reviewData } }, { upsert: true });
-      if (!updated) return res.status(500).send("We couldn't update the requested book");
+      const updated = await Book.findOneAndUpdate(
+        { isbn: book.isbn },
+        { $push: { reviews: reviewData } },
+        { upsert: true }
+      );
+      if (!updated)
+        return res.status(500).send("We couldn't update the requested book");
 
       return res.status(200).json(reviewData);
-    }
-    catch (error) {
-      console.log(error);
-      return res.status(500).send("Something went wrong while adding a new review")
+    } catch (error) {
+      return res.status(500).send(error);
     }
   });
 

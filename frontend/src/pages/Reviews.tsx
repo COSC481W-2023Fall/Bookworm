@@ -23,10 +23,13 @@ export default function Reviews(): JSX.Element {
     async function fetchReviews() {
       const book = await fetchBookByISBN(isbn!);
 
-      const reviews = book?.reviews.sort((a, b) => a.created_at.getTime() - b.created_at.getTime()) ?? [];
+      const reviews =
+        book?.reviews.sort(
+          (a, b) => a.created_at.getTime() - b.created_at.getTime()
+        ) ?? [];
 
       setReviews(reviews);
-      setCount(reviews.length)
+      setCount(reviews.length);
     }
 
     fetchReviews();

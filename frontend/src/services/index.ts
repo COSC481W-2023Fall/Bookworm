@@ -14,7 +14,7 @@ export type IReview = {
   username: string;
   content: string;
   created_at: Date;
-}
+};
 
 // TODO: Duplicate code
 export type IBook = {
@@ -119,7 +119,11 @@ export async function submitRegistrationData<T>(formData: T) {
  * @param content The content of the review.
  */
 export async function addReviewByISBN(isbn: string, content: string) {
-  return axios.post(`${BASE_URL}/books/${isbn}/reviews`, { content }, { withCredentials: true });
+  return axios.post(
+    `${BASE_URL}/books/${isbn}/reviews`,
+    { content },
+    { withCredentials: true }
+  );
 }
 
 export async function addBookToShelf(isbn: string, shelfID: number) {
