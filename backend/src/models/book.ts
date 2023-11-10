@@ -13,8 +13,6 @@ interface Ibook {
   publication_date: Date;
   publisher: string;
   genres: string[];
-  description: string | null;
-  average_rating: number;
 }
 
 const bookSchema = new Schema<Ibook>({
@@ -24,9 +22,7 @@ const bookSchema = new Schema<Ibook>({
   page_count: { type: Number, required: true },
   publication_date: { type: Date, required: true },
   publisher: { type: String, required: true },
-  genres: { type: [String], required: true },
-  description: { type: String || null, required: true },
-  average_rating: { type: Number, required: true }
+  genres: { type: [String], required: true }
 });
 
 /**
@@ -94,96 +90,4 @@ export async function fetchBookCount() {
   const count = await Book.find().estimatedDocumentCount();
 
   return count;
-}
-
-/**
- * Searches the database on title, author, and isbn for matching records.
- *
- * Returns null for invalid parameters.
- * @param query The string to match
- * @param offset The number of entries to skip. Must not be negative.
- * @param limit The number of entries to show on each page. Must be greater than 0.
- * @returns An array of the matching books or null document.
- */
-export async function searchBooks(
-  query: string,
-  fields: string,
-  offset: number,
-  limit: number
-): Promise<Ibook[] | null> {
-  if (offset < 0 || limit <= 0) return null;
-
-  await connect(DATABASE_URL);
-
-  const regQuery = new RegExp(query, 'i');
-
-  const searchFields = fields.split(',');
-
-  const safeFields = ['title', 'author', 'publisher', 'isbn', 'genres', ''];
-
-  if (!searchFields.every((elem) => safeFields.includes(elem))) {
-    return null;
-  }
-
-  let filter: { [key: string]: RegExp }[] = [
-    { title: regQuery },
-    { author: regQuery },
-    { isbn: regQuery },
-    { publisher: regQuery },
-    { genres: regQuery }
-  ];
-
-  if (searchFields[0] !== '') {
-    filter = searchFields.map((field) => ({ [field]: regQuery }));
-  }
-
-  const res = await Book.find({ $or: filter })
-    .sort({ _id: 1 })
-    .skip(offset)
-    .limit(limit);
-
-  return res;
-}
-
-/**
- * Gets the total number of books that match a particular search query.
- *
- * @param query The string to match.
- * @returns Promise containing the amount of matching books.
- */
-export async function searchCount(
-  query: string,
-  fields: string
-): Promise<number | null> {
-  await connect(DATABASE_URL);
-
-  const regQuery = new RegExp(query, 'i');
-
-  const searchFields = fields.split(',');
-
-  const safeFields = ['title', 'author', 'publisher', 'isbn', 'genres', ''];
-
-  if (!searchFields.every((elem) => safeFields.includes(elem))) {
-    return null;
-  }
-
-  let filter: { [key: string]: RegExp }[] = [
-    { title: regQuery },
-    { author: regQuery },
-    { isbn: regQuery },
-    { publisher: regQuery },
-    { genres: regQuery }
-  ];
-
-  if (searchFields[0] !== '') {
-    filter = searchFields.map((field) => ({ [field]: regQuery }));
-  }
-
-  const res = await Book.find({
-    $or: filter
-  })
-    .sort({ _id: 1 })
-    .count();
-
-  return res;
 }
