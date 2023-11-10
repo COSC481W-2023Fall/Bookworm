@@ -42,26 +42,24 @@ export async function checkBookISBN(
  * @param res The outbound express response.
  * @param next The express 'next' middleware callback.
  */
-export async function checkReviewID(
+export async function checkReviewUsername(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  const { reviewId } = req.params;
+  const { username } = req.params;
 
   const { reviews } = res.locals.book as Ibook;
 
-  // eslint-disable-next-line no-underscore-dangle
-  const reviewIdSet = new Set(reviews.map((review) => review._id));
+  const usernameSet = new Set(reviews.map((review) => review.username));
 
-  if (!reviewIdSet.has(reviewId)) {
-    return res.status(404).send(`No review found with ID ${reviewId}`);
+  if (!usernameSet.has(username)) {
+    return res.status(404).send(`No review found from username ${username}`);
   }
 
   // We don't need to check array length in this case, as we already
   // checked if the review ID was valid
-  // eslint-disable-next-line no-underscore-dangle
-  const review = reviews.filter((r) => r._id === reviewId)[0];
+  const review = reviews.filter((r) => r.username === username)[0];
   res.locals.review = review;
 
   return next();
