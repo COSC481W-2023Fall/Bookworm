@@ -10,6 +10,12 @@ const BASE_URL = import.meta.env.DEV
   ? `http://localhost:${PORT}/api`
   : 'https://capstone.caseycodes.dev/api';
 
+export type IReview = {
+  username: string;
+  content: string;
+  created_at: Date;
+}
+
 // TODO: Duplicate code
 export type IBook = {
   average_rating: number;
@@ -20,13 +26,7 @@ export type IBook = {
   publication_date: Date;
   publisher: string;
   genres: string[];
-  reviews: [
-    {
-      username: string;
-      content: string;
-      created_at: Date;
-    }
-  ];
+  reviews: IReview[];
   description: string | null;
 };
 export type IUser = {
