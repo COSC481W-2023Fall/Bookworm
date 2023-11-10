@@ -25,11 +25,11 @@ function App(): JSX.Element {
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/shelf' element={<Shelf />} />
-        <Route path='/search' element={<Search />} />
-        <Route path='/book/:isbn' element={<BookView />} />
         <Route path='/book/:isbn/reviews' element={<Reviews />} />
         <Route path='/profile/:username' element={<ShowProfile />} />
         <Route path='/profile' element={<ProfileLayout />} />
+        <Route path='/search' element={<Search />} />
+        <Route path='/book/:isbn' element={<BookView />} />
       </Routes>
     </ConfigProvider>
   );
