@@ -1,7 +1,9 @@
+import { ConfigProvider } from 'antd';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import { ConfigProvider } from 'antd';
 import Home from './pages/Home';
+import ProfileLayout from './pages/ProfileLayout';
+import ShowProfile from './pages/ShowProfile';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Shelf from './pages/Shelf';
@@ -26,6 +28,8 @@ function App(): JSX.Element {
         <Route path='/search' element={<Search />} />
         <Route path='/book/:isbn' element={<BookView />} />
         <Route path='/book/:isbn/reviews' element={<Reviews />} />
+        <Route path='/profile/:username' element={<ShowProfile />} />
+        <Route path='/profile' element={<ProfileLayout />} />
       </Routes>
     </ConfigProvider>
   );

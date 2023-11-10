@@ -18,7 +18,6 @@ export type IReview = {
 
 // TODO: Duplicate code
 export type IBook = {
-  average_rating: number;
   title: string;
   author: string;
   isbn: string;
@@ -56,31 +55,6 @@ export async function paginateBooks(offset: number, limit: number) {
 
 export async function getBookCount() {
   const res = await axios.get(`${BASE_URL}/books/total`);
-
-  return res.data as number;
-}
-
-export async function searchBooks(
-  query: string,
-  fields: string,
-  offset: number,
-  limit: number
-) {
-  const res = await axios.get(
-    `${BASE_URL}/search?q=${query}&fields=${fields}&offset=${offset}&limit=${limit}`
-  );
-
-  if (res.status !== 200) {
-    return [];
-  }
-
-  return res.data as IBook[];
-}
-
-export async function searchBookCount(query: string, fields: string) {
-  const res = await axios.get(
-    `${BASE_URL}/search/total?q=${query}&fields=${fields}`
-  );
 
   return res.data as number;
 }
@@ -177,4 +151,9 @@ export async function removeBookFromShelf(isbn: string) {
 export async function fetchBookShelfs() {
   const res = await axios.get(`${BASE_URL}/bookshelf/`);
   return res.data as IUser;
+}
+
+// Registers a new user by submitted form data
+export async function fetchResetPassword(val:String){
+  return axios.post(`${BASE_URL}/reset-password`, {val});
 }

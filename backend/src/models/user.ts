@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import { Response } from 'express';
 import jwt from 'jsonwebtoken';
 import mongoose, { Schema, connect } from 'mongoose';
 import dotenv from 'dotenv';
@@ -59,87 +58,32 @@ export const User = mongoose.model('User', userSchema);
  * Authenticates a user by checking the provided email and password.
  * @param email - The email of the user to authenticate.
  * @param password - The password of the user to authenticate.
- * @param res - The Express response object for sending the authentication result.
- * @returns A JSON response indicating the success or failure of the authentication process.
+ * @returns If user signs in successfully, return username otherwise return null
  */
 export const authenticateUser = async (
   email: string,
   password: string,
-  res: Response
 ) => {
   try {
     const user = await User.findOne({ email });
-
     if (!user) {
-      return res.json({
-        success: false,
-        message: 'User not found'
-      });
+      return null;
     }
-
     const passwordMatch = await bcrypt.compare(password, user.password);
-
     // Check if the password matches
     if (!passwordMatch) {
-      return res.json({
-        success: false,
-        message: 'Invalid password'
-      });
+      return null;
     }
 
     // Successful login
-    const name = user.username;
-    const token = jwt.sign({ name }, 'bookwormctrlcsbookwormctrlcs', {
-      expiresIn: '1d'
-    });
+    return user.username
 
-    res.cookie('token', token);
-    return res.json({
-      success: true,
-      message: 'Sign in successfully'
-    });
   } catch (error) {
     // TODO: Not sure why this error is logged to console rather than returned to user. Needs testing
 
     // eslint-disable-next-line no-console
     console.error('Error during authentication:', error);
-    return res.json({
-      success: false,
-      message: 'Internal Server Error'
-    });
-  }
-};
-
-/**
- * Define an interface named DecodedToken
- * @interface DecodedToken
- */
-export interface DecodedToken {
-  name: string;
-}
-
-/**
- * Handles the verification of a JWT (JSON Web Token) and responds accordingly.
- * @param token - The JWT to be verified.
- * @param res - The Express response object for sending the verification result.
- * @returns A JSON response indicating the success or failure of the token verification process.
- */
-export const handleTokenVerification = (
-  token: string | undefined,
-  res: Response
-) => {
-  if (!token) {
-    return res.json({ message: 'We need a token, please provide it.' });
-  }
-
-  try {
-    const decoded = jwt.verify(
-      token,
-      'bookwormctrlcsbookwormctrlcs'
-    ) as DecodedToken;
-    return res.json({ success: true, name: decoded.name });
-  } catch (err) {
-    return res.json({ message: 'Authentication error.' });
+    return null
   }
 };
 
@@ -148,14 +92,12 @@ export const handleTokenVerification = (
  * @param username - The username of the new user.
  * @param email - The email of the new user.
  * @param password - The password of the new user.
- * @param res - The Express response object for sending the registration result.
  * @returns A JSON response indicating the success or failure of the registration process.
  */
 export const registerUser = async (
   username: string,
   email: string,
   password: string,
-  res: Response
 ) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);

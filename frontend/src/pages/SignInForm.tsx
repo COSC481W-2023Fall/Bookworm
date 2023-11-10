@@ -1,5 +1,5 @@
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
-import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { SignData, fetchSignIn } from '../services/index';
@@ -12,6 +12,7 @@ function SigninForm() {
   const handlerFinish = async (val: SignData) => {
     try {
       const res = await fetchSignIn(val);
+      console.log(res)
       if (res.data.success) {
         navigate('/');
       } else {

@@ -1,0 +1,42 @@
+.user-info-edit {
+  text-align: center;
+  padding: 5px;
+} 
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  margin: 10px;
+}
+
+input {
+  max-height: 50px;
+  max-width: auto;
+}
+
+textarea {
+  width: 300px;
+  height: 120px;
+  min-width: 50px;
+  min-height: 100px;
+}
+
+ select, input, textarea {
+  margin: 4px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.editPageButton {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 4px 0;
+  cursor: pointer;
+}
+

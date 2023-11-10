@@ -1,10 +1,6 @@
 import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
 import mongoose from 'mongoose';
-import {
-  fetchAllBooks,
-  fetchBookByISBN,
-  searchBooks
-} from '../../src/models/book';
+import { fetchAllBooks, fetchBookByISBN } from '../../src/models/book';
 
 import connectToDb from '../../src/databaseConnection';
 
@@ -47,36 +43,6 @@ describe('Fetch multiple books', () => {
     expect(negativeOffset).toBeNull();
     expect(zeroLimit).toBeNull();
     expect(valid).not.toBeNull();
-  });
-});
-
-describe('Search through all books', () => {
-  test('Make a search', async () => {
-    const books = await searchBooks('hitchhiker', '', 0, 5);
-
-    expect(books!).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          isbn: '0517226952'
-        })
-      ])
-    );
-    expect(books?.length).toBeGreaterThan(0);
-    expect(books?.length).toBeLessThanOrEqual(5);
-  });
-
-  test('Bad data searh', async () => {
-    const emptyQuery = await searchBooks('badisbn', 'isbn', 0, 5);
-    const badField = await searchBooks('hitchhiker', 'issbn', 0, 5);
-    const negativeOffset = await searchBooks('hithhiker', 'title', -1, 0);
-    const zeroLimit = await searchBooks('hithhiker', 'title', 0, 0);
-    const valid = await searchBooks('hitchhiker', 'title', 0, 5);
-
-    expect(emptyQuery).toStrictEqual([]);
-    expect(badField).toBe(null);
-    expect(negativeOffset).toBe(null);
-    expect(zeroLimit).toBe(null);
-    expect(valid).not.toBe(null);
   });
 });
 
