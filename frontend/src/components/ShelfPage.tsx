@@ -70,7 +70,7 @@ export default function ShelfPage(): JSX.Element {
       }
     }
     fetchbook();
-  }, [readingShelf, completedShelf]);
+  }, [readingShelf, completedShelf, droppedShelf, planToShelf]);
 
   const items: TabsProps['items'] = [
     {

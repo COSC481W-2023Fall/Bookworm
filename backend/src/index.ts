@@ -202,6 +202,7 @@ app
 
     // TODO: Surely there's a cleaner way of doing this?
     try {
+      // eslint-disable-next-line no-underscore-dangle
       const newReviews = book.reviews.filter((r) => r._id !== review._id);
       await Book.findOneAndUpdate({ isbn: book.isbn }, { reviews: newReviews });
 

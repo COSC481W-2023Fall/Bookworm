@@ -26,6 +26,7 @@ export interface IReview {
   created_at: Date;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const reviewSchema = new Schema<IReview>({
   username: { type: String, required: true },
   content: { type: String, required: true },
