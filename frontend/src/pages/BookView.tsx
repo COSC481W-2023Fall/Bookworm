@@ -13,10 +13,10 @@ function BookView(): JSX.Element {
 
   const coverImageUrl = `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
 
-  let navigate = useNavigate(); 
-  const routeChange = () =>{ 
+  let navigate = useNavigate();
+  const routeChange = () => {
     navigate(`/book/${isbn}/reviews`);
-  }
+  };
 
   useEffect(() => {
     async function fetchBook() {
@@ -68,7 +68,12 @@ function BookView(): JSX.Element {
                 }
               }}
             >
-              <Button type='primary' shape='round' size='large' onClick={routeChange}>
+              <Button
+                type='primary'
+                shape='round'
+                size='large'
+                onClick={routeChange}
+              >
                 See Reviews
               </Button>
             </ConfigProvider>

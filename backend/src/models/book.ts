@@ -1,4 +1,4 @@
-import { Schema, model, Date, now, connect } from 'mongoose';
+import { Schema, model, Date, now } from 'mongoose';
 
 /**
  * Represents a book in the database.
