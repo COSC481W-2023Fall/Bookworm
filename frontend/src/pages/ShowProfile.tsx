@@ -3,7 +3,7 @@
 // import Navbar from '../components/Navbar';
 // import Profile from './Profile';
 // import useAuth from './UserAuth';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './Profile.css';
 import { useParams } from 'react-router-dom';
 
