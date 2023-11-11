@@ -1,7 +1,7 @@
 .user-info-edit {
   text-align: center;
   padding: 5px;
-} 
+}
 
 .form {
   display: flex;
@@ -25,7 +25,9 @@ textarea {
   min-height: 100px;
 }
 
- select, input, textarea {
+select,
+input,
+textarea {
   margin: 4px;
   padding: 10px;
   border: 1px solid #ccc;
@@ -39,4 +41,3 @@ textarea {
   margin: 4px 0;
   cursor: pointer;
 }
-

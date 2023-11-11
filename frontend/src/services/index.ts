@@ -101,6 +101,6 @@ export async function submitRegistrationData<T>(formData: T) {
 }
 
 // Registers a new user by submitted form data
-export async function fetchResetPassword(val:String){
-  return axios.post(`${BASE_URL}/reset-password`, {val});
+export async function fetchResetPassword(val: string) {
+  return axios.post(`${BASE_URL}/reset-password`, { val });
 }

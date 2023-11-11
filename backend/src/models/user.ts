@@ -32,10 +32,7 @@ export default User;
  * @param password - The password of the user to authenticate.
  * @returns If user signs in successfully, return username otherwise return null
  */
-export const authenticateUser = async (
-  email: string,
-  password: string,
-) => {
+export const authenticateUser = async (email: string, password: string) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
@@ -48,11 +45,10 @@ export const authenticateUser = async (
     }
 
     // Successful login
-    return user.username
-
+    return user.username;
   } catch (error) {
     console.error('Error during authentication:', error);
-    return null
+    return null;
   }
 };
 
@@ -66,7 +62,7 @@ export const authenticateUser = async (
 export const registerUser = async (
   username: string,
   email: string,
-  password: string,
+  password: string
 ) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -83,11 +79,7 @@ export const registerUser = async (
   }
 };
 
-
-export const resetPassword = async (
-  newPassword: string,
-  name: string
-) => {
+export const resetPassword = async (newPassword: string, name: string) => {
   try {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     const updatedUser = await User.findOneAndUpdate(
@@ -95,21 +87,21 @@ export const resetPassword = async (
       { $set: { password: hashedPassword } },
       { new: true }
     );
-    if(updatedUser) {
+    if (updatedUser) {
       return true;
     }
     return false;
-  } catch(error) {
+  } catch (error) {
     return false;
   }
-}
+};
 
 interface JwtPayload {
   currentUser: string;
 }
 
 // Function to verify JWT token and get payload
-export const verifyJwtToken = (token:string, secret:string) => {
+export const verifyJwtToken = (token: string, secret: string) => {
   try {
     // Verify the token using the provided secret
     const decoded = jwt.verify(token, secret) as JwtPayload;

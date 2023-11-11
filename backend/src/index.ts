@@ -4,13 +4,13 @@ import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import databaseConnection from './databaseConnection';
+import ProfileModel from './models/editProfile';
 import {
   authenticateUser,
   registerUser,
   resetPassword,
   verifyJwtToken
 } from './models/user';
-import {ProfileModel} from './models/editProfile';
 
 // load our .env file
 import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
@@ -51,22 +51,22 @@ app.post('/api/register', async (req: Request, res: Response) => {
   }
 
   const isRegister = await registerUser(username, email, password);
-  if(isRegister) {
+  if (isRegister) {
     return res.status(200).json({ message: 'Registration successful!' });
-  } else {
-    return   res.status(400).json({ error: 'Registration failed. User may already exist.' });
   }
+  return res
+    .status(400)
+    .json({ error: 'Registration failed. User may already exist.' });
 });
 
 // homepage route
 app.get('/api', (req, res) => {
   const { token } = req.cookies;
-  const isLogin = verifyJwtToken(token, 'bookwormctrlcsbookwormctrlcs')
-  if(isLogin) {
-    return res.json({ success: true, name: isLogin  });
-  } else {
-    return res.json({success: false, message: 'Authentication error.' });
+  const isLogin = verifyJwtToken(token, 'bookwormctrlcsbookwormctrlcs');
+  if (isLogin) {
+    return res.json({ success: true, name: isLogin });
   }
+  return res.json({ success: false, message: 'Authentication error.' });
 });
 
 // Sign in route
@@ -74,23 +74,23 @@ app.post('/api/sign-in', async (req, res) => {
   try {
     const { email, password } = req.body.val;
     const currentUser = await authenticateUser(email, password);
-    if(currentUser) {
+    if (currentUser) {
       // Successful login
       const token = jwt.sign({ currentUser }, 'bookwormctrlcsbookwormctrlcs');
       res.cookie('token', token);
-    return res.status(200).json({
-      success: true,
-      message: 'Sign in successfully'
-    });
-    } else {
       return res.status(200).json({
-        success: false,
-        message: 'Password or Email incorrect'
-      }
-      )
+        success: true,
+        message: 'Sign in successfully'
+      });
     }
+    return res.status(200).json({
+      success: false,
+      message: 'Password or Email incorrect'
+    });
   } catch (error) {
-    return res.status(400).json({ success: false, message: 'Internal server error' });
+    return res
+      .status(400)
+      .json({ success: false, message: 'Internal server error' });
   }
   return res.status(200);
 });
@@ -102,34 +102,30 @@ app.get('/api/sign-out', (req, res) => {
 });
 
 // Reset Password route
-app.post('/api/reset-password', async(req, res) => {
-  const password = req.body.val
+app.post('/api/reset-password', async (req, res) => {
+  const password = req.body.val;
   const { token } = req.cookies;
 
-  if(!password || !token) {
-    res.status(400).json('Missing required paramaters')
+  if (!password || !token) {
+    res.status(400).json('Missing required paramaters');
   }
 
   try {
     const isLogin = verifyJwtToken(token, 'bookwormctrlcsbookwormctrlcs');
 
-    if(!isLogin) {
+    if (!isLogin) {
       return res.status(400).json('invalid token');
     }
 
-    const isReset = await resetPassword(password, isLogin)
-      if(isReset) {
-        return res.status(200).json('Reset successfully')
-      }
-      else {
-        return res.status(400).json('Update unccessfully')
-      }
-  } catch(error) {
-    return res.status(500).json('Internal server error')
+    const isReset = await resetPassword(password, isLogin);
+    if (isReset) {
+      return res.status(200).json('Reset successfully');
+    }
+    return res.status(400).json('Update unccessfully');
+  } catch (error) {
+    return res.status(500).json('Internal server error');
   }
-
-  }
-);
+});
 
 // API routes for books
 app.get('/api/ping', (_, res) => {
@@ -185,8 +181,7 @@ app.get(
   }
 );
 
-
-//Profile data route
+// Profile data route
 app.post('/api/saveProfileData', async (req, res) => {
   try {
     const profile = new ProfileModel(req.body);
@@ -200,7 +195,7 @@ app.post('/api/saveProfileData', async (req, res) => {
 
 app.get('/api/getProfileData/:username', async (req, res) => {
   try {
-    const username = req.params.username;
+    const { username } = req.params;
     const profileData = await ProfileModel.findOne({ username });
     if (!profileData) {
       return res.status(404).send('Profile not found.');
@@ -211,10 +206,8 @@ app.get('/api/getProfileData/:username', async (req, res) => {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
+  return res.status(200);
 });
-
-
-
 
 // Start the server
 app.listen(PORT, () => {

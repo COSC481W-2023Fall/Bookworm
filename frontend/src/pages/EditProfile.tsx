@@ -1,12 +1,9 @@
 import { useState } from 'react';
-import './EditProfile.css'; 
+import './EditProfile.css';
 import { useNavigate } from 'react-router-dom';
-
 
 function EditProfile() {
   const navigate = useNavigate();
-
-
 
   const [gender, setGender] = useState('');
   const [occupation, setOccupation] = useState('');
@@ -17,20 +14,23 @@ function EditProfile() {
 
   const handleSave = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/saveProfileData', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          gender,
-          occupation,
-          favoriteBook,
-          description,
-          username,
-        }),
-      });
-  
+      const response = await fetch(
+        'http://localhost:3001/api/saveProfileData',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            gender,
+            occupation,
+            favoriteBook,
+            description,
+            username
+          })
+        }
+      );
+
       if (response.ok) {
         setIsSaved(true);
         navigate(`/profile/${username}`);
@@ -41,32 +41,48 @@ function EditProfile() {
       console.error('Error while saving profile data:', error);
     }
   };
-  
 
   return (
-    <div className="user-info-edit">
+    <div className='user-info-edit'>
       <h1>User Info Edit</h1>
-      <div className="form">
+      <div className='form'>
         <label>Gender:</label>
         <select value={gender} onChange={(e) => setGender(e.target.value)}>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
+          <option value='male'>Male</option>
+          <option value='female'>Female</option>
+          <option value='other'>Other</option>
         </select>
 
         <label>Occupation:</label>
-        <input type="text" value={occupation} onChange={(e) => setOccupation(e.target.value)} />
+        <input
+          type='text'
+          value={occupation}
+          onChange={(e) => setOccupation(e.target.value)}
+        />
 
         <label>Favorite Book:</label>
-        <input type="text" value={favoriteBook} onChange={(e) => setFavoriteBook(e.target.value)} />
+        <input
+          type='text'
+          value={favoriteBook}
+          onChange={(e) => setFavoriteBook(e.target.value)}
+        />
 
         <label>About me:</label>
-        <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        ></textarea>
 
         <label>Username Confirmation:</label>
-        <input type="text" value={username} onChange={(e) => setusername(e.target.value)} />
+        <input
+          type='text'
+          value={username}
+          onChange={(e) => setusername(e.target.value)}
+        />
 
-        <button className="editPageButton" onClick={handleSave}>Save & Show</button>
+        <button className='editPageButton' onClick={handleSave}>
+          Save & Show
+        </button>
         {isSaved}
       </div>
     </div>

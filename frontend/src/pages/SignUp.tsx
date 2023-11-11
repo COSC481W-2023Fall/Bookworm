@@ -15,7 +15,6 @@ function SignUp() {
     confirmPassword: ''
   });
 
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -35,8 +34,7 @@ function SignUp() {
       alert('Registration failed. User may already exist.');
     }
 
-    navigate('../sign-in')
-
+    navigate('../sign-in');
   };
 
   return (
@@ -85,12 +83,10 @@ function SignUp() {
         />
         <br />
         <button type='submit'>Sign Up</button>
-      <p>Already have an account? <Link to="../sign-in">Sign In</Link></p>
-
+        <p>
+          Already have an account? <Link to='../sign-in'>Sign In</Link>
+        </p>
       </form>
-      
-      
-      
     </div>
   );
 }
