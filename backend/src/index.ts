@@ -178,7 +178,7 @@ app
 
   // create a new review
   .post(requireLogin, ensureContent, async (_, res) => {
-    const content = res.locals.reviewContent as string;
+    const content = res.locals.content as string;
     const user = res.locals.user as IUser;
     const book = res.locals.book as Ibook;
 
