@@ -12,7 +12,7 @@ function SigninForm() {
   const handlerFinish = async (val: SignData) => {
     try {
       const res = await fetchSignIn(val);
-      console.log(res)
+      console.log(res);
       if (res.data.success) {
         navigate('/');
       } else {

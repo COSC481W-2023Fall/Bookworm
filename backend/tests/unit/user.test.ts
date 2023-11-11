@@ -1,6 +1,12 @@
 import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
 import mongoose from 'mongoose';
-import { authenticateUser, fetchUserByUserName, registerUser, resetPassword, verifyJwtToken } from '../../src/models/user';
+import {
+  authenticateUser,
+  fetchUserByUserName,
+  registerUser,
+  resetPassword,
+  verifyJwtToken
+} from '../../src/models/user';
 
 import connectToDb from '../../src/databaseConnection';
 
@@ -37,6 +43,17 @@ test('Provide a invalid token and return null', () => {
   expect(verifyJwtToken(token,'bookwormctrlcsbookwormctrlcs')).toBeNull();
 });
 
+test('Provide a valid token and it will return a specific name', () => {
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXJyZW50VXNlciI6InRyZWUiLCJpYXQiOjE2OTk0NzI4NDl9.utwU4TEobRU3eQQhtZJXM0CmCgK-PGXaqlq3XYFcp94';
+  expect(verifyJwtToken(token, 'bookwormctrlcsbookwormctrlcs')).toBe('tree');
+});
+
+test('Provide a invalid token and return null', () => {
+  const token =
+    'e1JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidHJlZSIsImlhdCI6MTY5OTQ2NzAwN30.ubNQUtSWTJ1OqbOsdT-JkJKJLJOqmTaACxTFdJRmg7w';
+  expect(verifyJwtToken(token, 'bookwormctrlcsbookwormctrlcs')).toBeNull();
+});
 
 test('User exists and reset password successfully', async () => {
   const data = await resetPassword('4','tree');
