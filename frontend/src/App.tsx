@@ -28,8 +28,6 @@ function App(): JSX.Element {
         <Route path='/book/:isbn/reviews' element={<Reviews />} />
         <Route path='/profile/:username' element={<ShowProfile />} />
         <Route path='/profile' element={<ProfileLayout />} />
-        <Route path='/search' element={<Search />} />
-        <Route path='/book/:isbn' element={<BookView />} />
       </Routes>
     </ConfigProvider>
   );

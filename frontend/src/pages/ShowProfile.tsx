@@ -80,7 +80,7 @@ interface ProfileData {
   
     return (
       <div className="profile-container">
-        <h1>Profile</h1>
+        <h1>Bookwormer Profile</h1>
         {profileData ? (
           <div className="profile-content">
             <p><strong>Gender:</strong> {profileData.gender}</p>
