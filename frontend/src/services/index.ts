@@ -18,6 +18,7 @@ export type IReview = {
 
 // TODO: Duplicate code
 export type IBook = {
+  average_rating: number;
   title: string;
   author: string;
   isbn: string;
@@ -55,6 +56,31 @@ export async function paginateBooks(offset: number, limit: number) {
 
 export async function getBookCount() {
   const res = await axios.get(`${BASE_URL}/books/total`);
+
+  return res.data as number;
+}
+
+export async function searchBooks(
+  query: string,
+  fields: string,
+  offset: number,
+  limit: number
+) {
+  const res = await axios.get(
+    `${BASE_URL}/search?q=${query}&fields=${fields}&offset=${offset}&limit=${limit}`
+  );
+
+  if (res.status !== 200) {
+    return [];
+  }
+
+  return res.data as IBook[];
+}
+
+export async function searchBookCount(query: string, fields: string) {
+  const res = await axios.get(
+    `${BASE_URL}/search/total?q=${query}&fields=${fields}`
+  );
 
   return res.data as number;
 }
