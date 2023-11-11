@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Button, ConfigProvider, Image, Rate, Spin, Typography } from 'antd';
 import { IBook, fetchBookByISBN } from '../services';
 import Navbar from '../components/Navbar';
 import useAuth from './UserAuth';
-import { Button, ConfigProvider, Image, Rate, Spin, Typography } from 'antd';
 import styles from './BookView.module.css';
+import ReviewBox from '../components/ReviewBox';
 
 function BookView(): JSX.Element {
   const { auth, username, handleSignout } = useAuth();
@@ -13,7 +14,7 @@ function BookView(): JSX.Element {
 
   const coverImageUrl = `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const routeChange = () => {
     navigate(`/book/${isbn}/reviews`);
   };
@@ -86,6 +87,7 @@ function BookView(): JSX.Element {
             <Typography.Paragraph>
               {book.description ? book.description : 'Description not found.'}
             </Typography.Paragraph>
+            <ReviewBox />
           </div>
         </div>
       ) : (

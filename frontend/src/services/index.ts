@@ -115,10 +115,10 @@ export async function submitRegistrationData<T>(formData: T) {
  * @param isbn The ISBN of the book to add the review to.
  * @param content The content of the review.
  */
-export async function addReviewByISBN(isbn: string, content: string) {
+export async function addReviewByISBN(isbn: string, rawContent: string) {
   return axios.post(
     `${BASE_URL}/books/${isbn}/reviews`,
-    { content },
+    { rawContent },
     { withCredentials: true }
   );
 }

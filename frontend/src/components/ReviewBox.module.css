@@ -1,0 +1,12 @@
+.addReviewContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.buttonBox {
+  display: flex;
+  gap: 5px;
+}
+.submitButton {
+  align-self: flex-end;
+}

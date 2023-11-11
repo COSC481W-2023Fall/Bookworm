@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Image, List } from 'antd';
+import { List } from 'antd';
 import { useSearchParams, Link } from 'react-router-dom';
 import { IBook, searchBookCount, searchBooks } from '../services';
 
@@ -59,9 +59,12 @@ export default function SearchDisplay() {
         <List.Item>
           <List.Item.Meta
             avatar={
-              <Image
-                src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-S.jpg`}
-              />
+              <Link to={`/book/${book.isbn}`}>
+                <img
+                  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-S.jpg`}
+                  alt={`Cover for ${book.title}`}
+                />
+              </Link>
             }
             title={<Link to={`/book/${book.isbn}`}>{book.title}</Link>}
             description={`Author:${book.author}`}
