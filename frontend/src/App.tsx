@@ -1,12 +1,14 @@
-import { ConfigProvider } from 'antd';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import { ConfigProvider } from 'antd';
 import Browse from './pages/Browse';
 import Home from './pages/Home';
 import ProfileLayout from './pages/ProfileLayout';
 import ShowProfile from './pages/ShowProfile';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import Search from './pages/Search';
+import BookView from './pages/BookView';
 
 function App(): JSX.Element {
   return (
@@ -21,6 +23,8 @@ function App(): JSX.Element {
         <Route path='/' element={<Home />} />
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/search' element={<Search />} />
+        <Route path='/book/:isbn' element={<BookView />} />
         <Route path='/browse' element={<Browse />} />
         <Route path='/profile/:username' element={<ShowProfile />} />
         <Route path='/profile' element={<ProfileLayout />} />
