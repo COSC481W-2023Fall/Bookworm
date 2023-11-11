@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import './EditProfile.css'; 
+import { useNavigate } from 'react-router-dom';
 
 
 function EditProfile() {
+  const navigate = useNavigate();
+
+
+
   const [gender, setGender] = useState('');
   const [occupation, setOccupation] = useState('');
   const [favoriteBook, setFavoriteBook] = useState('');
@@ -28,6 +33,7 @@ function EditProfile() {
   
       if (response.ok) {
         setIsSaved(true);
+        navigate(`/profile/${username}`);
       } else {
         console.error('Failed to save profile data');
       }
