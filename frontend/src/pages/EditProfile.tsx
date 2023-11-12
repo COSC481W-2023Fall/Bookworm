@@ -14,6 +14,10 @@ function EditProfile() {
 
   const handleSave = async () => {
     try {
+      if (username.trim() === '') {
+        window.alert('Username cannot be empty');
+        return;
+        }
       const response = await fetch(
         'http://localhost:3001/api/saveProfileData',
         {
