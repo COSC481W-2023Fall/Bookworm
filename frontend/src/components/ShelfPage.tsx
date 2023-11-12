@@ -121,7 +121,7 @@ export default function ShelfPage(): JSX.Element {
     },
     {
       key: '3',
-      label: 'dropped',
+      label: 'Dropped',
       children: (
         <List
           itemLayout='horizontal'
