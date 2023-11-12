@@ -1,10 +1,17 @@
-import { afterAll, describe, expect, test } from '@jest/globals';
+import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
 import mongoose from 'mongoose';
 import {
   fetchAllBooks,
   fetchBookByISBN,
   searchBooks
 } from '../../src/models/book';
+
+import connectToDb from '../../src/databaseConnection';
+
+beforeAll((done) => {
+  connectToDb();
+  done();
+});
 
 describe('Fetch a single book', () => {
   test('Fetch book with ISBN 0618346252', async () => {

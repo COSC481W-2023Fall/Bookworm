@@ -1,5 +1,13 @@
-import { describe, expect, test } from '@jest/globals';
+import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
+import mongoose from 'mongoose';
 import { fetchUserByUserName } from '../../src/models/user';
+
+import connectToDb from '../../src/databaseConnection';
+
+beforeAll((done) => {
+  connectToDb();
+  done();
+});
 
 describe('Fetch a single user', () => {
   test('Fetch user with username tfurey', async () => {
@@ -17,4 +25,9 @@ describe('Fetch a single user', () => {
     expect(space).toBeNull();
     expect(garbage).toBeNull();
   });
+});
+
+afterAll((done) => {
+  mongoose.connection.close();
+  done();
 });
