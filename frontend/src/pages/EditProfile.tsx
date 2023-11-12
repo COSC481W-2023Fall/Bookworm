@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './EditProfile.css';
 import useAuth from './UserAuth';
 
 function EditProfile() {
-  const navigate = useNavigate();
-  const { username:username1 } = useAuth();
+  const { username: username1 } = useAuth();
 
   const [gender, setGender] = useState('');
   const [occupation, setOccupation] = useState('');
@@ -13,7 +11,6 @@ function EditProfile() {
   const [description, setDescription] = useState('');
   const [username, setusername] = useState('');
   const [isSaved, setIsSaved] = useState(false);
-
 
   const handleSave = async () => {
     try {
@@ -43,7 +40,7 @@ function EditProfile() {
       if (response.ok) {
         setIsSaved(true);
         // navigate(`/profile/${username}`);
-        return alert('Edit profile sucessfully')
+        return alert('Edit profile sucessfully');
       } else {
         console.error('Failed to save profile data');
       }
