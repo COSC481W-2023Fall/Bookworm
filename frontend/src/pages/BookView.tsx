@@ -28,11 +28,6 @@ function BookView(): JSX.Element {
 
   const coverImageUrl = `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
 
-  const navigate = useNavigate();
-  const routeChange = () => {
-    navigate(`/book/${isbn}/reviews`);
-  };
-
   useEffect(() => {
     async function fetchBook() {
       const fetchedBook = await fetchBookByISBN(isbn!);
@@ -55,12 +50,13 @@ function BookView(): JSX.Element {
   };
 
   return (
-    <div>
+    <div className={styles.bookviewBox}>
       <Navbar auth={auth} username={username} handleSignout={handleSignout} />
       {book ? (
         <div className={styles.container}>
           <div className={styles.left}>
             <Image
+              preview={false}
               src={coverImageUrl}
               className={styles.image}
               width='300px'
@@ -103,22 +99,6 @@ function BookView(): JSX.Element {
               <p>Publisher: {book.publisher}</p>
               <p>Genres: {book.genres.join(', ')}</p>
             </div>
-            <ConfigProvider
-              theme={{
-                token: {
-                  colorPrimary: '#FEC80B'
-                }
-              }}
-            >
-              <Button
-                type='primary'
-                shape='round'
-                size='large'
-                onClick={routeChange}
-              >
-                See Reviews
-              </Button>
-            </ConfigProvider>
           </div>
           <div className={styles.right}>
             <Typography.Title style={{ marginTop: '0px' }}>
@@ -132,7 +112,10 @@ function BookView(): JSX.Element {
           </div>
         </div>
       ) : (
-        <Spin size='large' />
+        <Spin
+          size='large'
+          style={{ alignSelf: 'center', justifyContent: 'center' }}
+        />
       )}
     </div>
   );

@@ -64,11 +64,11 @@ export default function Reviews(): JSX.Element {
           <List.Item>
             <List.Item.Meta
               // TODO: Replace this with user's pfp
-              /*avatar={
+              /* avatar={
                 <Image
                   src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-S.jpg`}
                 />
-              }*/
+              } */
               title={`${review.username} @ ${review.created_at}`}
               description={review.content}
             />
