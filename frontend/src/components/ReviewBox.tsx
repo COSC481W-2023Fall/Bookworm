@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import { List, Typography, Avatar, Button, ConfigProvider, Flex } from 'antd';
@@ -28,7 +28,7 @@ export default function ReviewBox(): JSX.Element {
   const [reviewText, setReviewText] = useState('');
   const { auth, username } = useAuth();
   const [userReviewExists, setReviewExists] = useState(false);
-  const navigate = useNavigate();
+  const [renderToggle, setRenderToggle] = useState(false);
 
   useEffect(() => {
     async function fetchReviews() {
@@ -44,7 +44,7 @@ export default function ReviewBox(): JSX.Element {
     }
 
     fetchReviews();
-  }, [offset, limit, isbn, username]);
+  }, [offset, limit, isbn, username, renderToggle]);
 
   const handleReviewText = (event: { target: { value: string } }) => {
     setReviewText(event.target.value);
@@ -53,20 +53,20 @@ export default function ReviewBox(): JSX.Element {
   const handleReviewAddSubmit = async () => {
     await addReviewByISBN(isbn as string, reviewText).finally(() => {
       setReviewText('');
-      navigate(0);
+      setRenderToggle(!renderToggle);
     });
   };
 
   const handleReviewEditSubmit = async () => {
     await editReview(isbn as string, username, reviewText).finally(() => {
       setReviewText('');
-      navigate(0);
+      setRenderToggle(!renderToggle);
     });
   };
 
   const deleteButton = async () => {
     await deleteReview(isbn as string, username).finally(() => {
-      navigate(0);
+      setRenderToggle(!renderToggle);
     });
   };
 
@@ -149,7 +149,7 @@ export default function ReviewBox(): JSX.Element {
         }
       }}
     >
-      {addReviewComponent(auth, userReviewExists)}
+      {addReviewComponent()}
       <Typography.Title level={2}>Community Reviews</Typography.Title>
       <List
         pagination={{
