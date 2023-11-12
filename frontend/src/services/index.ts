@@ -113,7 +113,7 @@ export async function submitRegistrationData<T>(formData: T) {
  * The user information should not have to be passed to this function, as user information is passed
  * via cookies.
  * @param isbn The ISBN of the book to add the review to.
- * @param content The content of the review.
+ * @param rawContent The content of the review.
  */
 export async function addReviewByISBN(isbn: string, rawContent: string) {
   return axios.post(
@@ -130,17 +130,17 @@ export async function addReviewByISBN(isbn: string, rawContent: string) {
  * return an HTTP 404 response.
  * @param isbn The ISBN of the book to edit the review on.
  * @param username The username who's review to edit.
- * @param content The new text content to set for the user's review.
+ * @param rawContent The new text content to set for the user's review.
  */
 export async function editReview(
   isbn: string,
   username: string,
-  content: string
+  rawContent: string
 ) {
   // TODO: Ideally this would just use the username from the cookies for the route
   return axios.put(
     `${BASE_URL}/books/${isbn}/reviews/${username}`,
-    { content },
+    { rawContent },
     { withCredentials: true }
   );
 }
