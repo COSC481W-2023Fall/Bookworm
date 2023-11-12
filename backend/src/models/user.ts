@@ -113,3 +113,11 @@ export const verifyJwtToken = (token: string, secret: string) => {
     return null;
   }
 };
+
+export const getUserEmail = async (username: string) => {
+  const user = await User.findOne({ username });
+  if (user) {
+    return user.email;
+  }
+  return null;
+};

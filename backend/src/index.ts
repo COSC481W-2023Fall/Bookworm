@@ -7,6 +7,7 @@ import databaseConnection from './databaseConnection';
 import ProfileModel from './models/editProfile';
 import {
   authenticateUser,
+  getUserEmail,
   registerUser,
   resetPassword,
   verifyJwtToken
@@ -127,6 +128,36 @@ app.post('/api/reset-password', async (req, res) => {
   }
 });
 
+// get user email
+app.get('/api/get-user-email', async (req, res) => {
+  const { token } = req.cookies;
+  const isLogin = verifyJwtToken(token, 'bookwormctrlcsbookwormctrlcs');
+  if (isLogin) {
+    const email = await getUserEmail(isLogin);
+    if (email) {
+      return res.json({ success: true, email });
+    }
+  }
+  return res.json({ success: false, message: 'error' });
+});
+
+// // get user email
+// app.get('/api/get-user-public-informaiton', async (req, res) => {
+//   try {
+//     const { token } = req.cookies;
+//     const isLogin = verifyJwtToken(token, 'bookwormctrlcsbookwormctrlcs');
+//     const profileData = await ProfileModel.findOne({ isLogin });
+//     if (!profileData) {
+//       return res.status(404).send('Profile not found.');
+//     }
+//     res.status(200).json(profileData);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send('Internal Server Error');
+//   }
+//   return res.status(200);
+// });
+
 // API routes for books
 app.get('/api/ping', (_, res) => {
   res.status(200).send('Pong!');
@@ -196,11 +227,12 @@ app.post('/api/saveProfileData', async (req, res) => {
 app.get('/api/getProfileData/:username', async (req, res) => {
   try {
     const { username } = req.params;
+    console.log(username);
     const profileData = await ProfileModel.findOne({ username });
+    console.log(profileData);
     if (!profileData) {
       return res.status(404).send('Profile not found.');
     }
-
     res.status(200).json(profileData);
   } catch (error) {
     console.error(error);
