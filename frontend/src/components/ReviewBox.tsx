@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import { List, Typography, Avatar, Button, ConfigProvider, Flex } from 'antd';
@@ -28,6 +28,7 @@ export default function ReviewBox(): JSX.Element {
   const [reviewText, setReviewText] = useState('');
   const { auth, username } = useAuth();
   const [userReviewExists, setReviewExists] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchReviews() {
@@ -49,34 +50,35 @@ export default function ReviewBox(): JSX.Element {
     setReviewText(event.target.value);
   };
 
-  const handleReviewAddSubmit = () => {
-    addReviewByISBN(isbn as string, reviewText);
-    setReviewText('');
-    window.location.reload();
+  const handleReviewAddSubmit = async () => {
+    await addReviewByISBN(isbn as string, reviewText).finally(() => {
+      setReviewText('');
+      navigate(0);
+    });
   };
 
-  const handleReviewEditSubmit = () => {
-    editReview(isbn as string, username, reviewText);
-    setReviewText('');
-    window.location.reload();
+  const handleReviewEditSubmit = async () => {
+    await editReview(isbn as string, username, reviewText).finally(() => {
+      setReviewText('');
+      navigate(0);
+    });
   };
 
-  const deleteButton = () => {
-    deleteReview(isbn as string, username);
-    window.location.reload();
+  const deleteButton = async () => {
+    await deleteReview(isbn as string, username).finally(() => {
+      navigate(0);
+    });
   };
 
-  const addReviewComponent = (auth: boolean, userReviewExists: boolean) => {
+  const addReviewComponent = () => {
     if (auth && userReviewExists) {
       return (
         <div className={styles.addReviewContainer}>
           <Typography.Title level={2}>Edit Review: </Typography.Title>
           <TextArea
             placeholder='Edit your own review...'
-            style={{ minHeight: 200, resize: 'none' }}
+            style={{ height: 200, resize: 'none' }}
             onChange={handleReviewText}
-            maxLength={2000}
-            showCount
             value={reviewText}
           />
           <div className={styles.buttonBox}>
@@ -107,10 +109,8 @@ export default function ReviewBox(): JSX.Element {
           <Typography.Title level={2}>Add Review: </Typography.Title>
           <TextArea
             placeholder='Add your own review...'
-            style={{ minHeight: 200, resize: 'none' }}
+            style={{ height: 200, resize: 'none' }}
             onChange={handleReviewText}
-            maxLength={2000}
-            showCount
             value={reviewText}
           />
           <div className={styles.buttonBox}>
@@ -132,7 +132,7 @@ export default function ReviewBox(): JSX.Element {
         <Typography.Title level={2}>Add Review: </Typography.Title>
         <TextArea
           placeholder='Sign-in to add your own review...'
-          style={{ minHeight: 200, resize: 'none' }}
+          style={{ height: 200, resize: 'none' }}
           onChange={handleReviewText}
           value={reviewText}
           disabled
