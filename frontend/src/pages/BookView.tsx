@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Button, ConfigProvider, Image, Rate, Spin, Typography } from 'antd';
+import { useParams } from 'react-router-dom';
+import { Image, Rate, Spin, Typography } from 'antd';
 import { IBook, fetchBookByISBN } from '../services';
 import Navbar from '../components/Navbar';
 import useAuth from './UserAuth';
