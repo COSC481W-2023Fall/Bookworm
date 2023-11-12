@@ -137,7 +137,8 @@ export async function checkReviewAuthor(
 }
 
 /**
- * Middleware to ensure a non-empty 'content' string is provided in the request body.
+ * Middleware to ensure a non-empty 'content' string with a max length of 2000 characters
+ * is provided in the request body.
  *
  * This is mainly used for book review endpoints.
  *
@@ -149,7 +150,7 @@ export async function checkReviewAuthor(
  * @param res The outbound express response.
  * @param next The express 'next' middleware callback.
  */
-export async function ensureContent(
+export async function checkContent(
   req: Request,
   res: Response,
   next: NextFunction
@@ -160,8 +161,12 @@ export async function ensureContent(
 
   const content = rawContent as string;
 
-  if (content.length === 0)
-    return res.status(400).send("'content' must be a non-empty string");
+  if (content.length === 0 || content.length > 2000)
+    return res
+      .status(400)
+      .send(
+        "'content' must be a non-empty string with a maximum length of 2000 characters"
+      );
 
   res.locals.content = content;
 

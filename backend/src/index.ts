@@ -23,7 +23,7 @@ import {
   checkBookISBN,
   checkReviewAuthor,
   checkReviewUsername,
-  ensureContent,
+  checkContent,
   requireLogin
 } from './middleware';
 
@@ -174,7 +174,7 @@ app
   .get(async (_, res) => res.status(200).json(res.locals.book.reviews))
 
   // create a new review
-  .post(requireLogin, ensureContent, async (_, res) => {
+  .post(requireLogin, checkContent, async (_, res) => {
     const content = res.locals.content as string;
     const user = res.locals.user as IUser;
     const book = res.locals.book as Ibook;
@@ -216,7 +216,7 @@ app
   .get(async (_, res) => res.status(200).json(res.locals.review))
 
   // edit an existing review
-  .put(checkReviewAuthor, ensureContent, async (_, res) => {
+  .put(checkReviewAuthor, checkContent, async (_, res) => {
     const book = res.locals.book as Ibook;
     const currentReview = res.locals.review as IReview;
 
