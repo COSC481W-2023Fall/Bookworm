@@ -80,7 +80,7 @@ function BookView(): JSX.Element {
                     { value: 0, label: 'No Shelf' },
                     { value: 1, label: 'Reading' },
                     { value: 2, label: 'Completed' },
-                    { value: 3, label: 'dropped' },
+                    { value: 3, label: 'Dropped' },
                     { value: 4, label: 'Plan to read' }
                   ]}
                 />
