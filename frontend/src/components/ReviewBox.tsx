@@ -73,8 +73,10 @@ export default function ReviewBox(): JSX.Element {
           <Typography.Title level={2}>Edit Review: </Typography.Title>
           <TextArea
             placeholder='Edit your own review...'
-            style={{ height: 200, resize: 'none' }}
+            style={{ minHeight: 200, resize: 'none' }}
             onChange={handleReviewText}
+            maxLength={2000}
+            showCount
             value={reviewText}
           />
           <div className={styles.buttonBox}>
@@ -105,8 +107,10 @@ export default function ReviewBox(): JSX.Element {
           <Typography.Title level={2}>Add Review: </Typography.Title>
           <TextArea
             placeholder='Add your own review...'
-            style={{ height: 200, resize: 'none' }}
+            style={{ minHeight: 200, resize: 'none' }}
             onChange={handleReviewText}
+            maxLength={2000}
+            showCount
             value={reviewText}
           />
           <div className={styles.buttonBox}>
@@ -128,7 +132,7 @@ export default function ReviewBox(): JSX.Element {
         <Typography.Title level={2}>Add Review: </Typography.Title>
         <TextArea
           placeholder='Sign-in to add your own review...'
-          style={{ height: 200, resize: 'none' }}
+          style={{ minHeight: 200, resize: 'none' }}
           onChange={handleReviewText}
           value={reviewText}
           disabled
