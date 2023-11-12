@@ -32,3 +32,9 @@
 #ratingStars {
   min-width: 200px;
 }
+.shelfSelector {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 0;
+  margin-right: auto;
+}

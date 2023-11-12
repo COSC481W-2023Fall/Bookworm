@@ -1,11 +1,12 @@
-import { Schema, model, connect, Date } from 'mongoose';
+import { Schema, model, Date, now, connect } from 'mongoose';
 import dotenv from 'dotenv';
 
 dotenv.config();
 const DATABASE_URL = process.env.DATABASE_URL ?? '';
-
-// TODO: change capitalization in the db
-interface Ibook {
+/**
+ * Represents a book in the database.
+ */
+export interface Ibook {
   title: string;
   author: string;
   isbn: string;
@@ -15,7 +16,22 @@ interface Ibook {
   genres: string[];
   description: string | null;
   average_rating: number;
+  reviews: IReview[];
 }
+
+export interface IReview {
+  _id: string;
+  username: string;
+  content: string;
+  created_at: Date;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const reviewSchema = new Schema<IReview>({
+  username: { type: String, required: true },
+  content: { type: String, required: true },
+  created_at: { type: Date, required: true, default: now }
+});
 
 const bookSchema = new Schema<Ibook>({
   title: { type: String, required: true },
@@ -24,9 +40,7 @@ const bookSchema = new Schema<Ibook>({
   page_count: { type: Number, required: true },
   publication_date: { type: Date, required: true },
   publisher: { type: String, required: true },
-  genres: { type: [String], required: true },
-  description: { type: String || null, required: true },
-  average_rating: { type: Number, required: true }
+  genres: { type: [String], required: true }
 });
 
 /**
@@ -37,15 +51,11 @@ export const Book = model<Ibook>('Book', bookSchema);
 /**
  * Fetches a single book by ISBN.
  *
- * For fetching books by ISBN13, use {@link fetchBookByISBN13} instead
- *
  * Returns null if a book with the provided ISBN is not found.
  * @param isbn The ISBN of the book to fetch from the database.
  * @returns A promise containing a single, potentially-null book document.
  */
 export async function fetchBookByISBN(isbn: string): Promise<Ibook | null> {
-  await connect(DATABASE_URL);
-
   // TODO: Cache recently fetched books?
   const res = await Book.findOne({ isbn });
 
@@ -72,8 +82,6 @@ export async function fetchAllBooks(
 ): Promise<Ibook[] | null> {
   if (offset < 0 || limit <= 0) return null;
 
-  await connect(DATABASE_URL);
-
   // TODO: Using `.skip` is not an efficient way to paginate queries at scale
   // Ref: https://stackoverflow.com/questions/5539955/how-to-paginate-with-mongoose-in-node-js
   const res = await Book.find()
@@ -89,8 +97,6 @@ export async function fetchAllBooks(
  * @returns A promise containing the total number of books.
  */
 export async function fetchBookCount() {
-  await connect(DATABASE_URL);
-
   const count = await Book.find().estimatedDocumentCount();
 
   return count;
