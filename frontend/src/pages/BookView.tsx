@@ -1,13 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  Image,
-  Rate,
-  Spin,
-  Typography,
-  Select,
-  Form
-} from 'antd';
+import { Image, Rate, Spin, Typography, Select, Form } from 'antd';
 import {
   IBook,
   fetchBookByISBN,

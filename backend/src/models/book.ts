@@ -1,8 +1,5 @@
 import { Schema, model, Date, now } from 'mongoose';
-import dotenv from 'dotenv';
 
-dotenv.config();
-const DATABASE_URL = process.env.DATABASE_URL ?? '';
 /**
  * Represents a book in the database.
  */
