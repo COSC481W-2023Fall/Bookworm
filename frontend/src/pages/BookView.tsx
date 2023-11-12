@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Image, Rate, Spin, Typography } from 'antd';
 import {
-  Button,
-  ConfigProvider,
   Image,
   Rate,
   Spin,
