@@ -14,9 +14,9 @@ export interface Ibook {
   publication_date: Date;
   publisher: string;
   genres: string[];
+  reviews: IReview[];
   description: string | null;
   average_rating: number;
-  reviews: IReview[];
 }
 
 export interface IReview {
@@ -40,7 +40,10 @@ const bookSchema = new Schema<Ibook>({
   page_count: { type: Number, required: true },
   publication_date: { type: Date, required: true },
   publisher: { type: String, required: true },
-  genres: { type: [String], required: true }
+  genres: { type: [String], required: true },
+  reviews: [reviewSchema],
+  description: { type: String || null, required: true },
+  average_rating: { type: Number, required: true }
 });
 
 /**
