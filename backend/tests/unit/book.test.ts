@@ -5,12 +5,6 @@ import {
   fetchBookByISBN,
   searchBooks
 } from '../../src/models/book';
-import connectToDb from '../../src/databaseConnection';
-
-beforeAll((done) => {
-  connectToDb();
-  done();
-});
 
 import connectToDb from '../../src/databaseConnection';
 
