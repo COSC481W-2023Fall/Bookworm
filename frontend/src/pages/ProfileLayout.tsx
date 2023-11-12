@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import UserAvatar from '../components/Avatar';
 import Navbar from '../components/Navbar';
 import EditProfile from './EditProfile';
+import Profile from './Profile';
 import SetPassword from './SetPassword';
 import useAuth from './UserAuth';
-// import ShowProfile from './Profile';
 
 const { Content, Sider } = Layout;
 
@@ -39,10 +39,12 @@ function ProfileLayout(): JSX.Element {
   const componentsSwtich = (key: String) => {
     switch (key) {
       case '1':
-        return <EditProfile />;
+        return <Profile />;
       case '2':
-        return <SetPassword />;
+        return <EditProfile />;
       case '3':
+        return <SetPassword />;
+      case '4':
         navigate('/bookshelf'); // Redirect to the sign-in page
         break;
       // case '4':
@@ -55,16 +57,20 @@ function ProfileLayout(): JSX.Element {
   // Menu items configuration for rendering a menu.Each item has a label and a key.
   const items: MenuProps['items'] = [
     {
-      label: 'Edit Profile',
+      label: 'Profile',
       key: '1'
     },
     {
-      label: 'Set Password',
+      label: 'Edit Profile',
       key: '2'
     },
     {
-      label: 'Bookshelf',
+      label: 'Set Password',
       key: '3'
+    },
+    {
+      label: 'Bookshelf',
+      key: '4'
     }
     // {
     //     label: "Profile",

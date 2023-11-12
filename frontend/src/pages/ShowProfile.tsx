@@ -1,47 +1,6 @@
-// import { Layout } from 'antd';
-// import UserAvatar from '../components/Avatar.tsx';
-// import Navbar from '../components/Navbar';
-// import Profile from './Profile';
-// import useAuth from './UserAuth';
-import { useState, useEffect } from 'react';
-import './Profile.css';
+import { Descriptions, DescriptionsProps } from 'antd';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
-// const { Content, Sider} = Layout;
-
-// function ProfileLayout(): JSX.Element {
-
-// `auth`: Represents the authentication status.
-// `username`: Represents the username associated with the authenticated user.
-// `handleSignout`: Function to handle the signout action.
-//     const { auth, username, handleSignout } = useAuth();
-
-//     return (
-//     <Layout style= {{background:'none', padding:'0 50px'}}>
-//         <Navbar auth={auth} username={username} handleSignout={handleSignout} />
-//         <Layout style = {{background:"none", padding: '10px 0'}}>
-//             <Sider style = {{background:"none"}} >
-//                 <UserAvatar />
-//             </Sider>
-//             <Content
-//                 style={{
-//                 margin: '0 16px',
-//                 padding: '0',
-//                 minHeight:280,
-//                 background: 'none',
-//                 justifyContent: 'center',
-//                 textAlign: 'center'
-//                 }}
-//             >
-//                 <Profile />
-
-//             </Content>
-//         </Layout>
-//     </Layout>
-//     );
-// }
-
-// export default ProfileLayout;
 
 interface ProfileData {
   gender: string;
@@ -79,28 +38,57 @@ function ShowProfile() {
     fetchProfileData();
   }, [username]);
 
+  const items: DescriptionsProps['items'] = [
+    {
+      key: '1',
+      label: 'Gender',
+      children: profileData?.gender
+    },
+    {
+      key: '2',
+      label: 'Occupattion',
+      children: profileData?.occupation
+    },
+    {
+      key: '3',
+      label: 'Favorite Book',
+      children: profileData?.favoriteBook
+    },
+    {
+      key: '4',
+      label: 'About me',
+      children: profileData?.description
+    }
+  ];
+
   return (
     <div className='profile-container'>
-      <h1>Bookwormer Profile</h1>
+      <h1>{username}</h1>
       {profileData ? (
-        <div className='profile-content'>
-          <p>
-            <strong>Gender:</strong> {profileData.gender}
-          </p>
-          <p>
-            <strong>Occupation:</strong> {profileData.occupation}
-          </p>
-          <p>
-            <strong>Favorite Book:</strong> {profileData.favoriteBook}
-          </p>
-          <p>
-            <strong>About me:</strong> {profileData.description}
-          </p>
-          <p>
-            <strong>Username:</strong> {profileData.username}
-          </p>
-        </div>
+        <Descriptions
+          column={1}
+          items={items}
+          contentStyle={{ font: '1.3em inter', textAlign: 'left' }}
+          labelStyle={{ color: 'black', font: 'bold 1.3em inter' }}
+        />
       ) : (
+        // <div className='profile-content'>
+        //   <p>
+        //     <strong>Gender:</strong> {profileData.gender}
+        //   </p>
+        //   <p>
+        //     <strong>Occupation:</strong> {profileData.occupation}
+        //   </p>
+        //   <p>
+        //     <strong>Favorite Book:</strong> {profileData.favoriteBook}
+        //   </p>
+        //   <p>
+        //     <strong>About me:</strong> {profileData.description}
+        //   </p>
+        //   <p>
+        //     <strong>Username:</strong> {profileData.username}
+        //   </p>
+        // </div>
         <p>Loading profile data...</p>
       )}
     </div>

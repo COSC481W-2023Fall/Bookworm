@@ -32,10 +32,13 @@ const SubmitButton = ({ form }: { form: FormInstance }) => {
 function SetPassword() {
   const [form] = Form.useForm();
 
-  const handlerFinish = (val: { password: string; password2: string }) => {
+  const handlerFinish = async (val: {
+    password: string;
+    password2: string;
+  }) => {
     const { password } = val;
-    const data = fetchResetPassword(password);
-    console.log(data);
+    const result = await fetchResetPassword(password);
+    alert(result.data);
   };
 
   return (

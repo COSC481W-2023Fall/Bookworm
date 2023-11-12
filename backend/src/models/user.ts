@@ -271,3 +271,10 @@ export const removeBookFromShelf = async (
     res.status(400).json({ error: 'invalid bookshelf' });
   }
 };
+export const getUserEmail = async (username: string) => {
+  const user = await User.findOne({ username });
+  if (user) {
+    return user.email;
+  }
+  return null;
+};
