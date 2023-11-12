@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './EditProfile.css';
+import useAuth from './UserAuth';
 
 function EditProfile() {
   const navigate = useNavigate();
+  const { username:username1 } = useAuth();
 
   const [gender, setGender] = useState('');
   const [occupation, setOccupation] = useState('');
@@ -12,11 +14,14 @@ function EditProfile() {
   const [username, setusername] = useState('');
   const [isSaved, setIsSaved] = useState(false);
 
+
   const handleSave = async () => {
     try {
       if (username.trim() === '') {
-        window.alert('Username cannot be empty');
-        return;
+        return alert('Username cannot be empty');
+      }
+      if (username.trim() !== username1) {
+        return alert('Username is not correct');
       }
       const response = await fetch(
         'http://localhost:3001/api/saveProfileData',
@@ -37,7 +42,8 @@ function EditProfile() {
 
       if (response.ok) {
         setIsSaved(true);
-        navigate(`/profile/${username}`);
+        // navigate(`/profile/${username}`);
+        return alert('Edit profile sucessfully')
       } else {
         console.error('Failed to save profile data');
       }
