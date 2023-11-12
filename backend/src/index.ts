@@ -230,9 +230,9 @@ app
     try {
       await Book.findOneAndUpdate({ isbn: book.isbn }, { reviews: newReviews });
 
-      return res.status(204);
+      return res.status(204).send();
     } catch (error) {
-      return res.status(500);
+      return res.status(500).send(error);
     }
   })
 
@@ -248,9 +248,9 @@ app
       );
       await Book.findOneAndUpdate({ isbn: book.isbn }, { reviews: newReviews });
 
-      return res.status(204);
+      return res.status(204).send();
     } catch (error) {
-      return res.status(500);
+      return res.status(500).send(error);
     }
   });
 
