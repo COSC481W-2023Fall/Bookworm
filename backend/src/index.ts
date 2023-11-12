@@ -6,7 +6,9 @@ import {
   IUser,
   authenticateUser,
   handleTokenVerification,
-  registerUser
+  registerUser,
+  addBooktoShelf,
+  fetchBookShelf
 } from './models/user';
 
 import {
@@ -21,6 +23,7 @@ import {
 import connectToDb from './databaseConnection';
 import {
   checkBookISBN,
+  checkIfBookInShelf,
   checkReviewAuthor,
   checkReviewUsername,
   checkContent,

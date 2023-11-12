@@ -12,6 +12,13 @@ beforeAll((done) => {
   done();
 });
 
+import connectToDb from '../../src/databaseConnection';
+
+beforeAll((done) => {
+  connectToDb();
+  done();
+});
+
 describe('Fetch a single book', () => {
   test('Fetch book with ISBN 0618346252', async () => {
     const book = await fetchBookByISBN('0618346252');

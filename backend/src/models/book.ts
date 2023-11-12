@@ -1,5 +1,8 @@
-import { Schema, model, Date, now } from 'mongoose';
+import { Schema, model, Date, now, connect } from 'mongoose';
+import dotenv from 'dotenv';
 
+dotenv.config();
+const DATABASE_URL = process.env.DATABASE_URL ?? '';
 /**
  * Represents a book in the database.
  */
@@ -23,6 +26,7 @@ export interface IReview {
   created_at: Date;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const reviewSchema = new Schema<IReview>({
   username: { type: String, required: true },
   content: { type: String, required: true },

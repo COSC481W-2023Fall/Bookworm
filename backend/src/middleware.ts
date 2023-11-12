@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { IReview, Ibook, fetchBookByISBN } from './models/book';
-import { DecodedToken, IUser, User } from './models/user';
+import { DecodedToken, IUser, User, removeBookFromShelf } from './models/user';
 
 /**
  * Middleware to check that the requested ISBN references a valid book in the database.
@@ -170,5 +170,28 @@ export async function checkContent(
 
   res.locals.content = content;
 
+  return next();
+}
+
+export async function checkIfBookInShelf(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const isbn = req.query.isbn as string;
+  const user = res.locals.user as IUser;
+
+  if (user.reading_bookshelf.includes(isbn)) {
+    removeBookFromShelf(isbn, '1', user.username, res);
+  }
+  if (user.completed_bookshelf.includes(isbn)) {
+    removeBookFromShelf(isbn, '2', user.username, res);
+  }
+  if (user.dropped_bookshelf.includes(isbn)) {
+    removeBookFromShelf(isbn, '3', user.username, res);
+  }
+  if (user.plan_to_bookshelf.includes(isbn)) {
+    removeBookFromShelf(isbn, '4', user.username, res);
+  }
   return next();
 }

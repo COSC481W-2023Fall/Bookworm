@@ -1,7 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Image, Rate, Spin, Typography } from 'antd';
-import { IBook, fetchBookByISBN } from '../services';
+import {
+  Button,
+  ConfigProvider,
+  Image,
+  Rate,
+  Spin,
+  Typography,
+  Select,
+  Form
+} from 'antd';
+import {
+  IBook,
+  fetchBookByISBN,
+  addBookToShelf,
+  removeBookFromShelf
+} from '../services';
 import Navbar from '../components/Navbar';
 import useAuth from './UserAuth';
 import styles from './BookView.module.css';
@@ -22,6 +37,18 @@ function BookView(): JSX.Element {
 
     fetchBook();
   }, [isbn]);
+
+  const handleChangeShelfSelector = (value: number) => {
+    //  TODO: add book to shelf on change
+    if (book != null) {
+      if (value > 0) {
+        const shelfID = value;
+        return addBookToShelf(book.isbn, shelfID);
+      }
+      if (value === 0) return removeBookFromShelf(book.isbn);
+    }
+    return false;
+  };
 
   return (
     <div className={styles.bookviewBox}>
@@ -46,6 +73,21 @@ function BookView(): JSX.Element {
               <label htmlFor={styles.ratingStars} className={styles.rating}>
                 {book.average_rating}
               </label>
+            </div>
+            <div className={styles.shelfSelector}>
+              <Form.Item label='Add to bookshelf:'>
+                <Select
+                  placeholder='select bookshelf'
+                  onChange={handleChangeShelfSelector}
+                  options={[
+                    { value: 0, label: 'No Shelf' },
+                    { value: 1, label: 'Reading' },
+                    { value: 2, label: 'Completed' },
+                    { value: 3, label: 'Dropped' },
+                    { value: 4, label: 'Plan to read' }
+                  ]}
+                />
+              </Form.Item>
             </div>
             <div>
               <p>Author: {book.author}</p>
