@@ -1,6 +1,6 @@
 import './SigninC.css';
-import SigninForm from './SignInForm';
 import { Typography } from 'antd';
+import SigninForm from './SignInForm';
 
 function SignIn(): JSX.Element {
   return (

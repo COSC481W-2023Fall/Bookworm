@@ -1,11 +1,9 @@
-import { Schema, model, connect, Date } from 'mongoose';
-import dotenv from 'dotenv';
+import { Schema, model, Date, now } from 'mongoose';
 
-dotenv.config();
-const DATABASE_URL = process.env.DATABASE_URL ?? '';
-
-// TODO: change capitalization in the db
-interface Ibook {
+/**
+ * Represents a book in the database.
+ */
+export interface Ibook {
   title: string;
   author: string;
   isbn: string;
@@ -13,7 +11,24 @@ interface Ibook {
   publication_date: Date;
   publisher: string;
   genres: string[];
+  reviews: IReview[];
+  description: string | null;
+  average_rating: number;
 }
+
+export interface IReview {
+  _id: string;
+  username: string;
+  content: string;
+  created_at: Date;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const reviewSchema = new Schema<IReview>({
+  username: { type: String, required: true },
+  content: { type: String, required: true },
+  created_at: { type: Date, required: true, default: now }
+});
 
 const bookSchema = new Schema<Ibook>({
   title: { type: String, required: true },
@@ -22,7 +37,10 @@ const bookSchema = new Schema<Ibook>({
   page_count: { type: Number, required: true },
   publication_date: { type: Date, required: true },
   publisher: { type: String, required: true },
-  genres: { type: [String], required: true }
+  genres: { type: [String], required: true },
+  reviews: [reviewSchema],
+  description: { type: String || null, required: true },
+  average_rating: { type: Number, required: true }
 });
 
 /**
@@ -33,15 +51,11 @@ export const Book = model<Ibook>('Book', bookSchema);
 /**
  * Fetches a single book by ISBN.
  *
- * For fetching books by ISBN13, use {@link fetchBookByISBN13} instead
- *
  * Returns null if a book with the provided ISBN is not found.
  * @param isbn The ISBN of the book to fetch from the database.
  * @returns A promise containing a single, potentially-null book document.
  */
 export async function fetchBookByISBN(isbn: string): Promise<Ibook | null> {
-  await connect(DATABASE_URL);
-
   // TODO: Cache recently fetched books?
   const res = await Book.findOne({ isbn });
 
@@ -68,8 +82,6 @@ export async function fetchAllBooks(
 ): Promise<Ibook[] | null> {
   if (offset < 0 || limit <= 0) return null;
 
-  await connect(DATABASE_URL);
-
   // TODO: Using `.skip` is not an efficient way to paginate queries at scale
   // Ref: https://stackoverflow.com/questions/5539955/how-to-paginate-with-mongoose-in-node-js
   const res = await Book.find()
@@ -85,9 +97,95 @@ export async function fetchAllBooks(
  * @returns A promise containing the total number of books.
  */
 export async function fetchBookCount() {
-  await connect(DATABASE_URL);
-
   const count = await Book.find().estimatedDocumentCount();
 
   return count;
+}
+
+/**
+ * Searches the database on title, author, and isbn for matching records.
+ *
+ * Returns null for invalid parameters.
+ * @param query The string to match
+ * @param offset The number of entries to skip. Must not be negative.
+ * @param limit The number of entries to show on each page. Must be greater than 0.
+ * @returns An array of the matching books or null document.
+ */
+export async function searchBooks(
+  query: string,
+  fields: string,
+  offset: number,
+  limit: number
+): Promise<Ibook[] | null> {
+  if (offset < 0 || limit <= 0) return null;
+
+  const regQuery = new RegExp(query, 'i');
+
+  const searchFields = fields.split(',');
+
+  const safeFields = ['title', 'author', 'publisher', 'isbn', 'genres', ''];
+
+  if (!searchFields.every((elem) => safeFields.includes(elem))) {
+    return null;
+  }
+
+  let filter: { [key: string]: RegExp }[] = [
+    { title: regQuery },
+    { author: regQuery },
+    { isbn: regQuery },
+    { publisher: regQuery },
+    { genres: regQuery }
+  ];
+
+  if (searchFields[0] !== '') {
+    filter = searchFields.map((field) => ({ [field]: regQuery }));
+  }
+
+  const res = await Book.find({ $or: filter })
+    .sort({ _id: 1 })
+    .skip(offset)
+    .limit(limit);
+
+  return res;
+}
+
+/**
+ * Gets the total number of books that match a particular search query.
+ *
+ * @param query The string to match.
+ * @returns Promise containing the amount of matching books.
+ */
+export async function searchCount(
+  query: string,
+  fields: string
+): Promise<number | null> {
+  const regQuery = new RegExp(query, 'i');
+
+  const searchFields = fields.split(',');
+
+  const safeFields = ['title', 'author', 'publisher', 'isbn', 'genres', ''];
+
+  if (!searchFields.every((elem) => safeFields.includes(elem))) {
+    return null;
+  }
+
+  let filter: { [key: string]: RegExp }[] = [
+    { title: regQuery },
+    { author: regQuery },
+    { isbn: regQuery },
+    { publisher: regQuery },
+    { genres: regQuery }
+  ];
+
+  if (searchFields[0] !== '') {
+    filter = searchFields.map((field) => ({ [field]: regQuery }));
+  }
+
+  const res = await Book.find({
+    $or: filter
+  })
+    .sort({ _id: 1 })
+    .count();
+
+  return res;
 }

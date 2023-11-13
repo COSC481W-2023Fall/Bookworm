@@ -1,10 +1,13 @@
 import { afterAll, expect, test } from '@jest/globals';
 import databaseConnection from '../../src/databaseConnection';
+import connectToDb from '../../src/databaseConnection';
+
 import {
   authenticateUser,
   registerUser,
   resetPassword,
-  verifyJwtToken
+  verifyJwtToken,
+  fetchUserByUserName
 } from '../../src/models/user';
 
 // Connect to mongoDB
@@ -59,5 +62,37 @@ test('user sign in unsuccessfully', async () => {
 
 afterAll((done) => {
   databaseConnection.close();
+}
+// import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
+// import mongoose from 'mongoose';
+// import { fetchUserByUserName } from '../../src/models/user';
+
+// import connectToDb from '../../src/databaseConnection';
+
+beforeAll((done) => {
+  connectToDb();
+  done();
+});
+
+describe('Fetch a single user', () => {
+  test('Fetch user with username tfurey', async () => {
+    const book = await fetchUserByUserName('tfurey');
+
+    expect(book).not.toBeNull();
+  });
+
+  test('Return null on invalid ISBN values', async () => {
+    const empty = await fetchUserByUserName('');
+    const space = await fetchUserByUserName('     ');
+    const garbage = await fetchUserByUserName('1t5g5w436swethr');
+
+    expect(empty).toBeNull();
+    expect(space).toBeNull();
+    expect(garbage).toBeNull();
+  });
+});
+
+afterAll((done) => {
+  mongoose.connection.close();
   done();
 });

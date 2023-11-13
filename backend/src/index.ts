@@ -6,18 +6,41 @@ import jwt from 'jsonwebtoken';
 import databaseConnection from './databaseConnection';
 import ProfileModel from './models/editProfile';
 import {
+  IUser,
   authenticateUser,
   getUserEmail,
   registerUser,
   resetPassword,
-  verifyJwtToken
+  verifyJwtToken,
+  addBooktoShelf,
+  fetchBookShelf
 } from './models/user';
 
 // load our .env file
-import { fetchAllBooks, fetchBookByISBN, fetchBookCount } from './models/book';
+import {
+  Book,
+  IReview,
+  Ibook,
+  fetchAllBooks,
+  fetchBookCount,
+  searchBooks,
+  searchCount
+} from './models/book';
+import connectToDb from './databaseConnection';
+import {
+  checkBookISBN,
+  checkIfBookInShelf,
+  checkReviewAuthor,
+  checkReviewUsername,
+  checkContent,
+  requireLogin
+} from './middleware';
 
+// load our .env file
 dotenv.config();
 const PORT = process.env.PORT || 3001;
+
+connectToDb();
 
 const app = express();
 app.use(express.json());
@@ -33,14 +56,6 @@ app.use(
     credentials: true
   })
 );
-
-// Connect to mongoDB
-databaseConnection.on('error', (error) => {
-  console.error('MongoDB connection error:', error);
-});
-databaseConnection.once('open', () => {
-  console.log('Connected to MongoDB');
-});
 
 // Handle registration form submission
 app.post('/api/register', async (req: Request, res: Response) => {
@@ -195,22 +210,128 @@ app.get('/api/books/total', async (_, res: Response) => {
   }
 });
 
-app.get(
-  '/api/books/:isbn',
-  async (req: Request<{ isbn: string }, object, object>, res: Response) => {
-    const { isbn } = req.params;
+app.get('/api/books/:isbn', checkBookISBN, async (_: Request, res: Response) =>
+  res.status(200).json(res.locals.book)
+);
+
+app
+  .route('/api/books/:isbn/reviews')
+  .all(checkBookISBN)
+
+  // return all reviews
+  .get(async (_, res) => res.status(200).json(res.locals.book.reviews))
+
+  // create a new review
+  .post(requireLogin, checkContent, async (_, res) => {
+    const content = res.locals.content as string;
+    const user = res.locals.user as IUser;
+    const book = res.locals.book as Ibook;
+
+    // prevent users from submitting more than one review
+    const reviewExists =
+      book.reviews.filter((review) => review.username === user.username)
+        .length !== 0;
+    if (reviewExists)
+      return res.status(403).send('Only one review allowed per user');
+
+    const reviewData = {
+      content,
+      username: user.username
+    };
 
     try {
-      const book = await fetchBookByISBN(isbn);
-      if (!book) {
-        return res.status(404).send(`No book found with ISBN ${isbn}`);
-      }
-      return res.status(200).json(book);
+      const updated = await Book.findOneAndUpdate(
+        { isbn: book.isbn },
+        { $push: { reviews: reviewData } },
+        { upsert: true }
+      );
+      if (!updated)
+        return res.status(500).send("We couldn't update the requested book");
+
+      return res.status(200).json(reviewData);
     } catch (error) {
-      return res.status(500).json({ error: 'Server error' });
+      return res.status(500).send(error);
     }
-  }
-);
+  });
+
+app
+  .route('/api/books/:isbn/reviews/:username')
+  .all(checkBookISBN)
+  .all(checkReviewUsername)
+  .all(requireLogin)
+
+  // return a single review by username
+  .get(async (_, res) => res.status(200).json(res.locals.review))
+
+  // edit an existing review
+  .put(checkReviewAuthor, checkContent, async (_, res) => {
+    const book = res.locals.book as Ibook;
+    const currentReview = res.locals.review as IReview;
+
+    currentReview.content = res.locals.content;
+
+    const newReviews = book.reviews.filter(
+      (r) => r.username !== currentReview.username
+    );
+    newReviews.push(currentReview);
+
+    try {
+      await Book.findOneAndUpdate({ isbn: book.isbn }, { reviews: newReviews });
+
+      return res.status(204).send();
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  })
+
+  // delete an existing reivew
+  .delete(checkReviewAuthor, async (_, res) => {
+    const book = res.locals.book as Ibook;
+    const review = res.locals.review as IReview;
+
+    // TODO: Surely there's a cleaner way of doing this?
+    try {
+      const newReviews = book.reviews.filter(
+        (r) => r.username !== review.username
+      );
+      await Book.findOneAndUpdate({ isbn: book.isbn }, { reviews: newReviews });
+
+      return res.status(204).send();
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  });
+
+app
+  .route('/api/bookshelf')
+  .all(requireLogin)
+  // add book to book shelf
+  .put(checkIfBookInShelf, async (req: Request, res: Response) => {
+    try {
+      const isbn = req.query.isbn as string;
+      const user = res.locals.user as IUser;
+      const shelfid = req.query.shelfid as string;
+      addBooktoShelf(isbn, shelfid, user.username, res);
+      res.status(201);
+      return res.end();
+    } catch (error) {
+      return res.status(500);
+    }
+  })
+  //  remove book from all bookshelves
+  .delete(checkIfBookInShelf, async (_, res) => res.status(200))
+
+  //  return a bookshelf
+  .get(async (req: Request, res: Response) => {
+    // const shelfid = req.query.shelfid as string;
+    const user = res.locals.user as IUser;
+    try {
+      fetchBookShelf(user.username, res);
+      return res.status(200);
+    } catch (error) {
+      return res.status(500);
+    }
+  });
 
 // Profile data route
 app.post('/api/saveProfileData', async (req, res) => {
@@ -243,5 +364,6 @@ app.get('/api/getProfileData/:username', async (req, res) => {
 
 // Start the server
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`Listening on port ${PORT}`);
 });

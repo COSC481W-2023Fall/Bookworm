@@ -10,6 +10,12 @@ const BASE_URL = import.meta.env.DEV
   ? `http://localhost:${PORT}/api`
   : 'https://capstone.caseycodes.dev/api';
 
+export type IReview = {
+  username: string;
+  content: string;
+  created_at: Date;
+};
+
 // TODO: Duplicate code
 export type IBook = {
   average_rating: number;
@@ -20,7 +26,14 @@ export type IBook = {
   publication_date: Date;
   publisher: string;
   genres: string[];
+  reviews: IReview[];
   description: string | null;
+};
+export type IUser = {
+  reading_bookshelf: string[];
+  completed_bookshelf: string[];
+  dropped_bookshelf: string[];
+  plan_to_bookshelf: string[];
 };
 
 export async function fetchBookByISBN(isbn: string) {
@@ -121,5 +134,68 @@ export async function fetchUserEmail() {
 }
 
 export async function fetchProfile(username: string) {
-  return axios.get(`${BASE_URL}/getProfileData/${username}`);
+  return axios.get(`${BASE_URL}/getProfileData/${username}`);}
+ /* Adds a new review to the book with the given ISBN.
+ *
+ * The user information should not have to be passed to this function, as user information is passed
+ * via cookies.
+ * @param isbn The ISBN of the book to add the review to.
+ * @param rawContent The content of the review.
+ */
+export async function addReviewByISBN(isbn: string, rawContent: string) {
+  return axios.post(
+    `${BASE_URL}/books/${isbn}/reviews`,
+    { rawContent },
+    { withCredentials: true }
+  );
+}
+
+/**
+ * Edits the text content of a user's review on a particular book by the given ISBN.
+ *
+ * If the provided username has no review associated with the given book, this will
+ * return an HTTP 404 response.
+ * @param isbn The ISBN of the book to edit the review on.
+ * @param username The username who's review to edit.
+ * @param rawContent The new text content to set for the user's review.
+ */
+export async function editReview(
+  isbn: string,
+  username: string,
+  rawContent: string
+) {
+  // TODO: Ideally this would just use the username from the cookies for the route
+  return axios.put(
+    `${BASE_URL}/books/${isbn}/reviews/${username}`,
+    { rawContent },
+    { withCredentials: true }
+  );
+}
+
+/**
+ * Deletes a review authored by a particular username from a particular book of the given ISBN.
+ *
+ * This function is idempotent; if the book isbn is valid, but the provided
+ * author has no review on the book, this exits silently.
+ * @param isbn The ISBN of the book to delete the review from.
+ * @param username The username who's review to delete. In most cases,
+ * this is just the logged-in user's username.
+ */
+export async function deleteReview(isbn: string, username: string) {
+  // TODO: Ideally this would just use the username from the cookies for the route
+  return axios.delete(`${BASE_URL}/books/${isbn}/reviews/${username}`, {
+    withCredentials: true
+  });
+}
+
+export async function addBookToShelf(isbn: string, shelfID: number) {
+  return axios.put(`${BASE_URL}/bookshelf/?isbn=${isbn}&shelfid=${shelfID}`);
+}
+
+export async function removeBookFromShelf(isbn: string) {
+  return axios.delete(`${BASE_URL}/bookshelf/?isbn=${isbn}`);
+}
+export async function fetchBookShelfs() {
+  const res = await axios.get(`${BASE_URL}/bookshelf/`);
+  return res.data as IUser;
 }
