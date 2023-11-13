@@ -1,15 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  Button,
-  ConfigProvider,
-  Image,
-  Rate,
-  Spin,
-  Typography,
-  Select,
-  Form
-} from 'antd';
+import { Image, Rate, Spin, Typography, Select, Form } from 'antd';
 import {
   IBook,
   fetchBookByISBN,
@@ -19,6 +10,7 @@ import {
 import Navbar from '../components/Navbar';
 import useAuth from './UserAuth';
 import styles from './BookView.module.css';
+import ReviewBox from '../components/ReviewBox';
 
 function BookView(): JSX.Element {
   const { auth, username, handleSignout } = useAuth();
@@ -49,12 +41,13 @@ function BookView(): JSX.Element {
   };
 
   return (
-    <div>
+    <div className={styles.bookviewBox}>
       <Navbar auth={auth} username={username} handleSignout={handleSignout} />
       {book ? (
         <div className={styles.container}>
           <div className={styles.left}>
             <Image
+              preview={false}
               src={coverImageUrl}
               className={styles.image}
               width='300px'
@@ -97,17 +90,6 @@ function BookView(): JSX.Element {
               <p>Publisher: {book.publisher}</p>
               <p>Genres: {book.genres.join(', ')}</p>
             </div>
-            <ConfigProvider
-              theme={{
-                token: {
-                  colorPrimary: '#FEC80B'
-                }
-              }}
-            >
-              <Button type='primary' shape='round' size='large'>
-                Want to Buy?
-              </Button>
-            </ConfigProvider>
           </div>
           <div className={styles.right}>
             <Typography.Title style={{ marginTop: '0px' }}>
@@ -117,10 +99,14 @@ function BookView(): JSX.Element {
             <Typography.Paragraph>
               {book.description ? book.description : 'Description not found.'}
             </Typography.Paragraph>
+            <ReviewBox />
           </div>
         </div>
       ) : (
-        <Spin size='large' />
+        <Spin
+          size='large'
+          style={{ alignSelf: 'center', justifyContent: 'center' }}
+        />
       )}
     </div>
   );

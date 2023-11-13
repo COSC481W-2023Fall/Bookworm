@@ -1,8 +1,5 @@
-import { Schema, model, Date, now, connect } from 'mongoose';
-import dotenv from 'dotenv';
+import { Schema, model, Date, now } from 'mongoose';
 
-dotenv.config();
-const DATABASE_URL = process.env.DATABASE_URL ?? '';
 /**
  * Represents a book in the database.
  */
@@ -14,9 +11,9 @@ export interface Ibook {
   publication_date: Date;
   publisher: string;
   genres: string[];
+  reviews: IReview[];
   description: string | null;
   average_rating: number;
-  reviews: IReview[];
 }
 
 export interface IReview {
@@ -40,7 +37,10 @@ const bookSchema = new Schema<Ibook>({
   page_count: { type: Number, required: true },
   publication_date: { type: Date, required: true },
   publisher: { type: String, required: true },
-  genres: { type: [String], required: true }
+  genres: { type: [String], required: true },
+  reviews: [reviewSchema],
+  description: { type: String || null, required: true },
+  average_rating: { type: Number, required: true }
 });
 
 /**
@@ -119,8 +119,6 @@ export async function searchBooks(
 ): Promise<Ibook[] | null> {
   if (offset < 0 || limit <= 0) return null;
 
-  await connect(DATABASE_URL);
-
   const regQuery = new RegExp(query, 'i');
 
   const searchFields = fields.split(',');
@@ -161,8 +159,6 @@ export async function searchCount(
   query: string,
   fields: string
 ): Promise<number | null> {
-  await connect(DATABASE_URL);
-
   const regQuery = new RegExp(query, 'i');
 
   const searchFields = fields.split(',');

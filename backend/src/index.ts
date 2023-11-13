@@ -25,10 +25,10 @@ import {
   checkBookISBN,
   checkIfBookInShelf,
   checkReviewAuthor,
-  checkReviewID,
+  checkReviewUsername,
+  checkContent,
   requireLogin
 } from './middleware';
-// import { StringExpression } from 'mongoose';
 
 // load our .env file
 dotenv.config();
@@ -177,38 +177,83 @@ app
   .get(async (_, res) => res.status(200).json(res.locals.book.reviews))
 
   // create a new review
-  // TODO: Unimplemented
-  .post(async (req, res) => res.status(201));
+  .post(requireLogin, checkContent, async (_, res) => {
+    const content = res.locals.content as string;
+    const user = res.locals.user as IUser;
+    const book = res.locals.book as Ibook;
+
+    // prevent users from submitting more than one review
+    const reviewExists =
+      book.reviews.filter((review) => review.username === user.username)
+        .length !== 0;
+    if (reviewExists)
+      return res.status(403).send('Only one review allowed per user');
+
+    const reviewData = {
+      content,
+      username: user.username
+    };
+
+    try {
+      const updated = await Book.findOneAndUpdate(
+        { isbn: book.isbn },
+        { $push: { reviews: reviewData } },
+        { upsert: true }
+      );
+      if (!updated)
+        return res.status(500).send("We couldn't update the requested book");
+
+      return res.status(200).json(reviewData);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  });
 
 app
-  .route('/api/books/:isbn/reviews/:reviewId')
+  .route('/api/books/:isbn/reviews/:username')
   .all(checkBookISBN)
-  .all(checkReviewID)
+  .all(checkReviewUsername)
   .all(requireLogin)
 
-  // return a single review
-  // TODO: Unimplemented
+  // return a single review by username
   .get(async (_, res) => res.status(200).json(res.locals.review))
 
   // edit an existing review
-  // TODO: Unimplemented
-  .put(checkReviewAuthor, async (_, res) => res.status(200))
+  .put(checkReviewAuthor, checkContent, async (_, res) => {
+    const book = res.locals.book as Ibook;
+    const currentReview = res.locals.review as IReview;
+
+    currentReview.content = res.locals.content;
+
+    const newReviews = book.reviews.filter(
+      (r) => r.username !== currentReview.username
+    );
+    newReviews.push(currentReview);
+
+    try {
+      await Book.findOneAndUpdate({ isbn: book.isbn }, { reviews: newReviews });
+
+      return res.status(204).send();
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  })
 
   // delete an existing reivew
-  // TODO: Unimplemented
   .delete(checkReviewAuthor, async (_, res) => {
     const book = res.locals.book as Ibook;
     const review = res.locals.review as IReview;
 
     // TODO: Surely there's a cleaner way of doing this?
     try {
-      // eslint-disable-next-line no-underscore-dangle
-      const newReviews = book.reviews.filter((r) => r._id !== review._id);
+      const newReviews = book.reviews.filter(
+        (r) => r.username !== review.username
+      );
       await Book.findOneAndUpdate({ isbn: book.isbn }, { reviews: newReviews });
 
-      return res.status(204);
+      return res.status(204).send();
     } catch (error) {
-      return res.status(500);
+      return res.status(500).send(error);
     }
   });
 

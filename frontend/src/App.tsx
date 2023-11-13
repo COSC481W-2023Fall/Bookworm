@@ -7,6 +7,7 @@ import SignUp from './pages/SignUp';
 import Shelf from './pages/Shelf';
 import Search from './pages/Search';
 import BookView from './pages/BookView';
+import Reviews from './pages/Reviews';
 
 function App(): JSX.Element {
   return (
@@ -24,6 +25,7 @@ function App(): JSX.Element {
         <Route path='/shelf' element={<Shelf />} />
         <Route path='/search' element={<Search />} />
         <Route path='/book/:isbn' element={<BookView />} />
+        <Route path='/book/:isbn/reviews' element={<Reviews />} />
       </Routes>
     </ConfigProvider>
   );
