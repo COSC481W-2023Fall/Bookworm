@@ -45,7 +45,7 @@ function ProfileLayout(): JSX.Element {
       case '3':
         return <SetPassword />;
       case '4':
-        navigate('/bookshelf'); // Redirect to the sign-in page
+        navigate('/shelf'); // Redirect to the sign-in page
         break;
       // case '4':
       //     return (<ShowProfile />);
