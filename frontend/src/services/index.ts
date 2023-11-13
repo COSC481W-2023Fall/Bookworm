@@ -114,7 +114,28 @@ export async function submitRegistrationData<T>(formData: T) {
 }
 
 /**
- * Adds a new review to the book with the given ISBN.
+ * Asynchronously sends a POST request to the server to reset the password.
+ *
+ * @param {string} val - The new password value.
+ * @returns {Promise} A Promise representing the result of the reset password request.
+ */
+export async function fetchResetPassword(val: string) {
+  return axios.post(`${BASE_URL}/reset-password`, { val });
+}
+
+/**
+ * Asynchronously sends a POST request to the server to fetch user email based on a provided value.
+ *
+ * @param {string} val - The value used to retrieve user email.
+ * @returns {Promise} A Promise representing the result of the request to fetch user email.
+ */
+export async function fetchUserEmail() {
+  return axios.get(`${BASE_URL}/get-user-email`);
+}
+
+export async function fetchProfile(username: string) {
+  return axios.get(`${BASE_URL}/getProfileData/${username}`);}
+ /* Adds a new review to the book with the given ISBN.
  *
  * The user information should not have to be passed to this function, as user information is passed
  * via cookies.

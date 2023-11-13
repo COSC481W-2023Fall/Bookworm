@@ -104,14 +104,53 @@ export const registerUser = async (
   try {
     // Save to DB
     await user.save();
-    res.json({ message: 'Registration successful!' });
+    return true;
   } catch (error) {
-    res
-      .status(400)
-      .json({ error: 'Registration failed. User may already exist.' });
+    return false;
   }
 };
 
+export const resetPassword = async (newPassword: string, name: string) => {
+  try {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const updatedUser = await User.findOneAndUpdate(
+      { username: name },
+      { $set: { password: hashedPassword } },
+      { new: true }
+    );
+    if (updatedUser) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+};
+
+interface JwtPayload {
+  currentUser: string;
+}
+
+// Function to verify JWT token and get payload
+export const verifyJwtToken = (token: string, secret: string) => {
+  try {
+    // Verify the token using the provided secret
+    const decoded = jwt.verify(token, secret) as JwtPayload;
+
+    // If verification is successful, return the decoded payload
+    return decoded.currentUser;
+  } catch (error) {
+    // If there's an error during verification, return null or handle it as needed
+    return null;
+  }
+};
+
+export const getUserEmail = async (username: string) => {
+  const user = await User.findOne({ username });
+  if (user) {
+    return user.email;
+  }
+  return null;
 /**
  * fetches a single user by username
  *

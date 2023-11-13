@@ -1,11 +1,6 @@
 import { ConfigProvider } from 'antd';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-<<<<<<< HEAD
-import { ConfigProvider } from 'antd';
-=======
-import Browse from './pages/Browse';
->>>>>>> b30435d (fix: Modify user profile and public profile display)
 import Home from './pages/Home';
 import ProfileLayout from './pages/ProfileLayout';
 // import ShowProfileLay from './pages/ShowProfile';
@@ -14,13 +9,8 @@ import Search from './pages/Search';
 import ShowProfileLayout from './pages/ShowProfileLayout';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-<<<<<<< HEAD
 import Shelf from './pages/Shelf';
-import Search from './pages/Search';
-import BookView from './pages/BookView';
 import Reviews from './pages/Reviews';
-=======
->>>>>>> b30435d (fix: Modify user profile and public profile display)
 
 function App(): JSX.Element {
   return (
@@ -41,6 +31,7 @@ function App(): JSX.Element {
         <Route path='/book/:isbn' element={<BookView />} />
         <Route path='/profile/:username' element={<ShowProfileLayout />} />
         <Route path='/profile' element={<ProfileLayout />} />
+        <Route path='/book/:isbn/reviews' element={<Reviews />} />
       </Routes>
     </ConfigProvider>
   );

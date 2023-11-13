@@ -16,6 +16,7 @@ import {
   verifyJwtToken
 } from './models/user';
 
+// load our .env file
 import {
   Book,
   IReview,
