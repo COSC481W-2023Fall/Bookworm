@@ -370,9 +370,7 @@ app.post('/api/saveProfileData', async (req, res) => {
 app.get('/api/getProfileData/:username', async (req, res) => {
   try {
     const { username } = req.params;
-    console.log(username);
     const profileData = await ProfileModel.findOne({ username });
-    console.log(profileData);
     if (!profileData) {
       return res.status(404).send('Profile not found.');
     }
