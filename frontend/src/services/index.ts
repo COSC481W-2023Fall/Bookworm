@@ -134,8 +134,9 @@ export async function fetchUserEmail() {
 }
 
 export async function fetchProfile(username: string) {
-  return axios.get(`${BASE_URL}/getProfileData/${username}`);}
- /* Adds a new review to the book with the given ISBN.
+  return axios.get(`${BASE_URL}/getProfileData/${username}`);
+}
+/* Adds a new review to the book with the given ISBN.
  *
  * The user information should not have to be passed to this function, as user information is passed
  * via cookies.
@@ -199,4 +200,3 @@ export async function fetchBookShelfs() {
   const res = await axios.get(`${BASE_URL}/bookshelf/`);
   return res.data as IUser;
 }
-

@@ -72,7 +72,7 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
     ? [
         {
           label: (
-            <Link to='/profile' >
+            <Link to='/profile'>
               <Button type='text'>
                 <Typography.Text strong className={styles.menuLink}>
                   Hi {username}

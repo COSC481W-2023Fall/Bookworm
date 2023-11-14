@@ -223,7 +223,6 @@ app.get('/api/search/total', async (req: Request, res: Response) => {
   }
 });
 
-
 app.get('/api/books/total', async (_, res: Response) => {
   try {
     const count = await fetchBookCount();

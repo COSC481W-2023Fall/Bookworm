@@ -55,7 +55,9 @@ function EditProfile() {
       <div className='form'>
         <label>Gender:</label>
         <select value={gender} onChange={(e) => setGender(e.target.value)}>
-          <option value="" disabled>--Please select gender--</option>
+          <option value='' disabled>
+            --Please select gender--
+          </option>
           <option value='male'>Male</option>
           <option value='female'>Female</option>
           <option value='other'>Other</option>

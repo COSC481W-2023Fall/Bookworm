@@ -94,7 +94,7 @@ export async function requireLogin(
       token,
       'bookwormctrlcsbookwormctrlcs'
     ) as JwtPayload;
-    const  name  = decoded.currentUser;
+    const name = decoded.currentUser;
 
     const user = await User.findOne({ username: name });
 

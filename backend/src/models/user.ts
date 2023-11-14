@@ -93,7 +93,7 @@ export const authenticateUser = async (email: string, password: string) => {
 export const registerUser = async (
   username: string,
   email: string,
-  password: string,
+  password: string
 ) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -104,9 +104,9 @@ export const registerUser = async (
   try {
     // Save to DB
     await user.save();
-    return true
+    return true;
   } catch (error) {
-    return false
+    return false;
   }
 };
 

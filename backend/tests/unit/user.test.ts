@@ -34,13 +34,15 @@ describe('Fetch a single user', () => {
 });
 
 test('Provide a valid token and it will return a specific name', () => {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXJyZW50VXNlciI6InRyZWUiLCJpYXQiOjE2OTk0NzI4NDl9.utwU4TEobRU3eQQhtZJXM0CmCgK-PGXaqlq3XYFcp94'
-  expect(verifyJwtToken(token,'bookwormctrlcsbookwormctrlcs')).toBe('tree');
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXJyZW50VXNlciI6InRyZWUiLCJpYXQiOjE2OTk0NzI4NDl9.utwU4TEobRU3eQQhtZJXM0CmCgK-PGXaqlq3XYFcp94';
+  expect(verifyJwtToken(token, 'bookwormctrlcsbookwormctrlcs')).toBe('tree');
 });
 
 test('Provide a invalid token and return null', () => {
-  const token = 'e1JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidHJlZSIsImlhdCI6MTY5OTQ2NzAwN30.ubNQUtSWTJ1OqbOsdT-JkJKJLJOqmTaACxTFdJRmg7w'
-  expect(verifyJwtToken(token,'bookwormctrlcsbookwormctrlcs')).toBeNull();
+  const token =
+    'e1JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidHJlZSIsImlhdCI6MTY5OTQ2NzAwN30.ubNQUtSWTJ1OqbOsdT-JkJKJLJOqmTaACxTFdJRmg7w';
+  expect(verifyJwtToken(token, 'bookwormctrlcsbookwormctrlcs')).toBeNull();
 });
 
 test('Provide a valid token and it will return a specific name', () => {
@@ -56,12 +58,12 @@ test('Provide a invalid token and return null', () => {
 });
 
 test('User exists and reset password successfully', async () => {
-  const data = await resetPassword('4','tree');
+  const data = await resetPassword('4', 'tree');
   expect(data).toBe(true);
 });
 
 test('User does not exist and reset password successfully', async () => {
-  const data = await resetPassword('4','trees');
+  const data = await resetPassword('4', 'trees');
   expect(data).toBe(false);
 });
 
