@@ -3,12 +3,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import databaseConnection from './databaseConnection';
 import ProfileModel from './models/editProfile';
 import {
   IUser,
-  authenticateUser,
   addBooktoShelf,
+  authenticateUser,
   fetchBookShelf,
   getUserEmail,
   registerUser,
@@ -17,25 +16,24 @@ import {
 } from './models/user';
 
 // load our .env file
+import connectToDb from './databaseConnection';
+import {
+  checkBookISBN,
+  checkContent,
+  checkIfBookInShelf,
+  checkReviewAuthor,
+  checkReviewUsername,
+  requireLogin
+} from './middleware';
 import {
   Book,
   IReview,
   Ibook,
   fetchAllBooks,
-  fetchBookByISBN,
   fetchBookCount,
   searchBooks,
   searchCount
 } from './models/book';
-import connectToDb from './databaseConnection';
-import {
-  checkBookISBN,
-  checkIfBookInShelf,
-  checkReviewAuthor,
-  checkReviewUsername,
-  checkContent,
-  requireLogin
-} from './middleware';
 
 // load our .env file
 dotenv.config();
@@ -157,23 +155,6 @@ app.get('/api/get-user-email', async (req, res) => {
   return res.json({ success: false, message: 'error' });
 });
 
-// // get user email
-// app.get('/api/get-user-public-informaiton', async (req, res) => {
-//   try {
-//     const { token } = req.cookies;
-//     const isLogin = verifyJwtToken(token, 'bookwormctrlcsbookwormctrlcs');
-//     const profileData = await ProfileModel.findOne({ isLogin });
-//     if (!profileData) {
-//       return res.status(404).send('Profile not found.');
-//     }
-//     res.status(200).json(profileData);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('Internal Server Error');
-//   }
-//   return res.status(200);
-// });
-
 // API routes for books
 app.get('/api/ping', (_, res) => {
   res.status(200).send('Pong!');
@@ -201,6 +182,47 @@ app.get('/api/books', async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Server error' });
   }
 });
+
+app.get('/api/search', async (req: Request, res: Response) => {
+  const offset = parseInt((req.query.offset || '') as string, 10);
+  const limit = parseInt((req.query.limit || '') as string, 10);
+
+  if (Number.isNaN(offset) || offset < 0) {
+    return res.status(400).send('Offset must be a non-negative number');
+  }
+
+  if (Number.isNaN(limit) || limit <= 0) {
+    return res.status(400).send('Limit must be a number greater than zero');
+  }
+
+  try {
+    const books = await searchBooks(
+      (req.query.q ? req.query.q : '') as string,
+      (req.query.fields ? req.query.fields : '') as string,
+      offset,
+      limit
+    );
+    if (!books) {
+      return res.sendStatus(400);
+    }
+    return res.status(200).json(books);
+  } catch (error) {
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.get('/api/search/total', async (req: Request, res: Response) => {
+  try {
+    const count = await searchCount(
+      (req.query.q ? req.query.q : '') as string,
+      (req.query.fields ? req.query.fields : '') as string
+    );
+    return res.status(200).json(count);
+  } catch (error) {
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
 
 app.get('/api/books/total', async (_, res: Response) => {
   try {

@@ -1,16 +1,16 @@
+import { Form, Image, Rate, Select, Spin, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Image, Rate, Spin, Typography, Select, Form } from 'antd';
+import Navbar from '../components/Navbar';
+import ReviewBox from '../components/ReviewBox';
 import {
   IBook,
-  fetchBookByISBN,
   addBookToShelf,
+  fetchBookByISBN,
   removeBookFromShelf
 } from '../services';
-import Navbar from '../components/Navbar';
-import useAuth from './UserAuth';
 import styles from './BookView.module.css';
-import ReviewBox from '../components/ReviewBox';
+import useAuth from './UserAuth';
 
 function BookView(): JSX.Element {
   const { auth, username, handleSignout } = useAuth();

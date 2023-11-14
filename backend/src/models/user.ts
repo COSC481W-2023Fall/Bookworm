@@ -1,9 +1,11 @@
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+import { Response } from 'express';
 import jwt from 'jsonwebtoken';
 import mongoose, { Schema, connect } from 'mongoose';
-import dotenv from 'dotenv';
 
 dotenv.config();
+
 const DATABASE_URL = process.env.DATABASE_URL ?? '';
 
 export interface IUser {
@@ -75,9 +77,6 @@ export const authenticateUser = async (email: string, password: string) => {
     // Successful login
     return user.username;
   } catch (error) {
-    // TODO: Not sure why this error is logged to console rather than returned to user. Needs testing
-
-    // eslint-disable-next-line no-console
     console.error('Error during authentication:', error);
     return null;
   }
@@ -88,12 +87,13 @@ export const authenticateUser = async (email: string, password: string) => {
  * @param username - The username of the new user.
  * @param email - The email of the new user.
  * @param password - The password of the new user.
+ * @param res - The Express response object for sending the registration result.
  * @returns A JSON response indicating the success or failure of the registration process.
  */
 export const registerUser = async (
   username: string,
   email: string,
-  password: string
+  password: string,
 ) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -104,53 +104,12 @@ export const registerUser = async (
   try {
     // Save to DB
     await user.save();
-    return true;
+    return true
   } catch (error) {
-    return false;
+    return false
   }
 };
 
-export const resetPassword = async (newPassword: string, name: string) => {
-  try {
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    const updatedUser = await User.findOneAndUpdate(
-      { username: name },
-      { $set: { password: hashedPassword } },
-      { new: true }
-    );
-    if (updatedUser) {
-      return true;
-    }
-    return false;
-  } catch (error) {
-    return false;
-  }
-};
-
-interface JwtPayload {
-  currentUser: string;
-}
-
-// Function to verify JWT token and get payload
-export const verifyJwtToken = (token: string, secret: string) => {
-  try {
-    // Verify the token using the provided secret
-    const decoded = jwt.verify(token, secret) as JwtPayload;
-
-    // If verification is successful, return the decoded payload
-    return decoded.currentUser;
-  } catch (error) {
-    // If there's an error during verification, return null or handle it as needed
-    return null;
-  }
-};
-
-export const getUserEmail = async (username: string) => {
-  const user = await User.findOne({ username });
-  if (user) {
-    return user.email;
-  }
-  return null;
 /**
  * fetches a single user by username
  *
@@ -227,39 +186,6 @@ export const addBooktoShelf = async (
   } catch (error) {
     return res.status(400).json({ error: 'invalid bookshelf' });
   }
-}
-export const resetPassword = async (newPassword: string, name: string) => {
-  try {
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    const updatedUser = await User.findOneAndUpdate(
-      { username: name },
-      { $set: { password: hashedPassword } },
-      { new: true }
-    );
-    if (updatedUser) {
-      return true;
-    }
-    return false;
-  } catch (error) {
-    return false;
-  }
-};
-
-interface JwtPayload {
-  currentUser: string;
-}
-
-// Function to verify JWT token and get payload
-export const verifyJwtToken = (token: string, secret: string) => {
-  try {
-    // Verify the token using the provided secret
-    const decoded = jwt.verify(token, secret) as JwtPayload;
-
-    // If verification is successful, return the decoded payload
-    return decoded.currentUser;
-  } catch (error) {
-    return null;
-  }
 };
 
 /**
@@ -310,6 +236,42 @@ export const removeBookFromShelf = async (
     res.status(400).json({ error: 'invalid bookshelf' });
   }
 };
+
+export const resetPassword = async (newPassword: string, name: string) => {
+  try {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const updatedUser = await User.findOneAndUpdate(
+      { username: name },
+      { $set: { password: hashedPassword } },
+      { new: true }
+    );
+    if (updatedUser) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+};
+
+export interface JwtPayload {
+  currentUser: string;
+}
+
+// Function to verify JWT token and get payload
+export const verifyJwtToken = (token: string, secret: string) => {
+  try {
+    // Verify the token using the provided secret
+    const decoded = jwt.verify(token, secret) as JwtPayload;
+
+    // If verification is successful, return the decoded payload
+    return decoded.currentUser;
+  } catch (error) {
+    // If there's an error during verification, return null or handle it as needed
+    return null;
+  }
+};
+
 export const getUserEmail = async (username: string) => {
   const user = await User.findOne({ username });
   if (user) {

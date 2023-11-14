@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { IReview, Ibook, fetchBookByISBN } from './models/book';
-import { DecodedToken, IUser, User, removeBookFromShelf } from './models/user';
+import { IUser, JwtPayload, User, removeBookFromShelf } from './models/user';
 
 /**
  * Middleware to check that the requested ISBN references a valid book in the database.
@@ -93,8 +93,8 @@ export async function requireLogin(
     const decoded = jwt.verify(
       token,
       'bookwormctrlcsbookwormctrlcs'
-    ) as DecodedToken;
-    const { name } = decoded;
+    ) as JwtPayload;
+    const  name  = decoded.currentUser;
 
     const user = await User.findOne({ username: name });
 
