@@ -16,12 +16,6 @@ function Bookshelf({ shelfName, books }: BookshelfProps): JSX.Element {
     <div className={styles.bookshelf}>
       <span className={styles.shelfTitle}>
         <Typography.Title level={2}> {shelfName} </Typography.Title>
-        <Link to='/search' style={{ textDecoration: 'none' }}>
-          <Typography.Text style={{ fontSize: '1rem' }}>
-            {' '}
-            View All{' '}
-          </Typography.Text>
-        </Link>
       </span>
       <ul className={styles.bookList}>
         {books.map((book) => (

@@ -6,7 +6,7 @@ import {
   useSearchParams
 } from 'react-router-dom';
 import { useState } from 'react';
-import { Button, Menu, Input, Typography, ConfigProvider, Select } from 'antd';
+import { Button, Menu, Input, Typography, ConfigProvider, Select, Avatar } from 'antd';
 import type { MenuProps, SelectProps } from 'antd';
 import './Navbar.css';
 
@@ -73,11 +73,11 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
         {
           label: (
             <Link to='/profile'>
-              <Button type='text'>
+              <Button type='text' className='menuButton'>
                 <Typography.Text strong className='menuLink'>
                   Hi{' '}
-                  {username.length > 10
-                    ? username.substring(0, 11).concat('...')
+                  {username.length > 7
+                    ? username.substring(0, 8).concat('...')
                     : username}
                 </Typography.Text>
               </Button>
