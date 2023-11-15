@@ -6,7 +6,7 @@ import {
   useSearchParams
 } from 'react-router-dom';
 import { useState } from 'react';
-import { Button, Menu, Input, Typography, ConfigProvider, Select, Avatar } from 'antd';
+import { Button, Menu, Input, Typography, ConfigProvider, Select } from 'antd';
 import type { MenuProps, SelectProps } from 'antd';
 import './Navbar.css';
 
