@@ -28,7 +28,6 @@ function Home(): JSX.Element {
     Dive into a vibrant community of book enthusiasts and bibliophiles as you embark on a literary journey like no other. 
     Bookworm isn't just a social media app; it's a sanctuary for readers, a digital haven for bookworms of all kinds.`;
 
-  // const { auth, username, handleSignout } = useAuth();
   const { auth, username, handleSignout } = useAuth();
   return (
     <div className={styles.homePage}>
