@@ -1,6 +1,3 @@
-import type { MenuProps, SelectProps } from 'antd';
-import { Button, ConfigProvider, Input, Menu, Select, Typography } from 'antd';
-import { useState } from 'react';
 import {
   Link,
   createSearchParams,
@@ -75,13 +72,13 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
     ? [
         {
           label: (
-             <Link to='/profile'>
+            <Link to='/profile'>
               <Button type='text'>
-                <Typography.Text strong className={styles.menuLink}>
+                <Typography.Text strong className='menuLink'>
                   Hi{' '}
-                {username.length > 10
-                  ? username.substring(0, 11).concat('...')
-                  : username}
+                  {username.length > 10
+                    ? username.substring(0, 11).concat('...')
+                    : username}
                 </Typography.Text>
               </Button>
             </Link>
