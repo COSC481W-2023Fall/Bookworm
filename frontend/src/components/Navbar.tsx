@@ -1,3 +1,6 @@
+import type { MenuProps, SelectProps } from 'antd';
+import { Button, ConfigProvider, Input, Menu, Select, Typography } from 'antd';
+import { useState } from 'react';
 import {
   Link,
   createSearchParams,
@@ -5,9 +8,6 @@ import {
   useNavigate,
   useSearchParams
 } from 'react-router-dom';
-import { useState } from 'react';
-import { Button, Menu, Input, Typography, ConfigProvider, Select } from 'antd';
-import type { MenuProps, SelectProps } from 'antd';
 import styles from './Navbar.module.css';
 
 interface NavbarProps {
@@ -72,11 +72,13 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
     ? [
         {
           label: (
-            <Button type='text'>
-              <Typography.Text strong className={styles.menuLink}>
-                Hi {username}
-              </Typography.Text>
-            </Button>
+            <Link to='/profile'>
+              <Button type='text'>
+                <Typography.Text strong className={styles.menuLink}>
+                  Hi {username}
+                </Typography.Text>
+              </Button>
+            </Link>
           ),
           key: 'hi-username'
         },

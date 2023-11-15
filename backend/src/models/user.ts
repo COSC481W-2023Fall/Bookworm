@@ -1,10 +1,11 @@
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
 import { Response } from 'express';
 import jwt from 'jsonwebtoken';
 import mongoose, { Schema, connect } from 'mongoose';
-import dotenv from 'dotenv';
 
 dotenv.config();
+
 const DATABASE_URL = process.env.DATABASE_URL ?? '';
 
 export interface IUser {
@@ -59,87 +60,26 @@ export const User = mongoose.model('User', userSchema);
  * Authenticates a user by checking the provided email and password.
  * @param email - The email of the user to authenticate.
  * @param password - The password of the user to authenticate.
- * @param res - The Express response object for sending the authentication result.
- * @returns A JSON response indicating the success or failure of the authentication process.
+ * @returns If user signs in successfully, return username otherwise return null
  */
-export const authenticateUser = async (
-  email: string,
-  password: string,
-  res: Response
-) => {
+export const authenticateUser = async (email: string, password: string) => {
   try {
     const user = await User.findOne({ email });
-
     if (!user) {
-      return res.json({
-        success: false,
-        message: 'User not found'
-      });
+      return null;
     }
-
     const passwordMatch = await bcrypt.compare(password, user.password);
-
     // Check if the password matches
     if (!passwordMatch) {
-      return res.json({
-        success: false,
-        message: 'Invalid password'
-      });
+      return null;
     }
 
     // Successful login
-    const name = user.username;
-    const token = jwt.sign({ name }, 'bookwormctrlcsbookwormctrlcs', {
-      expiresIn: '1d'
-    });
-
-    res.cookie('token', token);
-    return res.json({
-      success: true,
-      message: 'Sign in successfully'
-    });
+    return user.username;
   } catch (error) {
-    // TODO: Not sure why this error is logged to console rather than returned to user. Needs testing
-
     // eslint-disable-next-line no-console
     console.error('Error during authentication:', error);
-    return res.json({
-      success: false,
-      message: 'Internal Server Error'
-    });
-  }
-};
-
-/**
- * Define an interface named DecodedToken
- * @interface DecodedToken
- */
-export interface DecodedToken {
-  name: string;
-}
-
-/**
- * Handles the verification of a JWT (JSON Web Token) and responds accordingly.
- * @param token - The JWT to be verified.
- * @param res - The Express response object for sending the verification result.
- * @returns A JSON response indicating the success or failure of the token verification process.
- */
-export const handleTokenVerification = (
-  token: string | undefined,
-  res: Response
-) => {
-  if (!token) {
-    return res.json({ message: 'We need a token, please provide it.' });
-  }
-
-  try {
-    const decoded = jwt.verify(
-      token,
-      'bookwormctrlcsbookwormctrlcs'
-    ) as DecodedToken;
-    return res.json({ success: true, name: decoded.name });
-  } catch (err) {
-    return res.json({ message: 'Authentication error.' });
+    return null;
   }
 };
 
@@ -154,8 +94,7 @@ export const handleTokenVerification = (
 export const registerUser = async (
   username: string,
   email: string,
-  password: string,
-  res: Response
+  password: string
 ) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -166,11 +105,9 @@ export const registerUser = async (
   try {
     // Save to DB
     await user.save();
-    res.json({ message: 'Registration successful!' });
+    return true;
   } catch (error) {
-    res
-      .status(400)
-      .json({ error: 'Registration failed. User may already exist.' });
+    return false;
   }
 };
 
@@ -299,4 +236,47 @@ export const removeBookFromShelf = async (
   } catch (error) {
     res.status(400).json({ error: 'invalid bookshelf' });
   }
+};
+
+export const resetPassword = async (newPassword: string, name: string) => {
+  try {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const updatedUser = await User.findOneAndUpdate(
+      { username: name },
+      { $set: { password: hashedPassword } },
+      { new: true }
+    );
+    if (updatedUser) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+};
+
+export interface JwtPayload {
+  currentUser: string;
+}
+
+// Function to verify JWT token and get payload
+export const verifyJwtToken = (token: string, secret: string) => {
+  try {
+    // Verify the token using the provided secret
+    const decoded = jwt.verify(token, secret) as JwtPayload;
+
+    // If verification is successful, return the decoded payload
+    return decoded.currentUser;
+  } catch (error) {
+    // If there's an error during verification, return null or handle it as needed
+    return null;
+  }
+};
+
+export const getUserEmail = async (username: string) => {
+  const user = await User.findOne({ username });
+  if (user) {
+    return user.email;
+  }
+  return null;
 };

@@ -2,8 +2,12 @@
 import React, { useState } from 'react';
 import './signup-styles.css';
 import { submitRegistrationData } from '../services';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -29,11 +33,14 @@ function SignUp() {
     } catch (error) {
       alert('Registration failed. User may already exist.');
     }
+
+    navigate('../sign-in');
   };
 
   return (
     <div className='container'>
       <h1>Bookwormer Registration</h1>
+
       <form onSubmit={handleSubmit}>
         <label htmlFor='username'>Username:</label>
         <input
@@ -76,6 +83,9 @@ function SignUp() {
         />
         <br />
         <button type='submit'>Sign Up</button>
+        <p>
+          Already have an account? <Link to='../sign-in'>Sign In</Link>
+        </p>
       </form>
     </div>
   );
