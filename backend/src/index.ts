@@ -362,7 +362,9 @@ app.post('/api/saveProfileData', async (req, res) => {
     await profile.save();
     res.status(201).send('Profile data saved successfully!');
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(error);
+
     res.status(500).send('Internal Server Error');
   }
 });
@@ -376,6 +378,7 @@ app.get('/api/getProfileData/:username', async (req, res) => {
     }
     res.status(200).json(profileData);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(error);
     res.status(500).send('Internal Server Error');
   }

@@ -1,6 +1,7 @@
 import { Descriptions, DescriptionsProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { fetchProfileGet } from '../services';
 
 interface ProfileData {
   gender: string;
@@ -21,11 +22,9 @@ function ShowProfile() {
     const fetchProfileData = async () => {
       try {
         //   const response = await fetch(`http://localhost:3001/getProfileData/${username}`);
-        const response = await fetch(
-          `http://localhost:3001/api/getProfileData/${username}`
-        );
-        if (response.ok) {
-          const data = await response.json();
+        const response = await fetchProfileGet(username!)
+        if (response.status===200) {
+          const data = response.data;
           setProfileData(data);
         } else {
           console.error('Failed to fetch profile data');

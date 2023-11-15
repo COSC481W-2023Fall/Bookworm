@@ -77,6 +77,7 @@ export const authenticateUser = async (email: string, password: string) => {
     // Successful login
     return user.username;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error during authentication:', error);
     return null;
   }

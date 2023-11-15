@@ -1,6 +1,6 @@
 import { Descriptions, DescriptionsProps, Space, Typography } from 'antd';
 import { useEffect, useState } from 'react';
-import { fetchUserEmail } from '../services';
+import { fetchProfileGet, fetchUserEmail } from '../services';
 import useAuth from './UserAuth';
 
 const { Title } = Typography;
@@ -24,12 +24,10 @@ function Profile(): JSX.Element {
       try {
         console.log(username);
         //   const response = await fetch(`http://localhost:3001/getProfileData/${username}`);
-        const response = await fetch(
-          `http://localhost:3001/api/getProfileData/${username}`
-        );
-        console.log('response.ok = ', response.ok);
-        if (response.ok) {
-          const data = await response.json();
+        const response = await fetchProfileGet(username)
+        console.log('response.ok = ', response.status===200);
+        if (response.status===200) {
+          const data = response.data;
           console.log('data', data);
           setProfileData(data);
         } else {

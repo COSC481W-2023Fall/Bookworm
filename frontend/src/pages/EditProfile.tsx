@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './EditProfile.css';
 import useAuth from './UserAuth';
+import { fetchProfileSave } from '../services';
 
 function EditProfile() {
   const { username: username1 } = useAuth();
@@ -20,24 +21,16 @@ function EditProfile() {
       if (username.trim() !== username1) {
         return alert('Username is not correct');
       }
-      const response = await fetch(
-        'http://localhost:3001/api/saveProfileData',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
+      const response = await fetchProfileSave(
+          JSON.stringify({
             gender,
             occupation,
             favoriteBook,
             description,
             username
-          })
-        }
-      );
+          }))
 
-      if (response.ok) {
+      if (response.status===201) {
         setIsSaved(true);
         // navigate(`/profile/${username}`);
         return alert('Edit profile sucessfully');
