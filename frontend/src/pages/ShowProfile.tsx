@@ -22,8 +22,8 @@ function ShowProfile() {
     const fetchProfileData = async () => {
       try {
         //   const response = await fetch(`http://localhost:3001/getProfileData/${username}`);
-        const response = await fetchProfileGet(username!)
-        if (response.status===200) {
+        const response = await fetchProfileGet(username!);
+        if (response.status === 200) {
           const data = response.data;
           setProfileData(data);
         } else {

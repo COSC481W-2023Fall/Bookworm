@@ -22,15 +22,16 @@ function EditProfile() {
         return alert('Username is not correct');
       }
       const response = await fetchProfileSave(
-          JSON.stringify({
-            gender,
-            occupation,
-            favoriteBook,
-            description,
-            username
-          }))
+        JSON.stringify({
+          gender,
+          occupation,
+          favoriteBook,
+          description,
+          username
+        })
+      );
 
-      if (response.status===201) {
+      if (response.status === 201) {
         setIsSaved(true);
         // navigate(`/profile/${username}`);
         return alert('Edit profile sucessfully');

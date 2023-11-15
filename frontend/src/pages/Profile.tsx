@@ -24,9 +24,9 @@ function Profile(): JSX.Element {
       try {
         console.log(username);
         //   const response = await fetch(`http://localhost:3001/getProfileData/${username}`);
-        const response = await fetchProfileGet(username)
-        console.log('response.ok = ', response.status===200);
-        if (response.status===200) {
+        const response = await fetchProfileGet(username);
+        console.log('response.ok = ', response.status === 200);
+        if (response.status === 200) {
           const data = response.data;
           console.log('data', data);
           setProfileData(data);

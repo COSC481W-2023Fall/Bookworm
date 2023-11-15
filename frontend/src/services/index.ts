@@ -137,14 +137,17 @@ export async function fetchProfileGet(username: string) {
   return axios.get(`${BASE_URL}/getProfileData/${username}`);
 }
 
-export async function fetchProfileSave(data:string) {
-  return axios.post( `${BASE_URL}/saveProfileData`,
-  { 
-    body:data
-  },
-  {headers: {
-    'Content-Type': 'application/json'
-  }}
+export async function fetchProfileSave(data: string) {
+  return axios.post(
+    `${BASE_URL}/saveProfileData`,
+    {
+      body: data
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
   );
 }
 /* Adds a new review to the book with the given ISBN.
