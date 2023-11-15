@@ -8,30 +8,19 @@ function Home(): JSX.Element {
   // Temporary book retrieval for testign the bookshelf component.
   const shelf1 = [
     {
-      isbn: '0156007754'
+      isbn: '0140119507' // If the River Was Whiskey
     },
     {
-      isbn: '0765365278'
+      isbn: '0553575651' // Liveship Traders 3
     },
     {
-      isbn: ' 0060883286'
+      isbn: '0156007754' // Blindness
     },
     {
-      isbn: '1939905214'
+      isbn: '849759682X' // Dune
     },
     {
-      isbn: '198481785X'
-    }
-  ];
-  const shelf2 = [
-    {
-      isbn: '0670826901'
-    },
-    {
-      isbn: '1324093021'
-    },
-    {
-      isbn: '0593466349'
+      isbn: '006112009X' // One Hundred Years of Solitude
     }
   ];
 
@@ -49,8 +38,7 @@ function Home(): JSX.Element {
           {blurb}
         </Typography.Paragraph>
       </div>
-      <Bookshelf shelfName='Book Shelf' books={shelf1} />
-      <Bookshelf shelfName='Recommendations' books={shelf2} />
+      <Bookshelf shelfName='Our Picks' books={shelf1} />
     </div>
   );
 }

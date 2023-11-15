@@ -2,6 +2,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 1200px;
+}
+
+.title {
+    margin-right: auto;
 }
 
 .search {
@@ -14,10 +19,20 @@
   border-bottom: none;
   line-height: 0px;
   background: none;
+  margin-left: auto;
+}
+
+.ant-menu-item {
+  padding: 10px !important;
+}
+
+.menuButton {
+  padding: 0px;
 }
 
 .menuLink {
   font-size: 1.25rem;
+  padding: 0px;
 }
 
 .searchContainer {

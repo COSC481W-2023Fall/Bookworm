@@ -8,7 +8,7 @@ import {
 import { useState } from 'react';
 import { Button, Menu, Input, Typography, ConfigProvider, Select } from 'antd';
 import type { MenuProps, SelectProps } from 'antd';
-import styles from './Navbar.module.css';
+import './Navbar.css';
 
 interface NavbarProps {
   auth: boolean;
@@ -72,9 +72,12 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
     ? [
         {
           label: (
-            <Button type='text'>
-              <Typography.Text strong className={styles.menuLink}>
-                Hi {username}
+            <Button type='text' className='menuButton'>
+              <Typography.Text strong className='menuLink'>
+                Hi{' '}
+                {username.length > 10
+                  ? username.substring(0, 11).concat('...')
+                  : username}
               </Typography.Text>
             </Button>
           ),
@@ -82,8 +85,8 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
         },
         {
           label: (
-            <Button type='link' onClick={handleSignout}>
-              <Typography.Text strong className={styles.menuLink}>
+            <Button type='link' onClick={handleSignout} className='menuButton'>
+              <Typography.Text strong className='menuLink'>
                 Sign Out
               </Typography.Text>
             </Button>
@@ -95,7 +98,7 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
         {
           label: (
             <Link to='/sign-in'>
-              <Typography.Text strong className={styles.menuLink}>
+              <Typography.Text strong className='menuLink'>
                 Sign In
               </Typography.Text>
             </Link>
@@ -105,7 +108,7 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
         {
           label: (
             <Link to='/sign-up'>
-              <Typography.Text strong className={styles.menuLink}>
+              <Typography.Text strong className='menuLink'>
                 Join
               </Typography.Text>
             </Link>
@@ -115,8 +118,8 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
       ];
 
   return (
-    <div className={styles.navbar}>
-      <Link to='/' style={{ textDecoration: 'none' }}>
+    <div className='navbar'>
+      <Link to='/' style={{ textDecoration: 'none', marginRight: 'auto' }}>
         <Typography.Title level={1} className='title'>
           BookWorm
         </Typography.Title>
@@ -128,9 +131,9 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
           }
         }}
       >
-        <div className={styles.searchContainer}>
+        <div className='searchContainer'>
           <Input.Search
-            className={styles.search}
+            className='search'
             placeholder='Book Title, Author, ISBN'
             size='large'
             onChange={handleInput}
@@ -140,7 +143,7 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
           {location.pathname === '/search' ? (
             <Select
               mode='multiple'
-              className={styles.fieldSelection}
+              className='fieldSelection'
               defaultValue={['title', 'author', 'isbn', 'publisher', 'genres']}
               options={searchFields}
               onChange={handleFields}
@@ -151,7 +154,7 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
           )}
         </div>
       </ConfigProvider>
-      <Menu mode='horizontal' items={items} className={styles.menu} />
+      <Menu mode='horizontal' items={items} className='menu' disabledOverflow />
     </div>
   );
 }
