@@ -9,6 +9,7 @@ import {
   addBooktoShelf,
   authenticateUser,
   fetchBookShelf,
+  fetchUserByUserName,
   getUserEmail,
   registerUser,
   resetPassword,
@@ -373,7 +374,13 @@ app.get('/api/getProfileData/:username', async (req, res) => {
   const { username } = req.params;
 
   try {
-    const profileData = await ProfileModel.findOne({ username });
+    // we check the username here in order to prevent spam requests that would
+    // end up creating profile data for users that don't exist
+    const user = await fetchUserByUserName(username);
+    if (!user) return res.status(400).send('Invalid username');
+
+    // find the profile data, or create it if it doesn't exist
+    const profileData = await ProfileModel.findOneAndUpdate({ username }, { $set: { username }}, { upsert: true });
     if (!profileData) return res.sendStatus(404);
 
     return res.status(200).json(profileData);
