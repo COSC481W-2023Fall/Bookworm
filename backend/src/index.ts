@@ -370,19 +370,18 @@ app.post('/api/saveProfileData', async (req, res) => {
 });
 
 app.get('/api/getProfileData/:username', async (req, res) => {
+  const { username } = req.params;
+
   try {
-    const { username } = req.params;
     const profileData = await ProfileModel.findOne({ username });
-    if (!profileData) {
-      return res.status(404).send('Profile not found.');
-    }
-    res.status(200).json(profileData);
+    if (!profileData) return res.sendStatus(404);
+
+    return res.status(200).json(profileData);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error);
-    res.status(500).send('Internal Server Error');
+    return res.status(500).send('Internal Server Error');
   }
-  return res.status(200);
 });
 
 // Start the server
