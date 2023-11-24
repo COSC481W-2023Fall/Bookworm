@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 
 export interface IProfile {
-  gender: string,
-  occupation: string,
-  favoriteBook: string,
-  description: string,
-  username: string
+  gender: string;
+  occupation: string;
+  favoriteBook: string;
+  description: string;
+  username: string;
 }
 
 const profileSchema = new mongoose.Schema<IProfile>({

@@ -358,10 +358,13 @@ app
 
 // Profile data route
 app.post('/api/saveProfileData', async (req, res) => {
-  const data = req.body['body'] as IProfile;
+  const data = req.body.body as IProfile;
 
   try {
-    await ProfileModel.findOneAndUpdate({ username: data.username }, data, { upsert: true, new: true });
+    await ProfileModel.findOneAndUpdate({ username: data.username }, data, {
+      upsert: true,
+      new: true
+    });
     res.status(201).send('Profile data saved successfully!');
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -374,7 +377,8 @@ app.post('/api/saveProfileData', async (req, res) => {
 app.get('/api/getProfileData/:username', async (req, res) => {
   const { username } = req.params;
 
-  if (username.trim() === '') return res.status(400).send('Username cannot be empty');
+  if (username.trim() === '')
+    return res.status(400).send('Username cannot be empty');
 
   try {
     // we check the username here in order to prevent spam requests that would
@@ -383,7 +387,11 @@ app.get('/api/getProfileData/:username', async (req, res) => {
     if (!user) return res.status(400).send('Invalid username');
 
     // find the profile data, or create it if it doesn't exist
-    const profileData = await ProfileModel.findOneAndUpdate({ username }, { $set: { username }}, { upsert: true });
+    const profileData = await ProfileModel.findOneAndUpdate(
+      { username },
+      { $set: { username } },
+      { upsert: true }
+    );
     if (!profileData) return res.sendStatus(404);
 
     return res.status(200).json(profileData);
