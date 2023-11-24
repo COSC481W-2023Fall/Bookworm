@@ -1,6 +1,6 @@
 import type { MenuProps } from 'antd';
 import { Layout, Menu, Typography } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserAvatar from '../components/Avatar';
 import Navbar from '../components/Navbar';
@@ -18,9 +18,14 @@ function ProfileLayout(): JSX.Element {
   // `handleSignout`: Function to handle the signout action.
   const { auth, username, handleSignout } = useAuth();
 
-  // 'current': Represents the current state and is initially set to '1'
+  // 'current': Represents the current state and is initially set to '1' or 'selectedKey' in localStorage
   // 'setCurrent': Funciton to update the 'current' state
-  const [current, setCurrent] = useState('1');
+  const [current, setCurrent] = useState(() => {
+    // Retrieve the saved key from localStorage, default to '1' if not found
+    return localStorage.getItem('selectedKey') || '1';
+  });
+
+  const [loading, setLoading] = useState(true); // New loading state
 
   const navigate = useNavigate();
 
@@ -48,8 +53,6 @@ function ProfileLayout(): JSX.Element {
       case '4':
         navigate('/shelf'); // Redirect to the sign-in page
         break;
-      // case '4':
-      //     return (<ShowProfile />);
       default:
         break;
     }
@@ -73,16 +76,27 @@ function ProfileLayout(): JSX.Element {
       label: 'Bookshelf',
       key: '4'
     }
-    // {
-    //     label: "Profile",
-    //     key: '4',
-    // }
   ];
+  
+    // Save to localStorage only if the current key is not '4'
+    useEffect(() => {
+      if (current !== '4') {
+        localStorage.setItem('selectedKey', current);
+      }
+    }, [current]);
 
+    // Set loading to false once auth status is fetched
+    useEffect(() => {
+      setLoading(false);
+    }, [auth]);
   return (
     <Layout style={{ background: 'none' }}>
       <Navbar auth={auth} username={username} handleSignout={handleSignout} />
-      { auth ? (
+      {loading ? (
+        // Display a loading spinner or message while auth status is being checked
+        <div>Loading...</div>
+      ) : auth ? (
+      // { auth ? (
       <Layout style={{ background: 'none', padding: '10px 0' }}>
         <Sider style={{ background: 'none' }}>
           <UserAvatar />
