@@ -1,5 +1,5 @@
 import type { MenuProps } from 'antd';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Typography } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserAvatar from '../components/Avatar';
@@ -8,6 +8,7 @@ import EditProfile from './EditProfile';
 import Profile from './Profile';
 import SetPassword from './SetPassword';
 import useAuth from './UserAuth';
+const { Title } = Typography;
 
 const { Content, Sider } = Layout;
 
@@ -79,8 +80,9 @@ function ProfileLayout(): JSX.Element {
   ];
 
   return (
-    <Layout style={{ background: 'none', padding: '0 50px' }}>
+    <Layout style={{ background: 'none' }}>
       <Navbar auth={auth} username={username} handleSignout={handleSignout} />
+      { auth ? (
       <Layout style={{ background: 'none', padding: '10px 0' }}>
         <Sider style={{ background: 'none' }}>
           <UserAvatar />
@@ -99,7 +101,12 @@ function ProfileLayout(): JSX.Element {
         >
           {componentsSwtich(current)}
         </Content>
-      </Layout>
+      </Layout> )
+      :
+      (<div style={{margin: '70px 20px'}}>
+        <Title level={2}>You need to sign in first to access the profile page.</Title>
+        <Title level={2}>Click "Sign in" button in Navbar to go to the sign in page.</Title>
+      </div>)}
     </Layout>
   );
 }
