@@ -32,7 +32,7 @@ export default function ShelfPage(): JSX.Element {
 
   useEffect(() => {
     async function fetchbook() {
-      if (readingShelf) {
+      if (readingShelf && readingShelf?.length > 0) {
         const res = await searchBooks(
           readingShelf.join('|'),
           'isbn',
@@ -41,7 +41,7 @@ export default function ShelfPage(): JSX.Element {
         );
         setRBooks(res);
       }
-      if (completedShelf) {
+      if (completedShelf && completedShelf?.length > 0) {
         const res = await searchBooks(
           completedShelf.join('|'),
           'isbn',
@@ -50,7 +50,7 @@ export default function ShelfPage(): JSX.Element {
         );
         setCBooks(res);
       }
-      if (droppedShelf) {
+      if (droppedShelf && droppedShelf?.length > 0) {
         const res = await searchBooks(
           droppedShelf.join('|'),
           'isbn',
@@ -59,7 +59,7 @@ export default function ShelfPage(): JSX.Element {
         );
         setDBooks(res);
       }
-      if (planToShelf) {
+      if (planToShelf && planToShelf?.length > 0) {
         const res = await searchBooks(
           planToShelf.join('|'),
           'isbn',
