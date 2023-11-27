@@ -39,7 +39,7 @@ function SignUp() {
 
   return (
     <div className='container'>
-      <h1>Bookwormer Registration</h1>
+      <h1>BookWorm Registration</h1>
 
       <form onSubmit={handleSubmit}>
         <label htmlFor='username'>Username:</label>
