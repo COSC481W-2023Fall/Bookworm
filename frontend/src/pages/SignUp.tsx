@@ -6,10 +6,10 @@ import { submitRegistrationData } from '../services';
 import { useNavigate } from 'react-router-dom';
 
 type SignUpData = {
-  email: string,
-  username: string,
-  password: string,
-  confirm_password: string
+  email: string;
+  username: string;
+  password: string;
+  confirmPassword: string;
 };
 
 function SignUp() {
@@ -43,11 +43,9 @@ function SignUp() {
 
         <Form.Item
           name='username'
-          rules={[
-            { required: true, message: 'Please input your username!' }
-          ]}
+          rules={[{ required: true, message: 'Please input your username!' }]}
         >
-          <Input placeholder='username' prefix={<UserOutlined />}/>
+          <Input placeholder='username' prefix={<UserOutlined />} />
         </Form.Item>
 
         <Form.Item
@@ -58,7 +56,7 @@ function SignUp() {
         </Form.Item>
 
         <Form.Item
-          name='confirm_password'
+          name='confirmPassword'
           rules={[
             { required: true, message: 'Please input your password!' },
             ({ getFieldValue }) => ({
@@ -72,7 +70,10 @@ function SignUp() {
             })
           ]}
         >
-          <Input.Password placeholder='confirm password' prefix={<LockOutlined />} />
+          <Input.Password
+            placeholder='confirm password'
+            prefix={<LockOutlined />}
+          />
         </Form.Item>
 
         <Form.Item>
