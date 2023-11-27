@@ -168,7 +168,7 @@ export default function ReviewBox(): JSX.Element {
           <List.Item>
             <List.Item.Meta
               avatar={
-                <ShowUserAvatar name={review.username}/>
+                <ShowUserAvatar name={review.username} size={32}/>
               }
               title={
                 <Flex justify='space-between'>
