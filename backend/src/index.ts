@@ -3,12 +3,13 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import ProfileModel from './models/editProfile';
+import ProfileModel, { IProfile } from './models/profile';
 import {
   IUser,
   addBooktoShelf,
   authenticateUser,
   fetchBookShelf,
+  fetchUserByUserName,
   getUserEmail,
   registerUser,
   resetPassword,
@@ -357,9 +358,13 @@ app
 
 // Profile data route
 app.post('/api/saveProfileData', async (req, res) => {
+  const data = req.body.body as IProfile;
+
   try {
-    const profile = new ProfileModel(req.body);
-    await profile.save();
+    await ProfileModel.findOneAndUpdate({ username: data.username }, data, {
+      upsert: true,
+      new: true
+    });
     res.status(201).send('Profile data saved successfully!');
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -370,19 +375,31 @@ app.post('/api/saveProfileData', async (req, res) => {
 });
 
 app.get('/api/getProfileData/:username', async (req, res) => {
+  const { username } = req.params;
+
+  if (username.trim() === '')
+    return res.status(400).send('Username cannot be empty');
+
   try {
-    const { username } = req.params;
-    const profileData = await ProfileModel.findOne({ username });
-    if (!profileData) {
-      return res.status(404).send('Profile not found.');
-    }
-    res.status(200).json(profileData);
+    // we check the username here in order to prevent spam requests that would
+    // end up creating profile data for users that don't exist
+    const user = await fetchUserByUserName(username);
+    if (!user) return res.status(400).send('Invalid username');
+
+    // find the profile data, or create it if it doesn't exist
+    const profileData = await ProfileModel.findOneAndUpdate(
+      { username },
+      { $set: { username } },
+      { upsert: true }
+    );
+    if (!profileData) return res.sendStatus(404);
+
+    return res.status(200).json(profileData);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error);
-    res.status(500).send('Internal Server Error');
+    return res.status(500).send('Internal Server Error');
   }
-  return res.status(200);
 });
 
 // Start the server
