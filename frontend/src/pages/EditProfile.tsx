@@ -22,9 +22,8 @@ function EditProfile() {
 
       if (response.status === 201) {
         return alert('Edit profile sucessfully');
-      } else {
-        console.error('Failed to save profile data');
       }
+      console.error('Failed to save profile data');
     } catch (error) {
       console.error('Error while saving profile data:', error);
     }
