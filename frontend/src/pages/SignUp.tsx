@@ -1,8 +1,9 @@
 // Import necessary libraries
+import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Form, Input } from 'antd';
 import React, { useState } from 'react';
 import './signup-styles.css';
 import { submitRegistrationData } from '../services';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
@@ -37,56 +38,71 @@ function SignUp() {
     navigate('../sign-in');
   };
 
+  // NOTE: https://ant.design/components/form#components-form-demo-register
   return (
     <div className='container'>
       <h1>BookWorm Registration</h1>
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor='username'>Username:</label>
-        <input
-          type='text'
-          id='username'
-          name='username'
-          value={formData.username}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <label htmlFor='email'>Email:</label>
-        <input
-          type='email'
-          id='email'
+      <Form name='basic' autoComplete='off' onFinish={handleSubmit}>
+        <Form.Item
           name='email'
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <label htmlFor='password'>Password:</label>
-        <input
-          type='password'
-          id='password'
+          rules={[
+            { type: 'email', message: 'The input is not valid E-mail!' },
+            { required: true, message: 'Please input your email!' }
+          ]}
+        >
+          <Input placeholder='email' prefix={<MailOutlined />} />
+        </Form.Item>
+
+        <Form.Item
+          name='username'
+          rules={[
+            { required: true, message: 'Please input your username!' }
+          ]}
+        >
+          <Input placeholder='username' prefix={<UserOutlined />}/>
+        </Form.Item>
+
+        <Form.Item
           name='password'
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <label htmlFor='confirmPassword'>Confirm Password:</label>
-        <input
-          type='password'
-          id='confirmPassword'
-          name='confirmPassword'
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <button type='submit'>Sign Up</button>
-        <p>
-          Already have an account? <Link to='../sign-in'>Sign In</Link>
-        </p>
-      </form>
+          rules={[{ required: true, message: 'Please input your password!' }]}
+        >
+          <Input.Password placeholder='password' prefix={<LockOutlined />} />
+        </Form.Item>
+
+        <Form.Item
+          name='confirm-password'
+          rules={[
+            { required: true, message: 'Please input your password!' },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+
+                return Promise.reject('Password does not match');
+              }
+            })
+          ]}
+        >
+          <Input.Password placeholder='confirm password' prefix={<LockOutlined />} />
+        </Form.Item>
+
+        <Form.Item>
+          <Button
+            type='primary'
+            htmlType='submit'
+            style={{
+              width: '300px',
+              height: '40px',
+              borderRadius: '20px',
+              backgroundColor: 'var(--secondary-button-background)'
+            }}
+          >
+            Sign in
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 }
