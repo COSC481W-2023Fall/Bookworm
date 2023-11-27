@@ -33,7 +33,7 @@ function App(): JSX.Element {
         <Route path='/profile/:username' element={<ShowProfileLayout />} />
         <Route path='/profile' element={<ProfileLayout />} />
         <Route path='/book/:isbn/reviews' element={<Reviews />} />
-        <Route path="*" element={<Error/>}/>
+        <Route path='*' element={<Error />} />
       </Routes>
     </ConfigProvider>
   );
