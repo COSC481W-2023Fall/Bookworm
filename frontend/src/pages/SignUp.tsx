@@ -1,9 +1,8 @@
 // Import necessary libraries
 import React, { useState } from 'react';
 import './signup-styles.css';
+import { Link, useNavigate } from 'react-router-dom';
 import { submitRegistrationData } from '../services';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
   const navigate = useNavigate();

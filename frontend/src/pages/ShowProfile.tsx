@@ -24,7 +24,7 @@ function ShowProfile() {
         //   const response = await fetch(`http://localhost:3001/getProfileData/${username}`);
         const response = await fetchProfileGet(username!);
         if (response.status === 200) {
-          const data = response.data;
+          const { data } = response;
           setProfileData(data);
         } else {
           console.error('Failed to fetch profile data');
