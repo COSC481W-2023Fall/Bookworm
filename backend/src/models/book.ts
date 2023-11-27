@@ -1,4 +1,4 @@
-import { Schema, model, Date, now } from 'mongoose';
+import { Schema, model, Date, now, SortOrder } from 'mongoose';
 
 /**
  * Represents a book in the database.
@@ -114,6 +114,8 @@ export async function fetchBookCount() {
 export async function searchBooks(
   query: string,
   fields: string,
+  sort: string,
+  order: string,
   offset: number,
   limit: number
 ): Promise<Ibook[] | null> {
@@ -124,6 +126,10 @@ export async function searchBooks(
   const searchFields = fields.split(',');
 
   const safeFields = ['title', 'author', 'publisher', 'isbn', 'genres', ''];
+
+  const sortObject = {
+    [sort]: order as SortOrder
+  };
 
   if (!searchFields.every((elem) => safeFields.includes(elem))) {
     return null;
@@ -142,7 +148,7 @@ export async function searchBooks(
   }
 
   const res = await Book.find({ $or: filter })
-    .sort({ _id: 1 })
+    .sort(sortObject)
     .skip(offset)
     .limit(limit);
 
