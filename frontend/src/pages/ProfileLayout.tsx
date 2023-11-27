@@ -8,6 +8,7 @@ import EditProfile from './EditProfile';
 import Profile from './Profile';
 import SetPassword from './SetPassword';
 import useAuth from './UserAuth';
+
 const { Title } = Typography;
 
 const { Content, Sider } = Layout;
@@ -20,10 +21,11 @@ function ProfileLayout(): JSX.Element {
 
   // 'current': Represents the current state and is initially set to '1' or 'selectedKey' in localStorage
   // 'setCurrent': Funciton to update the 'current' state
-  const [current, setCurrent] = useState(() => {
-    // Retrieve the saved key from localStorage, default to '1' if not found
-    return localStorage.getItem('selectedKey') || '1';
-  });
+  const [current, setCurrent] = useState(
+    () =>
+      // Retrieve the saved key from localStorage, default to '1' if not found
+      localStorage.getItem('selectedKey') || '1'
+  );
 
   const [loading, setLoading] = useState(true); // New loading state
 
@@ -42,7 +44,7 @@ function ProfileLayout(): JSX.Element {
    * @param {String} key - The key used to determine the component to render.
    * @return {JSX.Element | null}  The JSX representation of the selected component.
    */
-  const componentsSwtich = (key: String) => {
+  const componentsSwtich = (key: string) => {
     switch (key) {
       case '1':
         return <Profile />;
@@ -77,18 +79,18 @@ function ProfileLayout(): JSX.Element {
       key: '4'
     }
   ];
-  
-    // Save to localStorage only if the current key is not '4'
-    useEffect(() => {
-      if (current !== '4') {
-        localStorage.setItem('selectedKey', current);
-      }
-    }, [current]);
 
-    // Set loading to false once auth status is fetched
-    useEffect(() => {
-      setLoading(false);
-    }, [auth]);
+  // Save to localStorage only if the current key is not '4'
+  useEffect(() => {
+    if (current !== '4') {
+      localStorage.setItem('selectedKey', current);
+    }
+  }, [current]);
+
+  // Set loading to false once auth status is fetched
+  useEffect(() => {
+    setLoading(false);
+  }, [auth]);
   return (
     <Layout style={{ background: 'none' }}>
       <Navbar auth={auth} username={username} handleSignout={handleSignout} />
@@ -96,31 +98,36 @@ function ProfileLayout(): JSX.Element {
         // Display a loading spinner or message while auth status is being checked
         <div>Loading...</div>
       ) : auth ? (
-      // { auth ? (
-      <Layout style={{ background: 'none', padding: '10px 0' }}>
-        <Sider style={{ background: 'none' }}>
-          <UserAvatar />
-          <Menu onClick={onClick} selectedKeys={[current]} items={items} />
-        </Sider>
+        // { auth ? (
+        <Layout style={{ background: 'none', padding: '10px 0' }}>
+          <Sider style={{ background: 'none' }}>
+            <UserAvatar />
+            <Menu onClick={onClick} selectedKeys={[current]} items={items} />
+          </Sider>
 
-        <Content
-          style={{
-            margin: '0 16px',
-            padding: '0',
-            minHeight: 280,
-            background: 'none',
-            justifyContent: 'center',
-            textAlign: 'center'
-          }}
-        >
-          {componentsSwtich(current)}
-        </Content>
-      </Layout> )
-      :
-      (<div style={{margin: '70px 20px'}}>
-        <Title level={2}>You need to sign in first to access the profile page.</Title>
-        <Title level={2}>Click "Sign in" button in Navbar to go to the sign in page.</Title>
-      </div>)}
+          <Content
+            style={{
+              margin: '0 16px',
+              padding: '0',
+              minHeight: 280,
+              background: 'none',
+              justifyContent: 'center',
+              textAlign: 'center'
+            }}
+          >
+            {componentsSwtich(current)}
+          </Content>
+        </Layout>
+      ) : (
+        <div style={{ margin: '70px 20px' }}>
+          <Title level={2}>
+            You need to sign in first to access the profile page.
+          </Title>
+          <Title level={2}>
+            Click "Sign in" button in Navbar to go to the sign in page.
+          </Title>
+        </div>
+      )}
     </Layout>
   );
 }

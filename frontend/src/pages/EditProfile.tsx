@@ -35,9 +35,8 @@ function EditProfile() {
         setIsSaved(true);
         // navigate(`/profile/${username}`);
         return alert('Edit profile sucessfully');
-      } else {
-        console.error('Failed to save profile data');
       }
+      console.error('Failed to save profile data');
     } catch (error) {
       console.error('Error while saving profile data:', error);
     }
@@ -75,7 +74,7 @@ function EditProfile() {
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-        ></textarea>
+        />
 
         <label>Username Confirmation:</label>
         <input

@@ -27,7 +27,7 @@ function Profile(): JSX.Element {
         const response = await fetchProfileGet(username);
         console.log('response.ok = ', response.status === 200);
         if (response.status === 200) {
-          const data = response.data;
+          const { data } = response;
           console.log('data', data);
           setProfileData(data);
         } else {
