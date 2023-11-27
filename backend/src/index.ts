@@ -59,10 +59,10 @@ app.use(
 
 // Handle registration form submission
 app.post('/api/register', async (req: Request, res: Response) => {
-  const { username, email, password, confirmPassword } = req.body;
+  const { username, email, password, confirm_password } = req.body;
 
   // Check input password
-  if (password !== confirmPassword) {
+  if (password !== confirm_password) {
     return res.status(400).json({ error: 'Passwords do not match.' });
   }
 

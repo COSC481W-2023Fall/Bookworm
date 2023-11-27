@@ -1,35 +1,23 @@
 // Import necessary libraries
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
-import React, { useState } from 'react';
 import './signup-styles.css';
 import { submitRegistrationData } from '../services';
 import { useNavigate } from 'react-router-dom';
 
+type SignUpData = {
+  email: string,
+  username: string,
+  password: string,
+  confirm_password: string
+};
+
 function SignUp() {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match.');
-      return;
-    }
-
+  const handleSubmit = async (val: SignUpData) => {
     try {
-      const response = await submitRegistrationData<typeof formData>(formData);
+      const response = await submitRegistrationData<typeof val>(val);
       alert(response.data.message);
     } catch (error) {
       alert('Registration failed. User may already exist.');
@@ -38,7 +26,6 @@ function SignUp() {
     navigate('../sign-in');
   };
 
-  // NOTE: https://ant.design/components/form#components-form-demo-register
   return (
     <div className='container'>
       <h1>BookWorm Registration</h1>
@@ -71,7 +58,7 @@ function SignUp() {
         </Form.Item>
 
         <Form.Item
-          name='confirm-password'
+          name='confirm_password'
           rules={[
             { required: true, message: 'Please input your password!' },
             ({ getFieldValue }) => ({
