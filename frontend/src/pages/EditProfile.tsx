@@ -1,26 +1,15 @@
-import { useState } from 'react';
+import { Button, Form, Input, Select } from 'antd';
 import './EditProfile.css';
 import useAuth from './UserAuth';
-import { fetchProfileSave } from '../services';
+import { EditProfileData, fetchProfileSave } from '../services';
 
 function EditProfile() {
-  const { username: username1 } = useAuth();
+  const { username } = useAuth();
 
-  const [gender, setGender] = useState('');
-  const [occupation, setOccupation] = useState('');
-  const [favoriteBook, setFavoriteBook] = useState('');
-  const [description, setDescription] = useState('');
-  const [username, setusername] = useState('');
-  const [isSaved, setIsSaved] = useState(false);
+  const onSubmit = async (val: EditProfileData) => {
+    const { gender, occupation, favoriteBook, description, username } = val;
 
-  const handleSave = async () => {
     try {
-      if (username.trim() === '') {
-        return alert('Username cannot be empty');
-      }
-      if (username.trim() !== username1) {
-        return alert('Username is not correct');
-      }
       const response = await fetchProfileSave(
         JSON.stringify({
           gender,
@@ -32,8 +21,6 @@ function EditProfile() {
       );
 
       if (response.status === 201) {
-        setIsSaved(true);
-        // navigate(`/profile/${username}`);
         return alert('Edit profile sucessfully');
       } else {
         console.error('Failed to save profile data');
@@ -44,51 +31,60 @@ function EditProfile() {
   };
 
   return (
-    <div className='user-info-edit'>
+    <div className='edit-profile-form'>
       <h1>User Info Edit</h1>
-      <div className='form'>
-        <label>Gender:</label>
-        <select value={gender} onChange={(e) => setGender(e.target.value)}>
-          <option value='' disabled>
-            --Please select gender--
-          </option>
-          <option value='male'>Male</option>
-          <option value='female'>Female</option>
-          <option value='other'>Other</option>
-        </select>
+      <Form name='basic' autoComplete='off' onFinish={onSubmit}>
+        <Form.Item name='gender'>
+          <Select placeholder='Gender'>
+            <Select.Option value='male'>Male</Select.Option>
+            <Select.Option value='female'>Female</Select.Option>
+            <Select.Option value='other'>Other</Select.Option>
+          </Select>
+        </Form.Item>
 
-        <label>Occupation:</label>
-        <input
-          type='text'
-          value={occupation}
-          onChange={(e) => setOccupation(e.target.value)}
-        />
+        <Form.Item name='occupation'>
+          <Input placeholder='Occupation' />
+        </Form.Item>
 
-        <label>Favorite Book:</label>
-        <input
-          type='text'
-          value={favoriteBook}
-          onChange={(e) => setFavoriteBook(e.target.value)}
-        />
+        <Form.Item name='favoriteBook'>
+          <Input placeholder='Favorite Book' />
+        </Form.Item>
 
-        <label>About me:</label>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        ></textarea>
+        <Form.Item name='description'>
+          <Input placeholder='About Me' />
+        </Form.Item>
 
-        <label>Username Confirmation:</label>
-        <input
-          type='text'
-          value={username}
-          onChange={(e) => setusername(e.target.value)}
-        />
+        <Form.Item
+          name='username'
+          rules={[
+            { required: true, message: 'Please input your username!' },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('username') === username) {
+                  return Promise.resolve();
+                }
 
-        <button className='editPageButton' onClick={handleSave}>
+                return Promise.reject('Username does not match');
+              }
+            })
+          ]}
+        >
+          <Input placeholder='Username Confirmation' />
+        </Form.Item>
+
+        <Button
+          type='primary'
+          htmlType='submit'
+          style={{
+            width: '300px',
+            height: '40px',
+            borderRadius: '20px',
+            backgroundColor: 'var(--secondary-button-background)'
+          }}
+        >
           Save & Show
-        </button>
-        {isSaved}
-      </div>
+        </Button>
+      </Form>
     </div>
   );
 }
