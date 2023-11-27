@@ -141,7 +141,7 @@ export async function fetchProfileSave(data: string) {
   return axios.post(
     `${BASE_URL}/saveProfileData`,
     {
-      body: data
+      body: JSON.parse(data)
     },
     {
       headers: {
