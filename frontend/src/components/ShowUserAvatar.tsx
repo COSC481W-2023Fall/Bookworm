@@ -3,9 +3,9 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 type UserAvatarProps = {
-  name?: string,
-  size?: number,
-}
+  name?: string;
+  size?: number;
+};
 
 const ShowUserAvatar: React.FC<UserAvatarProps> = ({ name, size }) => {
   // Get the first character of the username
@@ -16,11 +16,10 @@ const ShowUserAvatar: React.FC<UserAvatarProps> = ({ name, size }) => {
   if (!name) {
     let params = useParams<{ username?: string }>();
     username = params.username;
-  }
-  else {
+  } else {
     username = name;
   }
-  
+
   const firstCharacter: string | undefined = username
     ? username.charAt(0).toUpperCase()
     : undefined;
@@ -30,7 +29,11 @@ const ShowUserAvatar: React.FC<UserAvatarProps> = ({ name, size }) => {
     <Avatar
       size={finalSize}
       shape='square'
-      style={{ backgroundColor: '#fde3cf', color: '#f56a00', fontSize: `${finalSize/2}px` }}
+      style={{
+        backgroundColor: '#fde3cf',
+        color: '#f56a00',
+        fontSize: `${finalSize / 2}px`
+      }}
     >
       {firstCharacter}
     </Avatar>
