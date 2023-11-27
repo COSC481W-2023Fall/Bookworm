@@ -86,7 +86,7 @@ function SignUp() {
               backgroundColor: 'var(--secondary-button-background)'
             }}
           >
-            Sign in
+            Register
           </Button>
         </Form.Item>
       </Form>
