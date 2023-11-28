@@ -90,14 +90,6 @@ export type SignData = {
   password: string;
 };
 
-export type EditProfileData = {
-  gender: string;
-  occupation: string;
-  favoriteBook: string;
-  description: string;
-  username: string;
-};
-
 // Perform an asynchronous sign-in request using Axios.
 export async function fetchSignIn(val: SignData) {
   const res = await axios.post(`${BASE_URL}/sign-in`, { val });

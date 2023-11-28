@@ -1,23 +1,16 @@
 import { Button, Form, Input, Select } from 'antd';
 import './EditProfile.css';
 import useAuth from './UserAuth';
-import { EditProfileData, fetchProfileSave } from '../services';
+import { fetchProfileSave } from '../services';
+import { ProfileData } from './Profile';
 
 function EditProfile() {
   const { username } = useAuth();
 
-  const onSubmit = async (val: EditProfileData) => {
-    const { gender, occupation, favoriteBook, description, username } = val;
-
+  const onSubmit = async (val: ProfileData) => {
     try {
       const response = await fetchProfileSave(
-        JSON.stringify({
-          gender,
-          occupation,
-          favoriteBook,
-          description,
-          username
-        })
+        JSON.stringify(val)
       );
 
       if (response.status === 201) {
