@@ -1,5 +1,6 @@
-import { Space, Radio, Select, ConfigProvider } from 'antd';
+import { Space, Radio, Select, ConfigProvider, RadioChangeEvent } from 'antd';
 import { useSearchParams } from 'react-router-dom';
+import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import SearchDisplay from '../components/SearchDisplay';
 import styles from './Home.module.css';
@@ -8,8 +9,11 @@ import useAuth from './UserAuth';
 function Search(): JSX.Element {
   const { auth, username, handleSignout } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [sort, setSort] = useState('title');
+  const [order, setOrder] = useState('asc');
 
   const handleSort = (value: string) => {
+    setSort(value);
     setSearchParams({
       q: searchParams.get('q') || '',
       fields: searchParams.get('fields') || '',
@@ -18,12 +22,13 @@ function Search(): JSX.Element {
     });
   };
 
-  const handleOrder = (event) => {
+  const handleOrder = ({ target: { value } }: RadioChangeEvent) => {
+    setOrder(value);
     setSearchParams({
       q: searchParams.get('q') || '',
       fields: searchParams.get('fields') || '',
       sort: searchParams.get('sort') || '',
-      order: event.target.value
+      order: value
     });
   };
 
@@ -42,7 +47,7 @@ function Search(): JSX.Element {
             <b>Sort By:</b>
           </p>
           <Select
-            defaultValue='title'
+            defaultValue={sort}
             style={{ width: 150 }}
             options={[
               { value: 'title', label: 'Title' },
@@ -61,7 +66,7 @@ function Search(): JSX.Element {
             ]}
             optionType='button'
             buttonStyle='solid'
-            defaultValue='asc'
+            defaultValue={order}
             onChange={handleOrder}
           />
         </Space>

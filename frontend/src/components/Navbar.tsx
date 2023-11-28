@@ -54,7 +54,9 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
       pathname: '/search',
       search: createSearchParams({
         q: searchText,
-        fields: searchParams.get('fields') || ''
+        fields: searchParams.get('fields') || '',
+        sort: searchParams.get('sort') || '',
+        order: searchParams.get('order') || ''
       }).toString()
     });
   };

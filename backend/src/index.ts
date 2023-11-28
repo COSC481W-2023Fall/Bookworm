@@ -200,8 +200,8 @@ app.get('/api/search', async (req: Request, res: Response) => {
     const books = await searchBooks(
       (req.query.q ? req.query.q : '') as string,
       (req.query.fields ? req.query.fields : '') as string,
-      (req.query.sort ? req.query.sort : 'title') as string,
-      (req.query.order ? req.query.order : 'asc') as string,
+      (req.query.sort === '' ? 'title' : req.query.sort) as string,
+      (req.query.order === '' ? 'asc' : req.query.order) as string,
       offset,
       limit
     );
