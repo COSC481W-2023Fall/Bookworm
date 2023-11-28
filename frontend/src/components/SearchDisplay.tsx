@@ -33,6 +33,8 @@ export default function SearchDisplay() {
       const res = await searchBooks(
         searchParams.get('q') || '',
         searchParams.get('fields') || '',
+        searchParams.get('sort') || '',
+        searchParams.get('order') || '',
         offset,
         limit
       );

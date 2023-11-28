@@ -63,11 +63,13 @@ export async function getBookCount() {
 export async function searchBooks(
   query: string,
   fields: string,
+  sort: string,
+  order: string,
   offset: number,
   limit: number
 ) {
   const res = await axios.get(
-    `${BASE_URL}/search?q=${query}&fields=${fields}&offset=${offset}&limit=${limit}`
+    `${BASE_URL}/search?q=${query}&fields=${fields}&offset=${offset}&limit=${limit}&sort=${sort}&order=${order}`
   );
 
   if (res.status !== 200) {
