@@ -11,6 +11,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Shelf from './pages/Shelf';
 import Reviews from './pages/Reviews';
+import Error from './pages/ErrorPage';
 
 function App(): JSX.Element {
   return (
@@ -32,6 +33,7 @@ function App(): JSX.Element {
         <Route path='/profile/:username' element={<ShowProfileLayout />} />
         <Route path='/profile' element={<ProfileLayout />} />
         <Route path='/book/:isbn/reviews' element={<Reviews />} />
+        <Route path='*' element={<Error />} />
       </Routes>
     </ConfigProvider>
   );
