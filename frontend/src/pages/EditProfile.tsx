@@ -9,9 +9,7 @@ function EditProfile() {
 
   const onSubmit = async (val: ProfileData) => {
     try {
-      const response = await fetchProfileSave(
-        JSON.stringify(val)
-      );
+      const response = await fetchProfileSave(JSON.stringify(val));
 
       if (response.status === 201) {
         return alert('Edit profile sucessfully');
