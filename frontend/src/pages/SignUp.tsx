@@ -2,9 +2,8 @@
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import './signup-styles.css';
-import { Link, useNavigate } from 'react-router-dom';
-import { submitRegistrationData } from '../services';
 import { useNavigate } from 'react-router-dom';
+import { submitRegistrationData } from '../services';
 
 type SignUpData = {
   email: string;
