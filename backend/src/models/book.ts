@@ -127,11 +127,24 @@ export async function searchBooks(
 
   const safeFields = ['title', 'author', 'publisher', 'isbn', 'genres', ''];
 
+  const sortSafe = [
+    'title',
+    'author',
+    'publisher',
+    'genres',
+    'page_count',
+    'publication_date'
+  ];
+
   const sortObject = {
     [sort]: order as SortOrder
   };
 
   if (!searchFields.every((elem) => safeFields.includes(elem))) {
+    return null;
+  }
+
+  if (!sortSafe.includes(sort)) {
     return null;
   }
 
