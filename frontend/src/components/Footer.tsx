@@ -14,7 +14,7 @@ function Footer(): JSX.Element {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginTop: 450
+          marginBottom: 20
         }}
       >
         <a
