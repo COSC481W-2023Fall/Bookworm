@@ -6,7 +6,15 @@ import {
   useSearchParams
 } from 'react-router-dom';
 import { useState } from 'react';
-import { Button, Menu, Input, Typography, ConfigProvider, Select } from 'antd';
+import {
+  Button,
+  Menu,
+  Input,
+  Typography,
+  ConfigProvider,
+  Select,
+  Image
+} from 'antd';
 import type { MenuProps, SelectProps } from 'antd';
 import './Navbar.css';
 
@@ -121,7 +129,17 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
 
   return (
     <div className='navbar'>
-      <Link to='/' style={{ textDecoration: 'none', marginRight: 'auto' }}>
+      <Link
+        to='/'
+        style={{
+          textDecoration: 'none',
+          marginRight: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 5
+        }}
+      >
+        <Image src='../public/logo.png' width={50} preview={false} />
         <Typography.Title level={1} className='title'>
           BookWorm
         </Typography.Title>
