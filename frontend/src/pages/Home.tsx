@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Bookshelf from '../components/Bookshelf';
 import styles from './Home.module.css';
 import useAuth from './UserAuth';
+import Footer from '../components/Footer';
 
 function Home(): JSX.Element {
   // Temporary book retrieval for testign the bookshelf component.
@@ -38,6 +39,7 @@ function Home(): JSX.Element {
         </Typography.Paragraph>
       </div>
       <Bookshelf shelfName='Our Picks' books={shelf1} />
+      <Footer />
     </div>
   );
 }
