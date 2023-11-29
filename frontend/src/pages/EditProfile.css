@@ -1,3 +1,14 @@
+.user-info-edit {
+  text-align: center;
+  padding: 5px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 label {
   margin: 10px;
 }
@@ -29,13 +40,4 @@ textarea {
   padding: 10px 20px;
   margin: 4px 0;
   cursor: pointer;
-}
-
-.edit-profile-form {
-  margin-left: 150px;
-  width: 500px;
-}
-
-.ant-select-selection-placeholder {
-  text-align: left;
 }
