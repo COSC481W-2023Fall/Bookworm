@@ -23,8 +23,13 @@ function EditProfile() {
   return (
     <div className='edit-profile-form'>
       <h1>Edit Profile</h1>
-      <Form name='basic' autoComplete='off' style={{ maxWidth: 600, padding: '0 50px' }}
-      layout='vertical' onFinish={onSubmit}>
+      <Form
+        name='basic'
+        autoComplete='off'
+        style={{ maxWidth: 600, padding: '0 50px' }}
+        layout='vertical'
+        onFinish={onSubmit}
+      >
         <Form.Item label='Gender' name='gender'>
           <Select placeholder='Gender'>
             <Select.Option value='male'>Male</Select.Option>
