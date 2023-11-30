@@ -1,6 +1,6 @@
 import type { MenuProps, SelectProps } from 'antd';
 import { Button, ConfigProvider, Input, Menu, Select, Typography } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Link,
   createSearchParams,
@@ -43,6 +43,10 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
     }
   ];
   const location = useLocation();
+
+  useEffect(() => {
+    setSearchText(searchParams.get('q') || '');
+  }, [searchParams]);
 
   const handleInput = (event: { target: { value: string } }) => {
     const text = event.target.value;
@@ -139,6 +143,7 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
             size='large'
             onChange={handleInput}
             onSearch={onSearch}
+            value={searchText}
             enterButton
           />
           {location.pathname === '/search' ? (

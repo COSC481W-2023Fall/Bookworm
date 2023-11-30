@@ -1,6 +1,6 @@
 import { Space, Radio, Select, ConfigProvider, RadioChangeEvent } from 'antd';
 import { useSearchParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import SearchDisplay from '../components/SearchDisplay';
 import styles from './Home.module.css';
@@ -11,6 +11,11 @@ function Search(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
   const [sort, setSort] = useState('title');
   const [order, setOrder] = useState('asc');
+
+  useEffect(() => {
+    setSort(searchParams.get('sort') || 'title');
+    setOrder(searchParams.get('order') || 'asc');
+  }, [searchParams]);
 
   const handleSort = (value: string) => {
     setSort(value);
