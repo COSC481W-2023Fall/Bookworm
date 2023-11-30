@@ -41,15 +41,15 @@ function EditProfile() {
           </Select>
         </Form.Item>
 
-        <Form.Item name='occupation'>
+        <Form.Item label='Occupation' name='occupation'>
           <Input placeholder='Occupation' />
         </Form.Item>
 
-        <Form.Item name='favoriteBook'>
+        <Form.Item label='Favorite Book' name='favoriteBook'>
           <Input placeholder='Favorite Book' />
         </Form.Item>
 
-        <Form.Item name='description'>
+        <Form.Item label='About Me' name='description'>
           <Input placeholder='About Me' />
         </Form.Item>
 
