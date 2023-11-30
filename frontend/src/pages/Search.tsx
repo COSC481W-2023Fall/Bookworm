@@ -52,7 +52,7 @@ function Search(): JSX.Element {
             <b>Sort By:</b>
           </p>
           <Select
-            defaultValue={sort}
+            value={sort}
             style={{ width: 150 }}
             options={[
               { value: 'title', label: 'Title' },
@@ -71,7 +71,7 @@ function Search(): JSX.Element {
             ]}
             optionType='button'
             buttonStyle='solid'
-            defaultValue={order}
+            value={order}
             onChange={handleOrder}
           />
         </Space>
