@@ -22,9 +22,10 @@ function EditProfile() {
 
   return (
     <div className='edit-profile-form'>
-      <h1>User Info Edit</h1>
-      <Form name='basic' autoComplete='off' onFinish={onSubmit}>
-        <Form.Item name='gender'>
+      <h1>Edit Profile</h1>
+      <Form name='basic' autoComplete='off' style={{ maxWidth: 600, padding: '0 50px' }}
+      layout='vertical' onFinish={onSubmit}>
+        <Form.Item label='Gender' name='gender'>
           <Select placeholder='Gender'>
             <Select.Option value='male'>Male</Select.Option>
             <Select.Option value='female'>Female</Select.Option>
@@ -32,19 +33,20 @@ function EditProfile() {
           </Select>
         </Form.Item>
 
-        <Form.Item name='occupation'>
+        <Form.Item label='Occupation' name='occupation'>
           <Input placeholder='Occupation' />
         </Form.Item>
 
-        <Form.Item name='favoriteBook'>
+        <Form.Item label='Favorite Book' name='favoriteBook'>
           <Input placeholder='Favorite Book' />
         </Form.Item>
 
-        <Form.Item name='description'>
+        <Form.Item label='About Me' name='description'>
           <Input placeholder='About Me' />
         </Form.Item>
 
         <Form.Item
+          label='Username Confirmation'
           name='username'
           rules={[
             { required: true, message: 'Please input your username!' },
