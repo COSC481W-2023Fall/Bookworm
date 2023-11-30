@@ -73,7 +73,7 @@ function Profile(): JSX.Element {
     },
     {
       key: '2',
-      label: 'Occupattion',
+      label: 'Occupation',
       children: profileData?.occupation
     },
     {
