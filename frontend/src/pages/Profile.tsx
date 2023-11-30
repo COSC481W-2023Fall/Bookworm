@@ -5,7 +5,7 @@ import useAuth from './UserAuth';
 
 const { Title } = Typography;
 
-interface ProfileData {
+export interface ProfileData {
   gender: string;
   occupation: string;
   favoriteBook: string;
