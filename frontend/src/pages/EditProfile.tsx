@@ -9,7 +9,10 @@ function EditProfile() {
 
   const onSubmit = async (val: ProfileData) => {
     try {
-      const response = await fetchProfileSave(JSON.stringify(val));
+      const response = await fetchProfileSave(JSON.stringify({
+        ...val,
+        username
+      }));
 
       if (response.status === 201) {
         return alert('Edit profile sucessfully');
@@ -48,25 +51,6 @@ function EditProfile() {
 
         <Form.Item label='About Me' name='description'>
           <Input placeholder='About Me' />
-        </Form.Item>
-
-        <Form.Item
-          label='Username Confirmation'
-          name='username'
-          rules={[
-            { required: true, message: 'Please input your username!' },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue('username') === username) {
-                  return Promise.resolve();
-                }
-
-                return Promise.reject('Username does not match');
-              }
-            })
-          ]}
-        >
-          <Input placeholder='Username Confirmation' />
         </Form.Item>
 
         <Button

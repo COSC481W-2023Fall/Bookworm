@@ -10,7 +10,6 @@ export interface ProfileData {
   occupation: string;
   favoriteBook: string;
   description: string;
-  username: string;
 }
 
 function Profile(): JSX.Element {
