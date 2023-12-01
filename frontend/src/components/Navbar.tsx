@@ -148,7 +148,13 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
           )}
         </div>
       </ConfigProvider>
-      <Menu mode='horizontal' items={items} className='menu' disabledOverflow />
+      <Menu
+        mode='horizontal'
+        items={items}
+        className='menu'
+        selectable={false}
+        disabledOverflow
+      />
     </div>
   );
 }
