@@ -26,6 +26,13 @@
   padding: 10px !important;
 }
 
+.ant-menu-item:hover,
+.ant-menu-item:hover::after,
+.ant-menu-item::after {
+  border-bottom: none !important;
+  transition: none !important;
+}
+
 .menuButton {
   padding: 0px;
 }
