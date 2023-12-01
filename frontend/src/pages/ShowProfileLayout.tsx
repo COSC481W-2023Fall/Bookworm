@@ -12,7 +12,7 @@ function ShowProfileLayout(): JSX.Element {
   // `handleSignout`: Function to handle the signout action.
   const { auth, username, handleSignout } = useAuth();
   return (
-    <Layout style={{ background: 'none', padding: '0 50px' }}>
+    <Layout style={{ background: 'none' }}>
       <Navbar auth={auth} username={username} handleSignout={handleSignout} />
       <Layout style={{ background: 'none', padding: '10px 0' }}>
         <Sider style={{ background: 'none', margin: '70px 20px' }}>
