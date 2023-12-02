@@ -71,7 +71,7 @@ function ProfileLayout(): JSX.Element {
       key: '2'
     },
     {
-      label: 'Set Password',
+      label: 'Reset Password',
       key: '3'
     },
     {
