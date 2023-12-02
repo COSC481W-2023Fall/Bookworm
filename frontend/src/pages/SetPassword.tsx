@@ -22,7 +22,12 @@ function SubmitButton({ form }: { form: FormInstance }) {
   }, [values]);
 
   return (
-    <Button type='primary' htmlType='submit' disabled={!submittable}>
+    <Button type='primary' htmlType='submit' disabled={!submittable}           style={{
+      width: '150px',
+      height: '40px',
+      borderRadius: '20px',
+      backgroundColor: 'var(--secondary-button-background)'
+    }}>
       Submit
     </Button>
   );
@@ -52,7 +57,7 @@ function SetPassword() {
         layout='vertical'
         onFinish={handlerFinish}
       >
-        <h1>Set Password</h1>
+        <h1>Reset Password</h1>
 
         <Form.Item
           label='Password'
@@ -91,7 +96,13 @@ function SetPassword() {
         <Form.Item>
           <Space>
             <SubmitButton form={form} />
-            <Button htmlType='reset'>Reset</Button>
+            <Button htmlType='reset'           style={{
+            width: '150px',
+            height: '40px',
+            borderRadius: '20px',
+            color: 'white',
+            backgroundColor: 'var(--secondary-button-background)'
+          }} >Reset</Button>
           </Space>
         </Form.Item>
       </Form>
