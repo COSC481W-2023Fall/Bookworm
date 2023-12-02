@@ -3,35 +3,25 @@ import Navbar from '../components/Navbar';
 import Bookshelf from '../components/Bookshelf';
 import styles from './Home.module.css';
 import useAuth from './UserAuth';
+import Footer from '../components/Footer';
 
 function Home(): JSX.Element {
   // Temporary book retrieval for testign the bookshelf component.
   const shelf1 = [
     {
-      isbn: '0156007754'
+      isbn: '0140119507' // If the River Was Whiskey
     },
     {
-      isbn: '0765365278'
+      isbn: '0553575651' // Liveship Traders 3
     },
     {
-      isbn: ' 0060883286'
+      isbn: '0156007754' // Blindness
     },
     {
-      isbn: '1939905214'
+      isbn: '849759682X' // Dune
     },
     {
-      isbn: '198481785X'
-    }
-  ];
-  const shelf2 = [
-    {
-      isbn: '0670826901'
-    },
-    {
-      isbn: '1324093021'
-    },
-    {
-      isbn: '0593466349'
+      isbn: '006112009X' // One Hundred Years of Solitude
     }
   ];
 
@@ -39,7 +29,6 @@ function Home(): JSX.Element {
     Dive into a vibrant community of book enthusiasts and bibliophiles as you embark on a literary journey like no other. 
     Bookworm isn't just a social media app; it's a sanctuary for readers, a digital haven for bookworms of all kinds.`;
 
-  // const { auth, username, handleSignout } = useAuth();
   const { auth, username, handleSignout } = useAuth();
   return (
     <div className={styles.homePage}>
@@ -49,8 +38,8 @@ function Home(): JSX.Element {
           {blurb}
         </Typography.Paragraph>
       </div>
-      <Bookshelf shelfName='Book Shelf' books={shelf1} />
-      <Bookshelf shelfName='Recommendations' books={shelf2} />
+      <Bookshelf shelfName='Our Picks' books={shelf1} />
+      <Footer />
     </div>
   );
 }

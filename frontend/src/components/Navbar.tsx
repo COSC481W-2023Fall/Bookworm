@@ -1,6 +1,3 @@
-import type { MenuProps, SelectProps } from 'antd';
-import { Button, ConfigProvider, Input, Menu, Select, Typography } from 'antd';
-import { useState } from 'react';
 import {
   Link,
   createSearchParams,
@@ -8,7 +5,18 @@ import {
   useNavigate,
   useSearchParams
 } from 'react-router-dom';
-import styles from './Navbar.module.css';
+import { useEffect, useState } from 'react';
+import {
+  Button,
+  Menu,
+  Input,
+  Typography,
+  ConfigProvider,
+  Select,
+  Image
+} from 'antd';
+import type { MenuProps, SelectProps } from 'antd';
+import './Navbar.css';
 
 interface NavbarProps {
   auth: boolean;
@@ -44,6 +52,10 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
   ];
   const location = useLocation();
 
+  useEffect(() => {
+    setSearchText(searchParams.get('q') || '');
+  }, [searchParams]);
+
   const handleInput = (event: { target: { value: string } }) => {
     const text = event.target.value;
     setSearchText(text);
@@ -54,7 +66,9 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
       pathname: '/search',
       search: createSearchParams({
         q: searchText,
-        fields: searchParams.get('fields') || ''
+        fields: searchParams.get('fields') || '',
+        sort: searchParams.get('sort') || '',
+        order: searchParams.get('order') || ''
       }).toString()
     });
   };
@@ -73,9 +87,12 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
         {
           label: (
             <Link to='/profile'>
-              <Button type='text'>
-                <Typography.Text strong className={styles.menuLink}>
-                  Hi {username}
+              <Button type='text' className='menuButton'>
+                <Typography.Text strong className='menuLink'>
+                  Hi{' '}
+                  {username.length > 7
+                    ? username.substring(0, 8).concat('...')
+                    : username}
                 </Typography.Text>
               </Button>
             </Link>
@@ -84,8 +101,8 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
         },
         {
           label: (
-            <Button type='link' onClick={handleSignout}>
-              <Typography.Text strong className={styles.menuLink}>
+            <Button type='link' onClick={handleSignout} className='menuButton'>
+              <Typography.Text strong className='menuLink'>
                 Sign Out
               </Typography.Text>
             </Button>
@@ -97,7 +114,7 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
         {
           label: (
             <Link to='/sign-in'>
-              <Typography.Text strong className={styles.menuLink}>
+              <Typography.Text strong className='menuLink'>
                 Sign In
               </Typography.Text>
             </Link>
@@ -107,7 +124,7 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
         {
           label: (
             <Link to='/sign-up'>
-              <Typography.Text strong className={styles.menuLink}>
+              <Typography.Text strong className='menuLink'>
                 Join
               </Typography.Text>
             </Link>
@@ -117,8 +134,18 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
       ];
 
   return (
-    <div className={styles.navbar}>
-      <Link to='/' style={{ textDecoration: 'none' }}>
+    <div className='navbar'>
+      <Link
+        to='/'
+        style={{
+          textDecoration: 'none',
+          marginRight: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 5
+        }}
+      >
+        <Image src='../logo.png' width={50} preview={false} />
         <Typography.Title level={1} className='title'>
           BookWorm
         </Typography.Title>
@@ -130,19 +157,20 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
           }
         }}
       >
-        <div className={styles.searchContainer}>
+        <div className='searchContainer'>
           <Input.Search
-            className={styles.search}
+            className='search'
             placeholder='Book Title, Author, ISBN'
             size='large'
             onChange={handleInput}
             onSearch={onSearch}
+            value={searchText}
             enterButton
           />
           {location.pathname === '/search' ? (
             <Select
               mode='multiple'
-              className={styles.fieldSelection}
+              className='fieldSelection'
               defaultValue={['title', 'author', 'isbn', 'publisher', 'genres']}
               options={searchFields}
               onChange={handleFields}
@@ -153,7 +181,7 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
           )}
         </div>
       </ConfigProvider>
-      <Menu mode='horizontal' items={items} className={styles.menu} />
+      <Menu mode='horizontal' items={items} className='menu' disabledOverflow />
     </div>
   );
 }

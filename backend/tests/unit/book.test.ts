@@ -52,12 +52,12 @@ describe('Fetch multiple books', () => {
 
 describe('Search through all books', () => {
   test('Make a search', async () => {
-    const books = await searchBooks('hitchhiker', '', 0, 5);
+    const books = await searchBooks('hitchhiker', '', 'title', 'asc', 0, 5);
 
     expect(books!).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          isbn: '0517226952'
+          isbn: '1400052939'
         })
       ])
     );
@@ -65,12 +65,47 @@ describe('Search through all books', () => {
     expect(books?.length).toBeLessThanOrEqual(5);
   });
 
-  test('Bad data searh', async () => {
-    const emptyQuery = await searchBooks('badisbn', 'isbn', 0, 5);
-    const badField = await searchBooks('hitchhiker', 'issbn', 0, 5);
-    const negativeOffset = await searchBooks('hithhiker', 'title', -1, 0);
-    const zeroLimit = await searchBooks('hithhiker', 'title', 0, 0);
-    const valid = await searchBooks('hitchhiker', 'title', 0, 5);
+  test('Bad data search', async () => {
+    const emptyQuery = await searchBooks(
+      'badisbn',
+      'isbn',
+      'title',
+      'asc',
+      0,
+      5
+    );
+    const badField = await searchBooks(
+      'hitchhiker',
+      'issbn',
+      'title',
+      'asc',
+      0,
+      5
+    );
+    const negativeOffset = await searchBooks(
+      'hithhiker',
+      'title',
+      'title',
+      'asc',
+      -1,
+      0
+    );
+    const zeroLimit = await searchBooks(
+      'hithhiker',
+      'title',
+      'title',
+      'asc',
+      0,
+      0
+    );
+    const valid = await searchBooks(
+      'hitchhiker',
+      'title',
+      'title',
+      'asc',
+      0,
+      5
+    );
 
     expect(emptyQuery).toStrictEqual([]);
     expect(badField).toBe(null);

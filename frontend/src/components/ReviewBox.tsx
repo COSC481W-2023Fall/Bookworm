@@ -1,15 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-import {
-  List,
-  Typography,
-  Avatar,
-  Button,
-  ConfigProvider,
-  Flex,
-  Modal
-} from 'antd';
+import { List, Typography, Button, ConfigProvider, Flex, Modal } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import {
   IReview,
@@ -20,6 +12,7 @@ import {
 } from '../services';
 import styles from './ReviewBox.module.css';
 import useAuth from '../pages/UserAuth';
+import ShowUserAvatar from './ShowUserAvatar';
 
 type PaginationPosition = 'top' | 'bottom' | 'both';
 
@@ -210,12 +203,7 @@ export default function ReviewBox(): JSX.Element {
         renderItem={(review) => (
           <List.Item>
             <List.Item.Meta
-              // TODO: Replace this with user's pfp
-              avatar={
-                <Avatar
-                  src={`https://covers.openlibrary.org/b/isbn/${isbn}-S.jpg`}
-                />
-              }
+              avatar={<ShowUserAvatar name={review.username} size={32} />}
               title={
                 <Flex justify='space-between'>
                   <Typography.Text>{review.username}</Typography.Text>
