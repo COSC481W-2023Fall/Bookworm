@@ -75,7 +75,7 @@ function ShowProfile() {
       ) : (
         <>
         <h1 style={{fontSize: '100px', fontWeight: 'bold' }}>404</h1>
-        <p style={{fontSize: '20px'}}>Sorry, the user <span style={{ color: 'red', fontWeight: 'bold' }}>{username}</span> does not exist</p>
+        <p style={{fontSize: '20px'}}>Sorry, the user{' '} <span style={{ color: 'red', fontWeight: 'bold' }}>{username}</span>{' '} does not exist</p>
         </>
       )}
     </div>
