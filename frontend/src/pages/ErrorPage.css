@@ -28,19 +28,6 @@
   transition: background-color 0.3s ease;
 }
 
-.container404 a:hover {
-  background-color: #2980b9;
-}
-
-#goback {
-  color: rgb(236, 203, 35);
-  font-weight: bold;
-}
-
-#goback:hover {
-  background-color: #2980b9;
-}
-
 #page {
   color: darkred;
 }
