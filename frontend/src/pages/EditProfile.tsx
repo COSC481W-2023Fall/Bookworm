@@ -1,8 +1,8 @@
 import { Button, Form, Input, Select } from 'antd';
-import './EditProfile.css';
-import useAuth from './UserAuth';
 import { fetchProfileSave } from '../services';
+import './EditProfile.css';
 import { ProfileData } from './Profile';
+import useAuth from './UserAuth';
 
 function EditProfile() {
   const { username } = useAuth();
