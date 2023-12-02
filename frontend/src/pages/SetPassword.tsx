@@ -22,12 +22,17 @@ function SubmitButton({ form }: { form: FormInstance }) {
   }, [values]);
 
   return (
-    <Button type='primary' htmlType='submit' disabled={!submittable}           style={{
-      width: '150px',
-      height: '40px',
-      borderRadius: '20px',
-      backgroundColor: 'var(--secondary-button-background)'
-    }}>
+    <Button
+      type='primary'
+      htmlType='submit'
+      disabled={!submittable}
+      style={{
+        width: '150px',
+        height: '40px',
+        borderRadius: '20px',
+        backgroundColor: 'var(--secondary-button-background)'
+      }}
+    >
       Submit
     </Button>
   );
@@ -96,13 +101,18 @@ function SetPassword() {
         <Form.Item>
           <Space>
             <SubmitButton form={form} />
-            <Button htmlType='reset'           style={{
-            width: '150px',
-            height: '40px',
-            borderRadius: '20px',
-            color: 'white',
-            backgroundColor: 'var(--secondary-button-background)'
-          }} >Reset</Button>
+            <Button
+              htmlType='reset'
+              style={{
+                width: '150px',
+                height: '40px',
+                borderRadius: '20px',
+                color: 'white',
+                backgroundColor: 'var(--secondary-button-background)'
+              }}
+            >
+              Reset
+            </Button>
           </Space>
         </Form.Item>
       </Form>
