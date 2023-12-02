@@ -44,57 +44,57 @@ function SetPassword() {
 
   return (
     <div className='edit-profile-form'>
-    <Form
-      form={form}
-      name='dependencies'
-      autoComplete='off'
-      style={{ maxWidth: 600, padding: '0 50px' }}
-      layout='vertical'
-      onFinish={handlerFinish}
-    >
-      <h1>Set Password</h1>
-
-      <Form.Item
-        label='Password'
-        name='password'
-        rules={[{ required: true }]}
-        wrapperCol={{ span: 32 }}
+      <Form
+        form={form}
+        name='dependencies'
+        autoComplete='off'
+        style={{ maxWidth: 600, padding: '0 50px' }}
+        layout='vertical'
+        onFinish={handlerFinish}
       >
-        <Input.Password />
-      </Form.Item>
+        <h1>Set Password</h1>
 
-      {/* Field */}
-      <Form.Item
-        label='Confirm Password'
-        name='password2'
-        dependencies={['password']}
-        rules={[
-          {
-            required: true
-          },
-          ({ getFieldValue }) => ({
-            validator(_, value) {
-              if (!value || getFieldValue('password') === value) {
-                return Promise.resolve();
+        <Form.Item
+          label='Password'
+          name='password'
+          rules={[{ required: true }]}
+          wrapperCol={{ span: 32 }}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        {/* Field */}
+        <Form.Item
+          label='Confirm Password'
+          name='password2'
+          dependencies={['password']}
+          rules={[
+            {
+              required: true
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error('The new password that you entered does not match!')
+                );
               }
-              return Promise.reject(
-                new Error('The new password that you entered does not match!')
-              );
-            }
-          })
-        ]}
-        wrapperCol={{ span: 32 }}
-      >
-        <Input.Password />
-      </Form.Item>
+            })
+          ]}
+          wrapperCol={{ span: 32 }}
+        >
+          <Input.Password />
+        </Form.Item>
 
-      <Form.Item>
-        <Space>
-          <SubmitButton form={form} />
-          <Button htmlType='reset'>Reset</Button>
-        </Space>
-      </Form.Item>
-    </Form>
+        <Form.Item>
+          <Space>
+            <SubmitButton form={form} />
+            <Button htmlType='reset'>Reset</Button>
+          </Space>
+        </Form.Item>
+      </Form>
     </div>
   );
 }
