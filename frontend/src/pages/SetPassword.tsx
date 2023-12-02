@@ -2,6 +2,7 @@ import type { FormInstance } from 'antd';
 import { Button, Form, Input, Space } from 'antd';
 import React from 'react';
 import { fetchResetPassword } from '../services/index';
+import './EditProfile.css';
 
 function SubmitButton({ form }: { form: FormInstance }) {
   const [submittable, setSubmittable] = React.useState(false);
@@ -42,6 +43,7 @@ function SetPassword() {
   };
 
   return (
+    <div className='edit-profile-form'>
     <Form
       form={form}
       name='dependencies'
@@ -93,6 +95,7 @@ function SetPassword() {
         </Space>
       </Form.Item>
     </Form>
+    </div>
   );
 }
 export default SetPassword;

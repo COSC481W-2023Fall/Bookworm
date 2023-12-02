@@ -1,17 +1,17 @@
-import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-import { List, Typography, Button, ConfigProvider, Flex } from 'antd';
+import { Button, ConfigProvider, Flex, List, Typography } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import useAuth from '../pages/UserAuth';
 import {
   IReview,
   addReviewByISBN,
-  fetchBookByISBN,
   deleteReview,
-  editReview
+  editReview,
+  fetchBookByISBN
 } from '../services';
 import styles from './ReviewBox.module.css';
-import useAuth from '../pages/UserAuth';
 import ShowUserAvatar from './ShowUserAvatar';
 
 type PaginationPosition = 'top' | 'bottom' | 'both';
@@ -170,7 +170,10 @@ export default function ReviewBox(): JSX.Element {
               avatar={<ShowUserAvatar name={review.username} size={32} />}
               title={
                 <Flex justify='space-between'>
-                  <Typography.Text>{review.username}</Typography.Text>
+                  {/* <Typography.Text>{review.username}</Typography.Text> */}
+                  <Link to={`/profile/${review.username}`}>
+                    <Typography.Text>{review.username}</Typography.Text>
+                  </Link>
                   <Typography.Text>
                     Created On: {review.created_at.toString().substring(0, 10)}
                   </Typography.Text>
