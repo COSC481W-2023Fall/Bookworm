@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import { Button, ConfigProvider, Flex, List, Typography } from 'antd';
+import { Button, ConfigProvider, Flex, List, Modal, Typography } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import useAuth from '../pages/UserAuth';
 import {
@@ -52,23 +52,59 @@ export default function ReviewBox(): JSX.Element {
   };
 
   const handleReviewAddSubmit = async () => {
-    await addReviewByISBN(isbn as string, reviewText).finally(() => {
-      setReviewText('');
-      setRenderToggle(!renderToggle);
-    });
+    try {
+      await addReviewByISBN(isbn as string, reviewText).then(() => {
+        setReviewText('');
+        setRenderToggle(!renderToggle);
+        Modal.success({
+          content: 'Review submitted.',
+          maskClosable: true,
+          okButtonProps: { style: { backgroundColor: '#FEC80B' } }
+        });
+      });
+    } catch {
+      Modal.error({
+        content: 'Review submission failed.',
+        okButtonProps: { style: { backgroundColor: '#FEC80B' } }
+      });
+    }
   };
 
   const handleReviewEditSubmit = async () => {
-    await editReview(isbn as string, username, reviewText).finally(() => {
-      setReviewText('');
-      setRenderToggle(!renderToggle);
-    });
+    try {
+      await editReview(isbn as string, username, reviewText).then(() => {
+        setReviewText('');
+        setRenderToggle(!renderToggle);
+        Modal.success({
+          content: 'Review edit submitted.',
+          maskClosable: true,
+          okButtonProps: { style: { backgroundColor: '#FEC80B' } }
+        });
+      });
+    } catch {
+      Modal.error({
+        content: 'Edit submission failed.',
+        okButtonProps: { style: { backgroundColor: '#FEC80B' } }
+      });
+    }
   };
 
   const deleteButton = async () => {
-    await deleteReview(isbn as string, username).finally(() => {
-      setRenderToggle(!renderToggle);
-    });
+    try {
+      await deleteReview(isbn as string, username).then(() => {
+        setRenderToggle(!renderToggle);
+        Modal.success({
+          content: 'Review deleted.',
+          maskClosable: true,
+          okButtonProps: { style: { backgroundColor: '#FEC80B' } }
+        });
+      });
+    } catch {
+      Modal.error({
+        content: 'Review deletion failed.',
+        okButtonProps: { style: { backgroundColor: '#FEC80B' } }
+      });
+    }
   };
 
   const addReviewComponent = () => {
