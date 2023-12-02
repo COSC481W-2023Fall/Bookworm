@@ -47,7 +47,7 @@ function Search(): JSX.Element {
           }
         }}
       >
-        <Space style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Space style={{ alignItems: 'center', justifyContent: 'flex-start' }}>
           <p>
             <b>Sort By:</b>
           </p>
