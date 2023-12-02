@@ -62,33 +62,21 @@ function ShowProfile() {
 
   return (
     <div className='profile-container'>
-      <h1>{username}</h1>
       {profileData ? (
+        <>
+        <h1>{username}</h1>
         <Descriptions
           column={1}
           items={items}
           contentStyle={{ font: '1.3em inter', textAlign: 'left' }}
           labelStyle={{ color: 'black', font: 'bold 1.3em inter' }}
         />
+        </>
       ) : (
-        // <div className='profile-content'>
-        //   <p>
-        //     <strong>Gender:</strong> {profileData.gender}
-        //   </p>
-        //   <p>
-        //     <strong>Occupation:</strong> {profileData.occupation}
-        //   </p>
-        //   <p>
-        //     <strong>Favorite Book:</strong> {profileData.favoriteBook}
-        //   </p>
-        //   <p>
-        //     <strong>About me:</strong> {profileData.description}
-        //   </p>
-        //   <p>
-        //     <strong>Username:</strong> {profileData.username}
-        //   </p>
-        // </div>
-        <p>Loading profile data...</p>
+        <>
+        <h1 style={{fontSize: '100px', fontWeight: 'bold' }}>404</h1>
+        <p style={{fontSize: '20px'}}>Sorry, the user <span style={{ color: 'red', fontWeight: 'bold' }}>{username}</span> does not exist</p>
+        </>
       )}
     </div>
   );
