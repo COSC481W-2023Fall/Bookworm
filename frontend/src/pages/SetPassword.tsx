@@ -3,7 +3,7 @@ import { Button, Form, Input, Space } from 'antd';
 import React from 'react';
 import { fetchResetPassword } from '../services/index';
 
-const SubmitButton = ({ form }: { form: FormInstance }) => {
+function SubmitButton({ form }: { form: FormInstance }) {
   const [submittable, setSubmittable] = React.useState(false);
 
   // Watch all values
@@ -25,7 +25,7 @@ const SubmitButton = ({ form }: { form: FormInstance }) => {
       Submit
     </Button>
   );
-};
+}
 
 // const res = await fetchProfile(val:SetPasswordData);
 
@@ -76,7 +76,7 @@ function SetPassword() {
                 return Promise.resolve();
               }
               return Promise.reject(
-                new Error('The new password that you entered do not match!')
+                new Error('The new password that you entered does not match!')
               );
             }
           })
