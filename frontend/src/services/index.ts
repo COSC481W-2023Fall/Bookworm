@@ -64,10 +64,14 @@ export async function searchBooks(
   query: string,
   fields: string,
   offset: number,
-  limit: number
+  limit: number,
+  sort?: string,
+  order?: string
 ) {
   const res = await axios.get(
-    `${BASE_URL}/search?q=${query}&fields=${fields}&offset=${offset}&limit=${limit}`
+    `${BASE_URL}/search?q=${query}&fields=${fields}&offset=${offset}&limit=${limit}&sort=${
+      sort || ''
+    }&order=${order || ''}`
   );
 
   if (res.status !== 200) {

@@ -34,7 +34,9 @@ export default function SearchDisplay() {
         searchParams.get('q') || '',
         searchParams.get('fields') || '',
         offset,
-        limit
+        limit,
+        searchParams.get('sort') || '',
+        searchParams.get('order') || ''
       );
       setBooks(res);
     }

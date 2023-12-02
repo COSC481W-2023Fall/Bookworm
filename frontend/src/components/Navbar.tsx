@@ -5,7 +5,7 @@ import {
   useNavigate,
   useSearchParams
 } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Button,
   Menu,
@@ -52,6 +52,10 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
   ];
   const location = useLocation();
 
+  useEffect(() => {
+    setSearchText(searchParams.get('q') || '');
+  }, [searchParams]);
+
   const handleInput = (event: { target: { value: string } }) => {
     const text = event.target.value;
     setSearchText(text);
@@ -62,7 +66,9 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
       pathname: '/search',
       search: createSearchParams({
         q: searchText,
-        fields: searchParams.get('fields') || ''
+        fields: searchParams.get('fields') || '',
+        sort: searchParams.get('sort') || '',
+        order: searchParams.get('order') || ''
       }).toString()
     });
   };
@@ -158,6 +164,7 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
             size='large'
             onChange={handleInput}
             onSearch={onSearch}
+            value={searchText}
             enterButton
           />
           {location.pathname === '/search' ? (
