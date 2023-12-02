@@ -139,7 +139,7 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
           gap: 5
         }}
       >
-        <Image src='../public/logo.png' width={50} preview={false} />
+        <Image src='../logo.png' width={50} preview={false} />
         <Typography.Title level={1} className='title'>
           BookWorm
         </Typography.Title>
