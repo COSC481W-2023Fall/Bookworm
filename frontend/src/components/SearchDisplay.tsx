@@ -71,7 +71,16 @@ export default function SearchDisplay() {
               </Link>
             }
             title={<Link to={`/book/${book.isbn}`}>{book.title}</Link>}
-            description={`Author:${book.author}`}
+            description={
+              <div>
+                Author: {book.author}
+                <br />
+                Publisher: {book.publisher}
+                <br />
+                Publication Date:{' '}
+                {book.publication_date.toString().substring(0, 10)}
+              </div>
+            }
           />
         </List.Item>
       )}
