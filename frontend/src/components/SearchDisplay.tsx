@@ -64,7 +64,7 @@ export default function SearchDisplay() {
               <Link to={`/book/${book.isbn}`}>
                 <Image
                   preview={false}
-                  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-S.jpg`}
+                  src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-S.jpg?default=false`}
                   fallback='../image_not_available.png'
                   width={40}
                 />
