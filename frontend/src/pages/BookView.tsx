@@ -51,7 +51,7 @@ function BookView(): JSX.Element {
               src={coverImageUrl}
               className={styles.image}
               width='300px'
-              fallback='../../public/image_not_available.png'
+              fallback='../image_not_available.png'
             />
             <div className={styles.ratingBox}>
               <Rate

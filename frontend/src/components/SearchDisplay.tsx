@@ -65,7 +65,7 @@ export default function SearchDisplay() {
                 <Image
                   preview={false}
                   src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-S.jpg`}
-                  fallback='../../public/image_not_available.png'
+                  fallback='../image_not_available.png'
                   width={40}
                 />
               </Link>
