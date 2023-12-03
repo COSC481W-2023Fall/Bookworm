@@ -64,18 +64,22 @@ function ShowProfile() {
     <div className='profile-container'>
       {profileData ? (
         <>
-        <h1>{username}</h1>
-        <Descriptions
-          column={1}
-          items={items}
-          contentStyle={{ font: '1.3em inter', textAlign: 'left' }}
-          labelStyle={{ color: 'black', font: 'bold 1.3em inter' }}
-        />
+          <h1>{username}</h1>
+          <Descriptions
+            column={1}
+            items={items}
+            contentStyle={{ font: '1.3em inter', textAlign: 'left' }}
+            labelStyle={{ color: 'black', font: 'bold 1.3em inter' }}
+          />
         </>
       ) : (
         <>
-        <h1 style={{fontSize: '100px', fontWeight: 'bold' }}>404</h1>
-        <p style={{fontSize: '20px'}}>Sorry, the user{' '} <span style={{ color: 'red', fontWeight: 'bold' }}>{username}</span>{' '} does not exist</p>
+          <h1 style={{ fontSize: '100px', fontWeight: 'bold' }}>404</h1>
+          <p style={{ fontSize: '20px' }}>
+            Sorry, the user{' '}
+            <span style={{ color: 'red', fontWeight: 'bold' }}>{username}</span>{' '}
+            does not exist
+          </p>
         </>
       )}
     </div>
