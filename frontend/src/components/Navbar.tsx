@@ -6,17 +6,10 @@ import {
   useSearchParams
 } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import {
-  Button,
-  Menu,
-  Input,
-  Typography,
-  ConfigProvider,
-  Select,
-  Image
-} from 'antd';
+import { Menu, Input, Typography, ConfigProvider, Select, Image } from 'antd';
 import type { MenuProps, SelectProps } from 'antd';
 import './Navbar.css';
+import DropdownMenu from './dropDown';
 
 interface NavbarProps {
   auth: boolean;
@@ -86,28 +79,9 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
     ? [
         {
           label: (
-            <Link to='/profile'>
-              <Button type='text' className='menuButton'>
-                <Typography.Text strong className='menuLink'>
-                  Hi{' '}
-                  {username.length > 7
-                    ? username.substring(0, 8).concat('...')
-                    : username}
-                </Typography.Text>
-              </Button>
-            </Link>
+            <DropdownMenu username={username} handleSignout={handleSignout} />
           ),
           key: 'hi-username'
-        },
-        {
-          label: (
-            <Button type='link' onClick={handleSignout} className='menuButton'>
-              <Typography.Text strong className='menuLink'>
-                Sign Out
-              </Typography.Text>
-            </Button>
-          ),
-          key: '/sign-out'
         }
       ]
     : [
@@ -181,7 +155,13 @@ function Navbar({ auth, username, handleSignout }: NavbarProps): JSX.Element {
           )}
         </div>
       </ConfigProvider>
-      <Menu mode='horizontal' items={items} className='menu' disabledOverflow />
+      <Menu
+        mode='horizontal'
+        items={items}
+        className='menu'
+        selectable={false}
+        disabledOverflow
+      />
     </div>
   );
 }
