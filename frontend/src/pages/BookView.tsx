@@ -17,7 +17,7 @@ function BookView(): JSX.Element {
   const { isbn } = useParams<{ isbn: string }>();
   const [book, setBook] = useState<IBook | null>(null);
 
-  const coverImageUrl = `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
+  const coverImageUrl = `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg?default=false`;
 
   useEffect(() => {
     async function fetchBook() {
@@ -51,7 +51,7 @@ function BookView(): JSX.Element {
               src={coverImageUrl}
               className={styles.image}
               width='300px'
-              fallback='../../public/image_not_available.png'
+              fallback='../image_not_available.png'
             />
             <div className={styles.ratingBox}>
               <Rate
