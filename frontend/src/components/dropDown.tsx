@@ -10,7 +10,7 @@ interface DropDownProps {
 function DropdownMenu({ username, handleSignout }: DropDownProps): JSX.Element {
   const items: MenuProps['items'] = [
     {
-      label: <Link to='/profile'>1st menu item</Link>,
+      label: <Link to='/profile'>Profile</Link>,
       key: '0'
     },
     {
