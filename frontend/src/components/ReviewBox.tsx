@@ -1,17 +1,18 @@
-import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-import { List, Typography, Avatar, Button, ConfigProvider, Flex } from 'antd';
+import { Button, ConfigProvider, Flex, List, Modal, Typography } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import useAuth from '../pages/UserAuth';
 import {
   IReview,
   addReviewByISBN,
-  fetchBookByISBN,
   deleteReview,
-  editReview
+  editReview,
+  fetchBookByISBN
 } from '../services';
 import styles from './ReviewBox.module.css';
-import useAuth from '../pages/UserAuth';
+import ShowUserAvatar from './ShowUserAvatar';
 
 type PaginationPosition = 'top' | 'bottom' | 'both';
 
@@ -51,23 +52,59 @@ export default function ReviewBox(): JSX.Element {
   };
 
   const handleReviewAddSubmit = async () => {
-    await addReviewByISBN(isbn as string, reviewText).finally(() => {
-      setReviewText('');
-      setRenderToggle(!renderToggle);
-    });
+    try {
+      await addReviewByISBN(isbn as string, reviewText).then(() => {
+        setReviewText('');
+        setRenderToggle(!renderToggle);
+        Modal.success({
+          content: 'Review submitted.',
+          maskClosable: true,
+          okButtonProps: { style: { backgroundColor: '#FEC80B' } }
+        });
+      });
+    } catch {
+      Modal.error({
+        content: 'Review submission failed.',
+        okButtonProps: { style: { backgroundColor: '#FEC80B' } }
+      });
+    }
   };
 
   const handleReviewEditSubmit = async () => {
-    await editReview(isbn as string, username, reviewText).finally(() => {
-      setReviewText('');
-      setRenderToggle(!renderToggle);
-    });
+    try {
+      await editReview(isbn as string, username, reviewText).then(() => {
+        setReviewText('');
+        setRenderToggle(!renderToggle);
+        Modal.success({
+          content: 'Review edit submitted.',
+          maskClosable: true,
+          okButtonProps: { style: { backgroundColor: '#FEC80B' } }
+        });
+      });
+    } catch {
+      Modal.error({
+        content: 'Edit submission failed.',
+        okButtonProps: { style: { backgroundColor: '#FEC80B' } }
+      });
+    }
   };
 
   const deleteButton = async () => {
-    await deleteReview(isbn as string, username).finally(() => {
-      setRenderToggle(!renderToggle);
-    });
+    try {
+      await deleteReview(isbn as string, username).then(() => {
+        setRenderToggle(!renderToggle);
+        Modal.success({
+          content: 'Review deleted.',
+          maskClosable: true,
+          okButtonProps: { style: { backgroundColor: '#FEC80B' } }
+        });
+      });
+    } catch {
+      Modal.error({
+        content: 'Review deletion failed.',
+        okButtonProps: { style: { backgroundColor: '#FEC80B' } }
+      });
+    }
   };
 
   const addReviewComponent = () => {
@@ -166,15 +203,13 @@ export default function ReviewBox(): JSX.Element {
         renderItem={(review) => (
           <List.Item>
             <List.Item.Meta
-              // TODO: Replace this with user's pfp
-              avatar={
-                <Avatar
-                  src={`https://covers.openlibrary.org/b/isbn/${isbn}-S.jpg`}
-                />
-              }
+              avatar={<ShowUserAvatar name={review.username} size={32} />}
               title={
                 <Flex justify='space-between'>
-                  <Typography.Text>{review.username}</Typography.Text>
+                  {/* <Typography.Text>{review.username}</Typography.Text> */}
+                  <Link to={`/profile/${review.username}`}>
+                    <Typography.Text>{review.username}</Typography.Text>
+                  </Link>
                   <Typography.Text>
                     Created On: {review.created_at.toString().substring(0, 10)}
                   </Typography.Text>

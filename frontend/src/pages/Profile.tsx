@@ -5,12 +5,11 @@ import useAuth from './UserAuth';
 
 const { Title } = Typography;
 
-interface ProfileData {
+export interface ProfileData {
   gender: string;
   occupation: string;
   favoriteBook: string;
   description: string;
-  username: string;
 }
 
 function Profile(): JSX.Element {
@@ -27,7 +26,7 @@ function Profile(): JSX.Element {
         const response = await fetchProfileGet(username);
         console.log('response.ok = ', response.status === 200);
         if (response.status === 200) {
-          const data = response.data;
+          const { data } = response;
           console.log('data', data);
           setProfileData(data);
         } else {
@@ -74,7 +73,7 @@ function Profile(): JSX.Element {
     },
     {
       key: '2',
-      label: 'Occupattion',
+      label: 'Occupation',
       children: profileData?.occupation
     },
     {
