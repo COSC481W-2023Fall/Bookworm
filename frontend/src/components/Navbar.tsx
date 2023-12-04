@@ -6,14 +6,7 @@ import {
   useSearchParams
 } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import {
-  Menu,
-  Input,
-  Typography,
-  ConfigProvider,
-  Select,
-  Image
-} from 'antd';
+import { Menu, Input, Typography, ConfigProvider, Select, Image } from 'antd';
 import type { MenuProps, SelectProps } from 'antd';
 import './Navbar.css';
 import DropdownMenu from './dropDown';
