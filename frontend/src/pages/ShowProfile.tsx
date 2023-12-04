@@ -15,14 +15,14 @@ function ShowProfile() {
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
 
   // Use the useParams hook to get the username from the route
-  const { username } = useParams();
+  const profileUsername = useParams().username;
 
   useEffect(() => {
     // Fetch profile data when the component mounts
     const fetchProfileData = async () => {
       try {
         //   const response = await fetch(`http://localhost:3001/getProfileData/${username}`);
-        const response = await fetchProfileGet(username!);
+        const response = await fetchProfileGet(profileUsername!);
         if (response.status === 200) {
           const { data } = response;
           setProfileData(data);
@@ -35,7 +35,7 @@ function ShowProfile() {
     };
 
     fetchProfileData();
-  }, [username]);
+  }, [profileUsername]);
 
   const items: DescriptionsProps['items'] = [
     {
@@ -64,7 +64,7 @@ function ShowProfile() {
     <div className='profile-container'>
       {profileData ? (
         <>
-          <h1>{username}</h1>
+          <h1>{profileUsername}</h1>
           <Descriptions
             column={1}
             items={items}
@@ -77,7 +77,7 @@ function ShowProfile() {
           <h1 style={{ fontSize: '100px', fontWeight: 'bold' }}>404</h1>
           <p style={{ fontSize: '20px' }}>
             Sorry, the user{' '}
-            <span style={{ color: 'red', fontWeight: 'bold' }}>{username}</span>{' '}
+            <span style={{ color: 'red', fontWeight: 'bold' }}>{profileUsername}</span>{' '}
             does not exist
           </p>
         </>
